@@ -73,38 +73,55 @@ def cmd_generate(args):
 def cmd_poll(_args):
     from .instagram import permalink, publish_carousel
     state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {"offset": 0}
+    print(f"[poll] offset atual: {state['offset']}")
+    pend = [p.parent.name for p in sorted(QUEUE.glob("*/post.json"))
+            if json.loads(p.read_text(encoding="utf-8")).get("status") == "pending"]
+    print(f"[poll] posts aguardando aprovação: {pend or 'nenhum'}")
     updates = tg.get_updates(state["offset"])
+    print(f"[poll] atualizações recebidas do Telegram: {len(updates)}")
     for u in updates:
         state["offset"] = u["update_id"] + 1
         cb = u.get("callback_query")
-        if not cb or str(cb["message"]["chat"]["id"]) != str(tg.chat_id()):
-            continue  # ignora qualquer pessoa que não seja você
+        if not cb:
+            print(f"[poll] update {u['update_id']} ignorado (não é toque em botão)")
+            continue
+        if str(cb["message"]["chat"]["id"]) != str(tg.chat_id()):
+            print(f"[poll] toque ignorado: chat {cb['message']['chat']['id']} não é o seu")
+            continue
         action, _, post_id = cb["data"].partition(":")
+        print(f"[poll] toque encontrado: ação={action} post={post_id}")
         meta_file = QUEUE / post_id / "post.json"
         if not meta_file.exists():
+            print(f"[poll] post {post_id} não encontrado em queue/")
             tg.answer(cb["id"], "Post não encontrado.")
             continue
         meta = json.loads(meta_file.read_text(encoding="utf-8"))
         if meta["status"] != "pending":
+            print(f"[poll] post {post_id} já está '{meta['status']}', ignorando")
             tg.answer(cb["id"], f"Já processado ({meta['status']}).")
             continue
         chat, msg = cb["message"]["chat"]["id"], cb["message"]["message_id"]
         if action == "rj":
             meta["status"] = "rejected"
+            print(f"[poll] post {post_id} rejeitado")
             tg.answer(cb["id"], "Rejeitado.")
             tg.mark_message(chat, msg, f"❌ Post {post_id} rejeitado. Nada foi publicado.")
         elif action == "ap":
             tg.answer(cb["id"], "Aprovado! Publicando...")
             try:
                 urls = [raw_url(post_id, i) for i in range(1, meta["slides"] + 1)]
+                print(f"[poll] publicando {len(urls)} imagens, primeira: {urls[0]}")
                 media_id = publish_carousel(urls, meta["caption"])
                 meta["status"], meta["media_id"] = "published", media_id
+                print(f"[poll] publicado! media_id={media_id}")
                 tg.mark_message(chat, msg, f"✅ Post {post_id} publicado!\n{permalink(media_id)}")
             except Exception as e:
                 meta["status"] = "failed"
+                print(f"[poll] FALHA ao publicar: {e}")
                 tg.mark_message(chat, msg, f"⚠️ Falha ao publicar {post_id}:\n{str(e)[:700]}")
         meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     STATE_FILE.write_text(json.dumps(state))
+    print("[poll] fim")
 
 
 def cmd_preview(args):
