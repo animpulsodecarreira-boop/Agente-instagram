@@ -72,7 +72,12 @@ def call_gemini(prompt):
     last = None
     for model in GEMINI_MODELS:
         for attempt in range(3):
-            r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=90)
+            try:
+                r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(15, 240))
+            except requests.exceptions.RequestException as e:  # timeout, conexão caiu etc.
+                last = f"{model}: {type(e).__name__}"
+                time.sleep(2 ** attempt * 5)
+                continue
             if r.status_code == 200:
                 data = r.json()
                 try:
