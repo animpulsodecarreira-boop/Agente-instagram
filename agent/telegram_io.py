@@ -44,7 +44,10 @@ def get_updates(offset):
 
 
 def answer(cb_id, text):
-    _call("answerCallbackQuery", json={"callback_query_id": cb_id, "text": text})
+    try:
+        _call("answerCallbackQuery", json={"callback_query_id": cb_id, "text": text})
+    except Exception:
+        pass  # o Telegram recusa respostas a toques antigos; isso não pode travar a publicação
 
 
 def mark_message(chat, message_id, text):
