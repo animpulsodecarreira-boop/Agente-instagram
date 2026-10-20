@@ -1,32 +1,40 @@
-"""Gera o conteúdo do carrossel (slides + legenda) com a API gratuita do Gemini."""
+"""Gera o conteúdo (carrossel + stories + legenda) com a API gratuita do Gemini."""
 import json
 import os
 import time
 
 import requests
 
-from .config import (FUNNEL, GEMINI_MODELS, HISTORY_FILE, MAX_HASHTAGS, MAX_SLIDES,
-                     MIN_SLIDES, MISSIONS, OFFER, BRAND_NAME)
+from .config import (BRAND_NAME, FUNNEL, GEMINI_MODELS, HISTORY_FILE, MAX_HASHTAGS, MAX_SLIDES,
+                     MIN_SLIDES, MISSIONS, OFFER, THEMES)
 
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 SYSTEM = f"""Você é o estrategista de conteúdo de Instagram da marca "{BRAND_NAME}", consultoria de posicionamento
 profissional no LinkedIn para pessoas em transição/recolocação. Escreva em português do Brasil, tom humano,
-direto e acolhedor, sem jargão e sem promessas de resultado garantido.
+direto e acolhedor, sem jargão e sem promessas de resultado garantido. NÃO use markdown (nada de ** ou #) nos textos dos slides.
 
 REGRAS DE CONTEÚDO
-- Nunca invente estatísticas, depoimentos, nomes ou resultados. Use só afirmações que sejam generalizações seguras.
+- Nunca invente estatísticas, depoimentos, nomes ou resultados. Use só generalizações seguras.
 - Nada de promessas como "garanto emprego". Fale de clareza, posicionamento e percepção do perfil.
 - Não repita temas já usados (lista abaixo).
 - Títulos curtos (até 70 caracteres). Corpo de slide até 230 caracteres. Frases curtas.
 
-ESTRUTURA DO CARROSSEL ({MIN_SLIDES} a {MAX_SLIDES} slides, nesta lógica)
-1. cover: gancho forte e curioso (title) + subtítulo curto (body).
-2. content (2 a 4 slides): um ponto por slide. Pode usar "highlight" para uma frase final de impacto.
-3. Opcional: 1 slide check (checklist com 3 a 4 itens em "items" e "note" pedindo para salvar).
-4. content de conexão: começa com "E aqui está o ponto:".
-5. cta: pergunta final (title) + chamada (body). Para topo, peça para comentar "QUERO", salvar e compartilhar.
-   Para meio, chame para a DM. Para fundo, mencione a oferta e o link na bio.
+TIPOS DE SLIDE (campo "kind")
+- cover: gancho forte e curioso (title) + subtítulo curto (body). Sempre o PRIMEIRO.
+- content: um ponto por slide (title + body; "highlight" opcional = frase final de impacto).
+- quote: frase de impacto grande (title) + apoio curto (body). Ótimo para uma verdade incômoda.
+- versus: contraste "em vez de / faça assim": title + left (o erro, curto) + right (a melhor versão, curta).
+- list: título + items (3 a 4 passos curtos, até 70 caracteres cada).
+- check: checklist (title + items com 3 a 4 itens + note pedindo para salvar).
+- cta: pergunta final (title) + chamada (body). Sempre o ÚLTIMO.
+Monte {MIN_SLIDES} a {MAX_SLIDES} slides, de cover a cta. USE VARIEDADE: inclua pelo menos 2 tipos diferentes entre
+content, quote, versus, list e check. Se houver um slide de conexão, comece com "E aqui está o ponto:".
+CTA por etapa: TOPO pede comentar "QUERO", salvar e compartilhar; MEIO chama para a DM; FUNDO apresenta a oferta e o link na bio.
+
+STORIES (campo "stories", exatamente 2, para acompanhar o post):
+1. kind "frase" (uma frase de impacto, title até 80 caracteres) ou "pergunta" (pergunta que gera resposta por DM). body opcional curto.
+2. kind "teaser": convida a ver o novo post no feed (title = gancho curto; body = "Veja o novo post no feed agora.").
 
 LEGENDA: 1ª linha é um gancho forte; corpo curto; pedido de salvar/compartilhar/comentar; até 1500 caracteres.
 HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português e relevantes ao LinkedIn/carreira.
@@ -37,15 +45,20 @@ SCHEMA = {
     "properties": {
         "topic": {"type": "STRING"},
         "slides": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
-            "kind": {"type": "STRING", "enum": ["cover", "content", "check", "cta"]},
+            "kind": {"type": "STRING", "enum": ["cover", "content", "quote", "versus", "list", "check", "cta"]},
             "title": {"type": "STRING"}, "body": {"type": "STRING"},
             "highlight": {"type": "STRING"}, "note": {"type": "STRING"},
+            "left": {"type": "STRING"}, "right": {"type": "STRING"},
             "items": {"type": "ARRAY", "items": {"type": "STRING"}},
+        }, "required": ["kind", "title"]}},
+        "stories": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
+            "kind": {"type": "STRING", "enum": ["frase", "pergunta", "teaser"]},
+            "title": {"type": "STRING"}, "body": {"type": "STRING"},
         }, "required": ["kind", "title"]}},
         "caption": {"type": "STRING"},
         "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
     },
-    "required": ["topic", "slides", "caption", "hashtags"],
+    "required": ["topic", "slides", "stories", "caption", "hashtags"],
 }
 
 
@@ -55,10 +68,18 @@ def load_history():
     return []
 
 
-def save_history(topic, funnel):
+def save_history(topic, funnel, theme=""):
     h = load_history()
-    h.append({"topic": topic, "funnel": funnel})
-    HISTORY_FILE.write_text(json.dumps(h[-60:], ensure_ascii=False, indent=2), encoding="utf-8")
+    h.append({"topic": topic, "funnel": funnel, "theme": theme})
+    HISTORY_FILE.write_text(json.dumps(h[-90:], ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def pick_theme():
+    """Escolhe o estilo visual menos usado recentemente (nunca repete o último)."""
+    recent = [h.get("theme") for h in load_history() if h.get("theme")]
+    last = recent[-1] if recent else None
+    candidates = [t for t in THEMES if t != last]
+    return min(candidates, key=lambda t: (recent[-8:].count(t), THEMES.index(t)))
 
 
 def call_gemini(prompt):
@@ -100,18 +121,37 @@ def validate(post):
     for x in s:
         assert len(x["title"]) <= 110, "título longo demais"
         assert len(x.get("body", "")) <= 400, "corpo longo demais"
+        if x["kind"] == "versus":
+            assert x.get("left") and x.get("right"), "versus precisa de left e right"
+        if x["kind"] in ("list", "check"):
+            assert 3 <= len(x.get("items", [])) <= 5, f"{x['kind']} precisa de 3 a 5 itens"
     tags = ["#" + t.lstrip("#").replace(" ", "") for t in post["hashtags"]][:MAX_HASHTAGS]
     post["hashtags"] = tags
     assert len(post["caption"]) <= 1800, "legenda longa demais"
+    st = post.get("stories") or []
+    assert len(st) >= 1, "faltam stories"
+    st = st[:2]
+    if st[-1]["kind"] != "teaser":  # garante o teaser "novo post no feed" por último
+        teaser = {"kind": "teaser", "title": post["slides"][0]["title"][:80], "body": "Veja o novo post no feed agora."}
+        if len(st) >= 2:
+            st[-1] = teaser
+        else:
+            st.append(teaser)
+    for x in st:
+        assert len(x["title"]) <= 120, "título de story longo demais"
+    post["stories"] = st
     return post
 
 
 def generate_post(funnel, extra_instruction=""):
     used = [h["topic"] for h in load_history()[-40:]]
+    today = [h["topic"] for h in load_history()[-3:]]
     prompt = (
-        f"Crie o carrossel de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
+        f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
         f"Missão do post: {MISSIONS[funnel]}\nOferta (só use em post de FUNDO): {OFFER}\n"
-        f"Temas já usados (NÃO repetir): {json.dumps(used, ensure_ascii=False)}\n{extra_instruction}"
+        f"Temas já usados (NÃO repetir): {json.dumps(used, ensure_ascii=False)}\n"
+        f"Os posts mais recentes foram: {json.dumps(today, ensure_ascii=False)} — escolha um ângulo diferente.\n"
+        f"{extra_instruction}"
     )
     last_err = None
     for _ in range(3):  # se a validação falhar, pede de novo

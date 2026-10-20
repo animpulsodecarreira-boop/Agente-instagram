@@ -17,8 +17,8 @@ def chat_id():
     return os.environ["TELEGRAM_CHAT_ID"]
 
 
-def send_for_approval(post_id, paths, caption_full, funnel):
-    # 1) álbum com as imagens (Telegram aceita até 10 por álbum)
+def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_videos=None):
+    # 1) álbum com as imagens do carrossel (Telegram aceita até 10 por álbum)
     files, media = {}, []
     for i, p in enumerate(paths):
         files[f"f{i}"] = open(p, "rb")
@@ -26,12 +26,24 @@ def send_for_approval(post_id, paths, caption_full, funnel):
     _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
     for f in files.values():
         f.close()
-    # 2) legenda + botões
-    text = f"📝 Post {post_id}  ({funnel.upper()})\n\n{caption_full}"[:4000]
-    kb = {"inline_keyboard": [[
-        {"text": "✅ Aprovar e postar", "callback_data": f"ap:{post_id}"},
-        {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"},
-    ]]}
+    # 2) stories em vídeo (com trilha)
+    if story_videos:
+        files, media = {}, []
+        for i, p in enumerate(story_videos):
+            files[f"v{i}"] = open(p, "rb")
+            media.append({"type": "video", "media": f"attach://v{i}", "supports_streaming": True})
+        _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
+        for f in files.values():
+            f.close()
+    # 3) legenda + botões
+    extra = f" · estilo {theme}" if theme else ""
+    stories_note = f"\n\n🎬 + {len(story_videos)} stories em vídeo (acima)" if story_videos else ""
+    text = f"📝 Post {post_id}  ({funnel.upper()}{extra}){stories_note}\n\n{caption_full}"[:4000]
+    kb = {"inline_keyboard": [
+        [{"text": "✅ Aprovar post + stories", "callback_data": f"ap:{post_id}"}],
+        [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
+         {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"}],
+    ]}
     return _call("sendMessage", json={"chat_id": chat_id(), "text": text, "reply_markup": kb})
 
 

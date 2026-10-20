@@ -30,9 +30,9 @@ MISSIONS = {
     "fundo": "O que eu vendo: a oferta, para quem é, o que a pessoa recebe.",
 }
 
-# Agenda semanal: dia da semana (0=segunda) -> etapa do funil.
-# Dias ausentes = sem post. Horário de geração é definido no workflow (cron).
-WEEK_PLAN = {0: "topo", 1: "topo", 2: "meio", 3: "topo", 4: "fundo"}
+# 3 posts por dia, de segunda a sexta (os horários ficam em .github/workflows/generate.yml):
+#   08:00 topo | 12:30 meio | 18:00 fundo   (horário de Brasília)
+# Se rodar manualmente sem escolher a etapa, ela é definida pela hora atual (ver main.funnel_by_hour).
 
 # ---------- IA ----------
 # Nomes de modelo do Gemini mudam rápido; usamos aliases e permitimos trocar por variável de ambiente.
@@ -43,3 +43,11 @@ GEMINI_MODELS = [m.strip() for m in os.getenv(
 IG_API_VERSION = os.getenv("IG_API_VERSION", "v25.0")
 MAX_SLIDES, MIN_SLIDES = 8, 5
 MAX_HASHTAGS = 10
+
+# ---------- Visual ----------
+THEMES = ["escuro", "claro", "azul", "geometrico"]  # o agente alterna, evitando repetir o último
+
+# ---------- Stories ----------
+STORY_SECONDS = 8          # duração de cada story em vídeo
+STORIES_PER_POST = 2       # 1 frase/pergunta + 1 teaser "novo post no feed"
+MUSIC_DIR = ASSETS / "music"   # coloque aqui faixas livres de direitos (.mp3/.m4a/.wav)

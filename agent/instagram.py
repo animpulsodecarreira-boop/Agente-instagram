@@ -78,3 +78,14 @@ def permalink(media_id):
     r = requests.get(f"{GRAPH}/{media_id}", timeout=60,
                      params={"fields": "permalink", "access_token": _token()})
     return r.json().get("permalink", "")
+
+
+def publish_story(video_url=None, image_url=None):
+    """Publica um story (vídeo ou imagem). Retorna o id da mídia."""
+    ig = os.environ.get("IG_USER_ID", "").strip() or "me"
+    if video_url:
+        container = _post(f"{ig}/media", media_type="STORIES", video_url=video_url)["id"]
+    else:
+        container = _post(f"{ig}/media", media_type="STORIES", image_url=image_url)["id"]
+    _wait_ready(container, tries=45)
+    return _post(f"{ig}/media_publish", creation_id=container)["id"]
