@@ -1,11 +1,13 @@
 name: Gerar post
 on:
   schedule:
-    - cron: "0 11 * * 1-5"   # 08:00 em Brasília (UTC-3), segunda a sexta
+    - cron: "0 11 * * 1-5"    # 08:00 Brasília -> TOPO
+    - cron: "30 15 * * 1-5"   # 12:30 Brasília -> MEIO
+    - cron: "0 21 * * 1-5"    # 18:00 Brasília -> FUNDO
   workflow_dispatch:
     inputs:
       funnel:
-        description: "Etapa do funil (vazio = pela agenda da semana)"
+        description: "Etapa do funil (vazio = pela hora atual)"
         required: false
         type: choice
         options: ["", "topo", "meio", "fundo"]
@@ -17,25 +19,39 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Instalar ffmpeg (vídeo dos stories)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - run: pip install -r requirements.txt && playwright install --with-deps chromium
+      - name: Definir a etapa do funil
+        id: f
+        run: |
+          F="${{ inputs.funnel }}"
+          if [ -z "$F" ]; then
+            case "${{ github.event.schedule }}" in
+              "0 11 * * 1-5") F="topo" ;;
+              "30 15 * * 1-5") F="meio" ;;
+              "0 21 * * 1-5") F="fundo" ;;
+            esac
+          fi
+          echo "funnel=$F" >> "$GITHUB_OUTPUT"
       - name: Gerar, renderizar e enviar para o Telegram
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          if [ -n "${{ inputs.funnel }}" ]; then
-            python -m agent.main generate --funnel "${{ inputs.funnel }}"
+          if [ -n "${{ steps.f.outputs.funnel }}" ]; then
+            python -m agent.main generate --funnel "${{ steps.f.outputs.funnel }}"
           else
             python -m agent.main generate
           fi
-      - name: Salvar imagens no repositório (necessário para o Instagram buscar as URLs)
+      - name: Salvar imagens e vídeos no repositório (o Instagram busca pelas URLs)
         if: always()
         run: |
           git config user.name "agente-instagram"
