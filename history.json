@@ -37,5 +37,10 @@
     "topic": "O que eu vejo no seu perfil que você não consegue enxergar sozinho",
     "funnel": "meio",
     "theme": "azul"
+  },
+  {
+    "topic": "O erro de tentar parecer bom em tudo no perfil do LinkedIn",
+    "funnel": "topo",
+    "theme": "geometrico"
   }
 ]
