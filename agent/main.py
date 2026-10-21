@@ -1,7 +1,8 @@
 """Uso:
   python -m agent.main generate [--funnel topo|meio|fundo]   # gera post + stories, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
-  python -m agent.main preview [--mock] [--theme escuro]     # só gera/renderiza localmente (teste)
+  python -m agent.main approve --post-id ID [--action ap|po|rj]   # aprova/reprocessa um post pelo GitHub
+  python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2]   # teste local
 """
 import argparse
 import json
@@ -14,7 +15,7 @@ from zoneinfo import ZoneInfo
 
 from . import telegram_io as tg
 from .config import QUEUE, STATE_FILE, THEMES
-from .generate import generate_post, pick_theme, save_history
+from .generate import generate_post, pick_theme, pick_variant, save_history
 from .render_v2 import render_all
 from .video import make_story_video
 
@@ -78,18 +79,21 @@ def cmd_generate(args):
     try:
         prune()
         post = generate_post(funnel)
-        theme = pick_theme()
+        theme, variant = pick_theme(), pick_variant()
         out = QUEUE / post_id
-        paths, story_pngs = render_all(post["slides"], post["stories"], out, theme)
+        paths, story_pngs = render_all(post["slides"], post["stories"], out, theme, variant)
         videos = [make_story_video(png, out / f"story{i}.mp4", f"{post_id}-{i}") for i, png in enumerate(story_pngs, 1)]
         cap = full_caption(post)
-        meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "topic": post["topic"],
+        meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "variant": variant, "topic": post["topic"],
                 "caption": cap, "slides": len(paths), "stories": len(videos)}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-        save_history(post["topic"], funnel, theme)
+        rc = post["recipe"]
+        save_history(post["topic"], funnel, theme, {
+            "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
+            "cover": post["cover"], "opener": post["opener"]})
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.send_for_approval(post_id, paths, cap, funnel, theme, videos)
-        print(f"Post {post_id} gerado ({funnel}, estilo {theme}): {post['topic']}")
+        print(f"Post {post_id} gerado ({funnel}, formato {post['recipe']['format']}, estilo {theme}/v{variant}): {post['topic']}")
     except Exception:
         err = traceback.format_exc()
         print(err, file=sys.stderr)
@@ -122,13 +126,68 @@ def publish_stories(post_id, n):
     return done, notes
 
 
-def cmd_poll(_args):
+def _report(chat, msg, text):
+    if chat is not None and msg is not None:
+        try:
+            tg.mark_message(chat, msg, text)
+            return
+        except Exception as e:  # mensagem antiga/apagada não pode derrubar o robô
+            print(f"[poll] não consegui editar a mensagem do Telegram ({e}); enviando aviso novo")
+    tg.notify(text)
+
+
+def process_action(action, post_id, chat=None, msg=None, retry=False, cb_id=None):
+    """Aplica aprovar/só post/rejeitar a um post. retry=True permite reprocessar um post que falhou."""
     from .instagram import permalink, publish_carousel
+    meta_file = QUEUE / post_id / "post.json"
+    if not meta_file.exists():
+        existing = sorted(d.name for d in QUEUE.iterdir() if d.is_dir() and not d.name.startswith("_")) if QUEUE.exists() else []
+        print(f"[poll] post {post_id} NÃO existe em queue/. Existentes: {existing}")
+        if cb_id:
+            tg.answer(cb_id, "Post não encontrado.")
+        _report(chat, msg, f"⚠️ Não encontrei o post {post_id} no repositório (pode ter sido removido ou não foi salvo).")
+        return
+    meta = json.loads(meta_file.read_text(encoding="utf-8"))
+    ok_states = ("pending", "failed") if retry else ("pending",)
+    if meta["status"] not in ok_states:
+        print(f"[poll] post {post_id} está '{meta['status']}', nada a fazer")
+        if cb_id:
+            tg.answer(cb_id, f"Já processado ({meta['status']}).")
+        return
+    if action == "rj":
+        meta["status"] = "rejected"
+        print(f"[poll] post {post_id} rejeitado")
+        if cb_id:
+            tg.answer(cb_id, "Rejeitado.")
+        _report(chat, msg, f"❌ Post {post_id} rejeitado. Nada foi publicado.")
+    elif action in ("ap", "po"):
+        if cb_id:
+            tg.answer(cb_id, "Aprovado! Publicando...")
+        try:
+            urls = [raw_url(post_id, f"slide{i}.png") for i in range(1, meta["slides"] + 1)]
+            print(f"[poll] publicando {len(urls)} imagens, primeira: {urls[0]}")
+            media_id = publish_carousel(urls, meta["caption"])
+            meta["status"], meta["media_id"] = "published", media_id
+            report = f"✅ Post {post_id} publicado!\n{permalink(media_id)}"
+            if action == "ap" and meta.get("stories"):
+                done, notes = publish_stories(post_id, meta["stories"])
+                meta["stories_published"] = done
+                report += f"\n🎬 Stories: {done}/{meta['stories']} publicados"
+                if notes:
+                    report += "\n" + "\n".join(notes)
+            _report(chat, msg, report)
+        except Exception as e:
+            meta["status"] = "failed"
+            print(f"[poll] FALHA ao publicar: {e}")
+            _report(chat, msg, f"⚠️ Falha ao publicar {post_id}:\n{str(e)[:700]}\n\nPara tentar de novo: Actions → Aprovar post → informe {post_id}.")
+    meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def cmd_poll(_args):
     me = tg.get_me()
     print(f"[poll] bot: @{me.get('username')}")
-    pend = [p.parent.name for p in sorted(QUEUE.glob("*/post.json"))
-            if json.loads(p.read_text(encoding="utf-8")).get("status") == "pending"]
-    print(f"[poll] posts aguardando aprovação: {pend or 'nenhum'}")
+    posts = {p.parent.name: json.loads(p.read_text(encoding="utf-8")).get("status") for p in sorted(QUEUE.glob("*/post.json"))}
+    print(f"[poll] posts no repositório: {posts or 'nenhum'}")
     # Sem offset salvo: pede tudo o que o Telegram ainda não confirmou. Seguro porque cada post só é
     # processado uma vez (o status muda de 'pending'). Só confirma os toques no FINAL da execução.
     updates = tg.get_updates(0)
@@ -145,55 +204,28 @@ def cmd_poll(_args):
             continue
         action, _, post_id = cb["data"].partition(":")
         print(f"[poll] toque encontrado: ação={action} post={post_id}")
-        meta_file = QUEUE / post_id / "post.json"
-        if not meta_file.exists():
-            print(f"[poll] post {post_id} não encontrado em queue/")
-            tg.answer(cb["id"], "Post não encontrado.")
-            continue
-        meta = json.loads(meta_file.read_text(encoding="utf-8"))
-        if meta["status"] != "pending":
-            print(f"[poll] post {post_id} já está '{meta['status']}', ignorando")
-            tg.answer(cb["id"], f"Já processado ({meta['status']}).")
-            continue
-        chat, msg = cb["message"]["chat"]["id"], cb["message"]["message_id"]
-        if action == "rj":
-            meta["status"] = "rejected"
-            print(f"[poll] post {post_id} rejeitado")
-            tg.answer(cb["id"], "Rejeitado.")
-            tg.mark_message(chat, msg, f"❌ Post {post_id} rejeitado. Nada foi publicado.")
-        elif action in ("ap", "po"):
-            tg.answer(cb["id"], "Aprovado! Publicando...")
-            try:
-                urls = [raw_url(post_id, f"slide{i}.png") for i in range(1, meta["slides"] + 1)]
-                print(f"[poll] publicando {len(urls)} imagens, primeira: {urls[0]}")
-                media_id = publish_carousel(urls, meta["caption"])
-                meta["status"], meta["media_id"] = "published", media_id
-                report = f"✅ Post {post_id} publicado!\n{permalink(media_id)}"
-                if action == "ap" and meta.get("stories"):
-                    done, notes = publish_stories(post_id, meta["stories"])
-                    meta["stories_published"] = done
-                    report += f"\n🎬 Stories: {done}/{meta['stories']} publicados"
-                    if notes:
-                        report += "\n" + "\n".join(notes)
-                tg.mark_message(chat, msg, report)
-            except Exception as e:
-                meta["status"] = "failed"
-                print(f"[poll] FALHA ao publicar: {e}")
-                tg.mark_message(chat, msg, f"⚠️ Falha ao publicar {post_id}:\n{str(e)[:700]}")
-        meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        process_action(action, post_id, cb["message"]["chat"]["id"], cb["message"]["message_id"], cb_id=cb["id"])
     if max_id is not None:
         tg.get_updates(max_id + 1)  # confirma os toques já tratados
     print("[poll] fim")
 
 
+def cmd_approve(args):
+    """Aprovação manual pelo GitHub (Actions → Aprovar post). Também reprocessa posts que falharam."""
+    print(f"[approve] post={args.post_id} ação={args.action}")
+    process_action(args.action, args.post_id.strip(), retry=True)
+    print("[approve] fim")
+
+
 def cmd_preview(args):
     post = MOCK if args.mock else generate_post(args.funnel or "topo")
     theme = args.theme or pick_theme()
+    variant = args.variant if args.variant is not None else pick_variant()
     out = QUEUE / "_preview"
-    paths, story_pngs = render_all(post["slides"], post["stories"], out, theme)
+    paths, story_pngs = render_all(post["slides"], post["stories"], out, theme, variant)
     vids = [make_story_video(p, out / f"story{i}.mp4", f"prev-{i}") for i, p in enumerate(story_pngs, 1)]
     print("\n".join(map(str, paths + story_pngs + vids)))
-    print(f"\nEstilo: {theme}\n\n" + full_caption(post))
+    print(f"\nEstilo: {theme}/v{variant}\n\n" + full_caption(post))
 
 
 def main():
@@ -201,9 +233,10 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo"])
     sub.add_parser("poll")
-    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo"]); p.add_argument("--theme", choices=THEMES)
+    ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj"], default="ap")
+    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2])
     args = ap.parse_args()
-    {"generate": cmd_generate, "poll": cmd_poll, "preview": cmd_preview}[args.cmd](args)
+    {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview}[args.cmd](args)
 
 
 if __name__ == "__main__":
