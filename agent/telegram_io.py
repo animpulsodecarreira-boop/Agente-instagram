@@ -71,3 +71,7 @@ def mark_message(chat, message_id, text):
 
 def webhook_info():
     return _call("getWebhookInfo", json={})
+
+
+def get_me():
+    return _call("getMe", json={})
