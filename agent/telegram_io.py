@@ -67,3 +67,7 @@ def mark_message(chat, message_id, text):
     _call("editMessageReplyMarkup", json={"chat_id": chat, "message_id": message_id,
                                           "reply_markup": {"inline_keyboard": []}})
     notify(text)
+
+
+def webhook_info():
+    return _call("getWebhookInfo", json={})
