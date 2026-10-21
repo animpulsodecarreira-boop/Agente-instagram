@@ -5,8 +5,8 @@ import time
 
 import requests
 
-from .config import (BRAND_NAME, FUNNEL, GEMINI_MODELS, HISTORY_FILE, MAX_HASHTAGS, MAX_SLIDES,
-                     MIN_SLIDES, MISSIONS, OFFER, THEMES)
+from .config import (BANNED_PHRASES, BRAND_NAME, CTAS, FORMATS, FUNNEL, GEMINI_MODELS, HISTORY_FILE, HOOKS,
+                     KEYWORDS, MAX_HASHTAGS, MAX_SLIDES, MIN_SLIDES, MISSIONS, OFFER, THEMES)
 
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
@@ -21,22 +21,24 @@ REGRAS DE CONTEÚDO
 - Títulos curtos (até 70 caracteres). Corpo de slide até 230 caracteres. Frases curtas.
 
 TIPOS DE SLIDE (campo "kind")
-- cover: gancho forte e curioso (title) + subtítulo curto (body). Sempre o PRIMEIRO.
+- cover: gancho (title) + subtítulo curto (body). Sempre o PRIMEIRO.
 - content: um ponto por slide (title + body; "highlight" opcional = frase final de impacto).
-- quote: frase de impacto grande (title) + apoio curto (body). Ótimo para uma verdade incômoda.
+- quote: frase de impacto grande (title) + apoio curto (body).
 - versus: contraste "em vez de / faça assim": title + left (o erro, curto) + right (a melhor versão, curta).
 - list: título + items (3 a 4 passos curtos, até 70 caracteres cada).
-- check: checklist (title + items com 3 a 4 itens + note pedindo para salvar).
-- cta: pergunta final (title) + chamada (body). Sempre o ÚLTIMO.
-Monte {MIN_SLIDES} a {MAX_SLIDES} slides, de cover a cta. USE VARIEDADE: inclua pelo menos 2 tipos diferentes entre
-content, quote, versus, list e check. Se houver um slide de conexão, comece com "E aqui está o ponto:".
-CTA por etapa: TOPO pede comentar "QUERO", salvar e compartilhar; MEIO chama para a DM; FUNDO apresenta a oferta e o link na bio.
+- check: checklist (title + items com 3 a 4 itens + note curta).
+- cta: chamada final (title + body). Sempre o ÚLTIMO.
+Monte de 5 a 8 slides. A receita do dia (formato, gancho e CTA) vem na mensagem do usuário: SIGA-A. Cada post deve
+parecer diferente dos anteriores: varie o jeito de abrir, de transicionar e de fechar. O slide de conexão é OPCIONAL
+e, se usar, nunca repita a mesma frase de transição dos posts anteriores.
+Não escreva "Salva este post" ou pedidos de salvar em todo post: peça só quando fizer sentido para a receita do dia.
+Exemplos e casos devem ser FICTÍCIOS e identificados como exemplo ("Imagine...", "Por exemplo:"). Nunca apresente um caso inventado como real.
 
 STORIES (campo "stories", exatamente 2, para acompanhar o post):
 1. kind "frase" (uma frase de impacto, title até 80 caracteres) ou "pergunta" (pergunta que gera resposta por DM). body opcional curto.
-2. kind "teaser": convida a ver o novo post no feed (title = gancho curto; body = "Veja o novo post no feed agora.").
+2. kind "teaser": convida a ver o novo post no feed (title = gancho curto; body = convite curto, diferente a cada dia).
 
-LEGENDA: 1ª linha é um gancho forte; corpo curto; pedido de salvar/compartilhar/comentar; até 1500 caracteres.
+LEGENDA: 1ª linha é um gancho forte e diferente das anteriores; corpo curto; termine com a chamada do CTA da receita (não repita o mesmo pedido todo dia); até 1500 caracteres.
 HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português e relevantes ao LinkedIn/carreira.
 """
 
@@ -68,18 +70,42 @@ def load_history():
     return []
 
 
-def save_history(topic, funnel, theme=""):
+def save_history(topic, funnel, theme="", extra=None):
     h = load_history()
-    h.append({"topic": topic, "funnel": funnel, "theme": theme})
-    HISTORY_FILE.write_text(json.dumps(h[-90:], ensure_ascii=False, indent=2), encoding="utf-8")
+    entry = {"topic": topic, "funnel": funnel, "theme": theme}
+    entry.update(extra or {})
+    h.append(entry)
+    HISTORY_FILE.write_text(json.dumps(h[-120:], ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _lru(options, key, history=None):
+    """Escolhe a opção usada há mais tempo (nunca usadas primeiro; nunca repete a última)."""
+    hist = [h[key] for h in (history if history is not None else load_history()) if h.get(key) is not None]
+    last = hist[-1] if hist else None
+    pool = [o for o in options if o != last] or list(options)
+
+    def age(o):  # índice da última vez usada (-1 = nunca usada)
+        return max((i for i, v in enumerate(hist) if v == o), default=-1)
+    return min(pool, key=lambda o: (age(o), options.index(o)))
 
 
 def pick_theme():
-    """Escolhe o estilo visual menos usado recentemente (nunca repete o último)."""
-    recent = [h.get("theme") for h in load_history() if h.get("theme")]
-    last = recent[-1] if recent else None
-    candidates = [t for t in THEMES if t != last]
-    return min(candidates, key=lambda t: (recent[-8:].count(t), THEMES.index(t)))
+    return _lru(THEMES, "theme")
+
+
+def pick_variant():
+    return _lru([0, 1, 2], "variant")
+
+
+def pick_recipe(funnel):
+    """Sorteia a 'receita' do post: formato, gancho, estilo de CTA e palavra-chave."""
+    hist = load_history()
+    fmt = _lru([k for k, v in FORMATS.items() if funnel in v["funnels"]], "format", hist)
+    hook = _lru(HOOKS, "hook", hist)
+    cta_opts = CTAS[funnel]
+    cta = _lru(cta_opts, "cta", hist)
+    kw = _lru(KEYWORDS, "keyword", hist)
+    return {"format": fmt, "hook": hook, "cta": cta, "keyword": kw}
 
 
 def call_gemini(prompt):
@@ -114,7 +140,7 @@ def call_gemini(prompt):
     raise RuntimeError(f"Gemini falhou: {last}")
 
 
-def validate(post):
+def validate(post, strict=True):
     s = post["slides"]
     assert MIN_SLIDES <= len(s) <= MAX_SLIDES, f"{len(s)} slides"
     assert s[0]["kind"] == "cover" and s[-1]["kind"] == "cta", "primeiro deve ser cover e último cta"
@@ -140,25 +166,43 @@ def validate(post):
     for x in st:
         assert len(x["title"]) <= 120, "título de story longo demais"
     post["stories"] = st
+    if strict:
+        blob = " ".join([post["caption"]] + [x["title"] + " " + x.get("body", "") + " " + x.get("highlight", "") for x in s]).lower()
+        hit = [p for p in BANNED_PHRASES if p in blob]
+        assert not hit, f"usou fórmulas repetidas: {hit}"
     return post
 
 
 def generate_post(funnel, extra_instruction=""):
-    used = [h["topic"] for h in load_history()[-40:]]
-    today = [h["topic"] for h in load_history()[-3:]]
+    hist = load_history()
+    used = [h["topic"] for h in hist[-40:]]
+    recent_hooks = [h.get("cover") for h in hist[-14:] if h.get("cover")]
+    recent_openers = [h.get("opener") for h in hist[-14:] if h.get("opener")]
+    recipe = pick_recipe(funnel)
+    fmt = FORMATS[recipe["format"]]
+    cta = recipe["cta"].replace("{kw}", f"“{recipe['keyword']}”")
     prompt = (
         f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
-        f"Missão do post: {MISSIONS[funnel]}\nOferta (só use em post de FUNDO): {OFFER}\n"
+        f"Missão do post: {MISSIONS[funnel]}\nOferta (só use em post de FUNDO): {OFFER}\n\n"
+        f"RECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
+        f"- Estilo do gancho da capa: {recipe['hook']}\n- CTA do último slide: {cta}\n\n"
         f"Temas já usados (NÃO repetir): {json.dumps(used, ensure_ascii=False)}\n"
-        f"Os posts mais recentes foram: {json.dumps(today, ensure_ascii=False)} — escolha um ângulo diferente.\n"
+        f"Capas recentes (NÃO usar estrutura parecida): {json.dumps(recent_hooks, ensure_ascii=False)}\n"
+        f"Aberturas de legenda recentes (NÃO repetir o jeito de começar): {json.dumps(recent_openers, ensure_ascii=False)}\n"
+        f"Frases PROIBIDAS (já ficaram repetitivas): {json.dumps(BANNED_PHRASES, ensure_ascii=False)}\n"
         f"{extra_instruction}"
     )
     last_err = None
-    for _ in range(3):  # se a validação falhar, pede de novo
+    for attempt in range(3):  # se a validação falhar, pede de novo
         post = call_gemini(prompt)
         try:
-            post = validate(post)
+            post = validate(post, strict=attempt < 2)  # na última tentativa aceita, para não ficar sem post
             post["funnel"] = funnel
+            last = post["slides"][-1]
+            last["show_link"] = funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower()
+            post["recipe"] = recipe
+            post["cover"] = post["slides"][0]["title"]
+            post["opener"] = post["caption"].strip().split("\n")[0][:120]
             return post
         except (AssertionError, KeyError) as e:
             last_err = e
