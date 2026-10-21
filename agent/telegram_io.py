@@ -89,6 +89,11 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
         [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
          {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"}],
     ]}
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if repo:  # plano B que não depende do Telegram: abre o fluxo "Aprovar post" no GitHub
+        kb["inline_keyboard"].append([{"text": "🛠 Plano B: aprovar pelo GitHub",
+                                       "url": f"https://github.com/{repo}/actions/workflows/aprovar.yml"}])
+        text += f"\n\nSe o botão não funcionar: abra o plano B e informe o número {post_id}."
     return _call("sendMessage", json={"chat_id": chat_id(), "text": text, "reply_markup": kb})
 
 
