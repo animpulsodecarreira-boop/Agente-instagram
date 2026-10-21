@@ -64,5 +64,17 @@
     "keyword": "QUERO",
     "cover": "Você sente que seu LinkedIn atrai as oportunidades certas?",
     "opener": "Muitos profissionais capricham na experiência, mas esquecem que a vitrine precisa ser simples de entender. Se o seu perf"
+  },
+  {
+    "topic": "Como o excesso de informação pode prejudicar o perfil profissional e o papel da consultoria",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 1,
+    "format": "caso_hipotetico",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "PERFIL",
+    "cover": "Imagine: ter muita experiência pode afastar oportunidades",
+    "opener": "Colocar cada detalhe da sua trajetória no perfil costuma gerar mais confusão do que credibilidade."
   }
 ]
