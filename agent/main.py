@@ -124,22 +124,18 @@ def publish_stories(post_id, n):
 
 def cmd_poll(_args):
     from .instagram import permalink, publish_carousel
-    state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {"offset": 0}
-    print(f"[poll] offset atual: {state['offset']}")
+    me = tg.get_me()
+    print(f"[poll] bot: @{me.get('username')}")
     pend = [p.parent.name for p in sorted(QUEUE.glob("*/post.json"))
             if json.loads(p.read_text(encoding="utf-8")).get("status") == "pending"]
     print(f"[poll] posts aguardando aprovação: {pend or 'nenhum'}")
-    info = tg.webhook_info()
-    print(f"[poll] Telegram: webhook={info.get('url') or 'nenhum'}, updates pendentes={info.get('pending_update_count')}, "
-          f"último erro={info.get('last_error_message')}")
-    updates = tg.get_updates(state["offset"])
-    if not updates and info.get("pending_update_count", 0) > 0:
-        print("[poll] há updates pendentes mas nenhum veio com o offset salvo; refazendo sem offset")
-        state["offset"] = 0
-        updates = tg.get_updates(0)
-    print(f"[poll] atualizações recebidas do Telegram: {len(updates)}")
+    # Sem offset salvo: pede tudo o que o Telegram ainda não confirmou. Seguro porque cada post só é
+    # processado uma vez (o status muda de 'pending'). Só confirma os toques no FINAL da execução.
+    updates = tg.get_updates(0)
+    print(f"[poll] atualizações recebidas do Telegram: {len(updates)} (ids: {[u['update_id'] for u in updates]})")
+    max_id = None
     for u in updates:
-        state["offset"] = u["update_id"] + 1
+        max_id = u["update_id"]
         cb = u.get("callback_query")
         if not cb:
             print(f"[poll] update {u['update_id']} ignorado (não é toque em botão)")
@@ -185,7 +181,8 @@ def cmd_poll(_args):
                 print(f"[poll] FALHA ao publicar: {e}")
                 tg.mark_message(chat, msg, f"⚠️ Falha ao publicar {post_id}:\n{str(e)[:700]}")
         meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
-    STATE_FILE.write_text(json.dumps(state))
+    if max_id is not None:
+        tg.get_updates(max_id + 1)  # confirma os toques já tratados
     print("[poll] fim")
 
 
