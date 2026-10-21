@@ -204,3 +204,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+  
+    updates = tg.get_updates(state["offset"])
+    print(f"[poll] atualizações recebidas do Telegram: {len(updates)}")
