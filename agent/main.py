@@ -95,7 +95,7 @@ def cmd_generate(args):
             tg.send_for_approval(post_id, paths, cap, funnel, theme, videos)
         print(f"Post {post_id} gerado ({funnel}, formato {post['recipe']['format']}, estilo {theme}/v{variant}): {post['topic']}")
     except Exception:
-        err = traceback.format_exc()
+        err = tg.redact(traceback.format_exc())
         print(err, file=sys.stderr)
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.notify(f"⚠️ O agente falhou ao gerar o post ({funnel}):\n{err[-800:]}")
