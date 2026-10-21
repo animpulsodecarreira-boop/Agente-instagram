@@ -1,44 +1,89 @@
 """Aprovação via Telegram (grátis): o bot envia as imagens + legenda com botões Aprovar/Rejeitar."""
 import json
 import os
+import re
 
 import requests
 
 BASE = "https://api.telegram.org/bot{token}/{method}"
+SECRET_ENVS = ("TELEGRAM_BOT_TOKEN", "GEMINI_API_KEY", "IG_ACCESS_TOKEN")
+
+
+def redact(text):
+    """Remove tokens e chaves de qualquer texto antes de mostrar/enviar."""
+    text = str(text)
+    for name in SECRET_ENVS:
+        v = os.environ.get(name, "").strip()
+        if v:
+            text = text.replace(v, "***")
+    return re.sub(r"bot\d{5,}:[A-Za-z0-9_-]{20,}", "bot***", text)
 
 
 def _call(method, **kw):
-    r = requests.post(BASE.format(token=os.environ["TELEGRAM_BOT_TOKEN"], method=method), timeout=60, **kw)
-    r.raise_for_status()
+    url = BASE.format(token=os.environ["TELEGRAM_BOT_TOKEN"].strip(), method=method)
+    try:
+        r = requests.post(url, timeout=180, **kw)
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(redact(f"Telegram {method}: falha de conexão ({type(e).__name__})")) from None
+    if r.status_code != 200:
+        try:
+            desc = r.json().get("description", r.text[:200])
+        except ValueError:
+            desc = r.text[:200]
+        raise RuntimeError(redact(f"Telegram {method}: HTTP {r.status_code} - {desc}")) from None
     return r.json()["result"]
 
 
 def chat_id():
-    return os.environ["TELEGRAM_CHAT_ID"]
+    return os.environ["TELEGRAM_CHAT_ID"].strip()
+
+
+def _album(kind, paths):
+    """Envia um álbum; se o Telegram recusar, envia item por item; se recusar de novo, como documento.
+    kind: 'photo' ou 'video'. Nunca derruba o fluxo: devolve uma nota com o que não deu certo."""
+    if not paths:
+        return ""
+    media_type = "photo" if kind == "photo" else "video"
+    files, media = {}, []
+    try:
+        for i, p in enumerate(paths):
+            files[f"f{i}"] = open(p, "rb")
+            item = {"type": media_type, "media": f"attach://f{i}"}
+            if kind == "video":
+                item["supports_streaming"] = True
+            media.append(item)
+        if len(paths) >= 2:
+            _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
+            return ""
+        raise RuntimeError("álbum precisa de 2 itens")
+    except Exception as e:
+        print(f"[telegram] álbum de {kind} falhou ({redact(e)}); enviando um a um")
+    finally:
+        for f in files.values():
+            f.close()
+    notes = []
+    for p in paths:
+        sent = False
+        for method, field in (("sendPhoto" if kind == "photo" else "sendVideo", kind), ("sendDocument", "document")):
+            try:
+                with open(p, "rb") as fh:
+                    _call(method, data={"chat_id": chat_id()}, files={field: fh})
+                sent = True
+                break
+            except Exception as e:
+                print(f"[telegram] {method} falhou para {p.name if hasattr(p, 'name') else p}: {redact(e)}")
+        if not sent:
+            notes.append(str(p))
+    return f"⚠️ Não consegui enviar a prévia de {len(notes)} arquivo(s)." if notes else ""
 
 
 def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_videos=None):
-    # 1) álbum com as imagens do carrossel (Telegram aceita até 10 por álbum)
-    files, media = {}, []
-    for i, p in enumerate(paths):
-        files[f"f{i}"] = open(p, "rb")
-        media.append({"type": "photo", "media": f"attach://f{i}"})
-    _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
-    for f in files.values():
-        f.close()
-    # 2) stories em vídeo (com trilha)
-    if story_videos:
-        files, media = {}, []
-        for i, p in enumerate(story_videos):
-            files[f"v{i}"] = open(p, "rb")
-            media.append({"type": "video", "media": f"attach://v{i}", "supports_streaming": True})
-        _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
-        for f in files.values():
-            f.close()
-    # 3) legenda + botões
+    notes = [_album("photo", paths), _album("video", story_videos or [])]
+    notes = "\n".join(n for n in notes if n)
     extra = f" · estilo {theme}" if theme else ""
     stories_note = f"\n\n🎬 + {len(story_videos)} stories em vídeo (acima)" if story_videos else ""
-    text = f"📝 Post {post_id}  ({funnel.upper()}{extra}){stories_note}\n\n{caption_full}"[:4000]
+    warn = f"\n\n{notes}\nO post foi salvo mesmo assim; você pode aprovar normalmente." if notes else ""
+    text = redact(f"📝 Post {post_id}  ({funnel.upper()}{extra}){stories_note}{warn}\n\n{caption_full}")[:4000]
     kb = {"inline_keyboard": [
         [{"text": "✅ Aprovar post + stories", "callback_data": f"ap:{post_id}"}],
         [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
@@ -48,7 +93,7 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
 
 
 def notify(text):
-    return _call("sendMessage", json={"chat_id": chat_id(), "text": text[:4000]})
+    return _call("sendMessage", json={"chat_id": chat_id(), "text": redact(text)[:4000]})
 
 
 def get_updates(offset):
