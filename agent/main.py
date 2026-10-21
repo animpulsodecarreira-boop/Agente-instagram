@@ -129,7 +129,14 @@ def cmd_poll(_args):
     pend = [p.parent.name for p in sorted(QUEUE.glob("*/post.json"))
             if json.loads(p.read_text(encoding="utf-8")).get("status") == "pending"]
     print(f"[poll] posts aguardando aprovação: {pend or 'nenhum'}")
+        info = tg.webhook_info()
+    print(f"[poll] Telegram: webhook={info.get('url') or 'nenhum'}, updates pendentes={info.get('pending_update_count')}, "
+          f"último erro={info.get('last_error_message')}")
     updates = tg.get_updates(state["offset"])
+    if not updates and info.get("pending_update_count", 0) > 0:
+        print("[poll] há updates pendentes mas nenhum veio com o offset salvo; refazendo sem offset")
+        state["offset"] = 0
+        updates = tg.get_updates(0)
     print(f"[poll] atualizações recebidas do Telegram: {len(updates)}")
     for u in updates:
         state["offset"] = u["update_id"] + 1
