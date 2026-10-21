@@ -52,5 +52,17 @@
     "topic": "Como eu organizo a sua história profissional no LinkedIn para gerar clareza",
     "funnel": "meio",
     "theme": "claro"
+  },
+  {
+    "topic": "Oferta de Diagnóstico Gratuito do LinkedIn",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 0,
+    "format": "comparativo",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "apontar o link na bio para o diagnóstico",
+    "keyword": "QUERO",
+    "cover": "Você sente que seu LinkedIn atrai as oportunidades certas?",
+    "opener": "Muitos profissionais capricham na experiência, mas esquecem que a vitrine precisa ser simples de entender. Se o seu perf"
   }
 ]
