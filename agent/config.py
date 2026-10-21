@@ -51,3 +51,70 @@ THEMES = ["escuro", "claro", "azul", "geometrico"]  # o agente alterna, evitando
 STORY_SECONDS = 8          # duração de cada story em vídeo
 STORIES_PER_POST = 2       # 1 frase/pergunta + 1 teaser "novo post no feed"
 MUSIC_DIR = ASSETS / "music"   # coloque aqui faixas livres de direitos (.mp3/.m4a/.wav)
+
+# ---------- Variedade de conteúdo (o código sorteia; o Gemini só executa) ----------
+# Cada formato é uma "receita" diferente de post. O agente alterna, evitando repetir os últimos.
+FORMATS = {
+    "mito_verdade": dict(funnels=["topo"], nome="Mito vs. verdade",
+                         plano="cover; 3 slides 'versus' ou 'content' desmentindo um mito de LinkedIn por slide; 1 slide 'quote' com a conclusão; cta"),
+    "erro_correcao": dict(funnels=["topo"], nome="Erros e como corrigir",
+                          plano="cover; 2 a 3 slides 'versus' (erro -> melhor versão); 1 slide 'list' com o resumo; cta"),
+    "antes_depois": dict(funnels=["topo", "meio"], nome="Antes e depois de um trecho do perfil",
+                         plano="cover; 1 slide 'versus' com um EXEMPLO FICTÍCIO de antes/depois; 2 slides 'content' explicando o que mudou; cta"),
+    "tres_sinais": dict(funnels=["topo"], nome="Sinais de que algo está errado",
+                        plano="cover; 3 a 4 slides 'content' (um sinal por slide, com exemplo curto); 1 slide 'check'; cta"),
+    "pergunta": dict(funnels=["topo"], nome="Pergunta provocativa respondida",
+                     plano="cover em forma de pergunta; 3 slides 'content' ou 'quote' respondendo; cta (sem slide de conexão)"),
+    "mini_aula": dict(funnels=["topo", "meio"], nome="Mini-aula com analogia",
+                      plano="cover; 1 slide 'quote' com a ideia central; 2 a 3 slides 'content' usando uma analogia do dia a dia; 1 slide 'list'; cta"),
+    "comparativo": dict(funnels=["topo", "fundo"], nome="Perfil A vs. perfil B",
+                        plano="cover; 2 slides 'versus' comparando dois perfis FICTÍCIOS ou dois jeitos de se apresentar; 1 slide 'content' com a lição; cta"),
+    "checklist": dict(funnels=["topo"], nome="Checklist de autoavaliação",
+                      plano="cover; 1 slide 'check'; 2 a 3 slides 'content' explicando os itens mais negligenciados; cta"),
+    "passo_a_passo": dict(funnels=["meio"], nome="Passo a passo prático",
+                          plano="cover; 1 slide 'list' com os passos; 3 slides 'content' detalhando os passos mais importantes; cta"),
+    "bastidor": dict(funnels=["meio"], nome="Como funciona o trabalho (bastidores do método)",
+                     plano="cover; 3 a 4 slides 'content' mostrando as etapas de uma consultoria de LinkedIn (SEM casos reais, SEM resultados prometidos); cta para DM"),
+    "caso_hipotetico": dict(funnels=["meio", "fundo"], nome="Mini-caso hipotético",
+                            plano="cover com 'Imagine...'; 3 slides 'content' contando um caso FICTÍCIO (deixe claro que é um exemplo); 1 slide 'quote' com a lição; cta"),
+    "oferta": dict(funnels=["fundo"], nome="Apresentação da oferta",
+                   plano="cover; 1 slide 'content' sobre para quem é; 1 slide 'list' com o que a pessoa recebe; 1 slide 'content' de como funciona; cta com link na bio"),
+}
+
+HOOKS = [
+    "pergunta direta que gera identificação",
+    "afirmação contraintuitiva que quebra uma crença comum",
+    "número concreto + promessa moderada (sem garantir resultado)",
+    "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "observação do dia a dia de quem procura emprego",
+    "comparação inesperada entre duas coisas",
+    "curiosidade que deixa a pessoa querendo saber o motivo",
+]
+
+CTAS = {
+    "topo": [
+        "convidar a comentar a palavra-chave {kw}",
+        "convidar a salvar para consultar antes de mexer no perfil",
+        "convidar a mandar o post para alguém que está buscando recolocação",
+        "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é o seu título hoje?)",
+        "convidar a seguir o perfil para a próxima dica",
+    ],
+    "meio": [
+        "convidar a mandar uma DM com a palavra {kw}",
+        "convidar a responder o story do dia",
+        "convidar a comentar a dúvida para virar tema de um próximo post",
+    ],
+    "fundo": [
+        "apontar o link na bio para o diagnóstico",
+        "convidar a comentar {kw} para receber o diagnóstico",
+        "convidar a mandar DM com a palavra {kw}",
+    ],
+}
+KEYWORDS = ["QUERO", "PERFIL", "TITULO", "CHECK", "AJUDA"]
+
+# Fórmulas que ficaram repetitivas: o Gemini é instruído a não usá-las.
+BANNED_PHRASES = [
+    "e aqui está o ponto", "quantos você marcaria", "salva para conferir depois", "desliza e confere",
+    "pequenos ajustes", "muda a percepção", "mudam a percepção", "mudar completamente",
+    "salva este post e manda", "recrutador escaneia", "seu perfil pode estar correto",
+]
