@@ -100,5 +100,17 @@
     "keyword": "CHECK",
     "cover": "Pare de acreditar nestes 3 mitos sobre o LinkedIn",
     "opener": "Circulam dezenas de manuais não oficiais sobre o que supostamente funciona ou não no LinkedIn. O problema é que a maiori"
+  },
+  {
+    "topic": "Bastidores e método da consultoria de LinkedIn mostrando um antes e depois prático",
+    "funnel": "meio",
+    "theme": "azul",
+    "variant": 1,
+    "format": "antes_depois",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "cta": "convidar a mandar uma DM com a palavra {kw}",
+    "keyword": "AJUDA",
+    "cover": "Quando a sua história profissional fica confusa na vitrine",
+    "opener": "Passar horas olhando para a própria tela tentando resumir anos de carreira é um desafio comum na transição. No dia a dia"
   }
 ]
