@@ -124,5 +124,17 @@
     "keyword": "QUERO",
     "cover": "Seu perfil é um porta-malas cheio ou um painel de bordo?",
     "opener": "Abra o porta-malas de quem acabou de voltar de uma viagem longa: cada item ali dentro teve utilidade, mas encontrar um o"
+  },
+  {
+    "topic": "Perfil A vs. Perfil B e oferta de Diagnóstico Gratuito de LinkedIn",
+    "funnel": "fundo",
+    "theme": "escuro",
+    "variant": 0,
+    "format": "comparativo",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "apontar o link na bio para o diagnóstico",
+    "keyword": "PERFIL",
+    "cover": "Mesma bagagem, resultados opostos: por que isso acontece?",
+    "opener": "Duas pessoas com a mesma senioridade podem ser vistas de formas completamente distintas dependendo apenas da estrutura d"
   }
 ]
