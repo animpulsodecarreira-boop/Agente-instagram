@@ -88,5 +88,17 @@
     "keyword": "TITULO",
     "cover": "3 pilares para destravar sua presença no LinkedIn",
     "opener": "Muitas vezes o seu conhecimento é excelente, mas a forma como ele está disposto na sua vitrine digital acaba gerando ruí"
+  },
+  {
+    "topic": "3 mitos sobre o LinkedIn que você precisa deixar para trás",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 0,
+    "format": "mito_verdade",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a comentar a palavra-chave {kw}",
+    "keyword": "CHECK",
+    "cover": "Pare de acreditar nestes 3 mitos sobre o LinkedIn",
+    "opener": "Circulam dezenas de manuais não oficiais sobre o que supostamente funciona ou não no LinkedIn. O problema é que a maiori"
   }
 ]
