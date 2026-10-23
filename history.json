@@ -148,5 +148,17 @@
     "keyword": "TITULO",
     "cover": "Você sente que ninguém entende direito o que você faz no LinkedIn?",
     "opener": "Reescrever as seções do perfil costuma gerar dúvidas: o que entra e o que fica de fora?"
+  },
+  {
+    "topic": "Como funciona o método de análise e reestruturação da consultoria",
+    "funnel": "meio",
+    "theme": "azul",
+    "variant": 2,
+    "format": "passo_a_passo",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a comentar a dúvida para virar tema de um próximo post",
+    "keyword": "CHECK",
+    "cover": "Mexer no texto do perfil é a última coisa que faço na consultoria.",
+    "opener": "Trocar frases no perfil sem saber o destino exato é como pintar a fachada de uma casa que ainda precisa de alicerce."
   }
 ]
