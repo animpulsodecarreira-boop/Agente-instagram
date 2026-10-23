@@ -160,5 +160,17 @@
     "keyword": "CHECK",
     "cover": "Mexer no texto do perfil é a última coisa que faço na consultoria.",
     "opener": "Trocar frases no perfil sem saber o destino exato é como pintar a fachada de uma casa que ainda precisa de alicerce."
+  },
+  {
+    "topic": "Como organizar uma trajetória longa com foco e a oferta de diagnóstico gratuito",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 0,
+    "format": "caso_hipotetico",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "AJUDA",
+    "cover": "Imagine: 12 anos de carreira traduzidos com precisão",
+    "opener": "Ter uma bagagem profissional rica nem sempre significa ter um perfil fácil de compreender."
   }
 ]
