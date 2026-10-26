@@ -30,7 +30,7 @@ MISSIONS = {
     "fundo": "O que eu vendo: a oferta, para quem é, o que a pessoa recebe.",
 }
 
-# 3 posts por dia, de segunda a sexta (os horários ficam em .github/workflows/generate.yml):
+# (agenda atual) 3 posts por dia, de segunda a sexta (os horários ficam em .github/workflows/generate.yml):
 #   08:00 topo | 12:30 meio | 18:00 fundo   (horário de Brasília)
 # Se rodar manualmente sem escolher a etapa, ela é definida pela hora atual (ver main.funnel_by_hour).
 
@@ -48,9 +48,60 @@ MAX_HASHTAGS = 10
 THEMES = ["escuro", "claro", "azul", "geometrico"]  # o agente alterna, evitando repetir o último
 
 # ---------- Stories ----------
-STORY_SECONDS = 8          # duração de cada story em vídeo
-STORIES_PER_POST = 2       # 1 frase/pergunta + 1 teaser "novo post no feed"
+STORY_SECONDS = 8          # duração do story em vídeo
+STORIES_PER_POST = 1       # 1 story por execução
 MUSIC_DIR = ASSETS / "music"   # coloque aqui faixas livres de direitos (.mp3/.m4a/.wav)
+
+# Modo do story (o código sorteia com rotação):
+#   acompanha = mesmo tema do post, com ângulo diferente
+#   paralela  = conversa solta, mais leve, sem relação direta com o post
+STORY_MODES = ["acompanha", "paralela"]
+
+# Formatos de story. Cada um é uma animação diferente (ver agent/render_v2.py).
+#   funnels:      etapas do funil em que o formato pode aparecer
+#   modes:        modos em que o formato faz sentido
+#   post_formats: no modo "acompanha", só combina com estes formatos de post (None = qualquer um)
+#   instrucao:    o que o Gemini deve preencher
+STORY_FORMATS = {
+    "digitar": dict(
+        nome="Frase que se escreve", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        instrucao=("title = UMA frase de impacto, até 90 caracteres, uma ideia só (sem lista). "
+                   "highlight = trecho do FINAL da própria frase (1 a 4 palavras, copiado EXATAMENTE como aparece em title) que ganha destaque. "
+                   "body = vazio ou uma linha curta de apoio (até 80 caracteres).")),
+    "riscar": dict(
+        nome="Riscar e reescrever", funnels=["topo", "meio"], modes=["acompanha", "paralela"],
+        post_formats=["erro_correcao", "antes_depois", "comparativo", "mito_verdade"],
+        instrucao=("title = rótulo curto do que está sendo reescrito (ex.: 'Título do LinkedIn', 'Frase do currículo'), até 40 caracteres. "
+                   "antes = versão fraca, curta, até 70 caracteres. depois = versão melhor, curta, até 85 caracteres. Exemplo FICTÍCIO.")),
+    "chat": dict(
+        nome="Conversa de chat", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"],
+        post_formats=["pergunta", "caso_hipotetico", "bastidor", "mini_aula", "tres_sinais"],
+        instrucao=("title = contexto curto (ex.: 'Entrevista', 'Mensagem no LinkedIn'), até 40 caracteres. "
+                   "messages = de 2 a 4 mensagens alternando quem ('outro' = recrutador(a) ou colega; 'voce' = a pessoa), "
+                   "cada texto com até 90 caracteres, tom natural de conversa. Conversa FICTÍCIA.")),
+    "checklist": dict(
+        nome="Checklist que se marca sozinho", funnels=["topo", "meio"], modes=["acompanha", "paralela"],
+        post_formats=["checklist", "tres_sinais", "passo_a_passo", "mini_aula"],
+        instrucao=("title = chamada curta (até 60 caracteres). items = 3 ou 4 itens, até 50 caracteres cada. "
+                   "body = convite curto e opcional (até 60 caracteres), sem repetir fórmulas proibidas.")),
+    "nota": dict(
+        nome="Nota do celular", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        instrucao=("title = título da nota (até 40 caracteres, ex.: 'Lembrete'). "
+                   "items = de 2 a 4 linhas curtas, até 60 caracteres cada; a ÚLTIMA linha é a mais importante (vai ganhar destaque).")),
+    "pergunta": dict(
+        nome="Pergunta aberta", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        instrucao=("title = pergunta aberta que a pessoa responde por DM, até 90 caracteres. "
+                   "body = vazio ou uma linha curta (até 80 caracteres) dizendo que você responde.")),
+    "teaser": dict(
+        nome="Teaser do post", funnels=["topo", "meio", "fundo"], modes=["acompanha"], post_formats=None,
+        instrucao=("title = gancho curto tirado do post (até 80 caracteres, diferente da capa palavra por palavra). "
+                   "body = convite curto para ver o novo post no feed (até 70 caracteres), diferente a cada dia.")),
+}
+STORY_MODE_TEXT = {
+    "acompanha": "Mesmo assunto do post de hoje, mas com ÂNGULO diferente (não copie a capa nem os títulos dos slides).",
+    "paralela": ("CONVERSA PARALELA: tema solto e leve do mundo do trabalho e da carreira em geral (não precisa ser LinkedIn), "
+                 "sem relação direta com o post, sem tom de venda e sem mencionar o post."),
+}
 
 # ---------- Variedade de conteúdo (o código sorteia; o Gemini só executa) ----------
 # Cada formato é uma "receita" diferente de post. O agente alterna, evitando repetir os últimos.
