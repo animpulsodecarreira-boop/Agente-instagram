@@ -196,5 +196,20 @@
     "keyword": "PERFIL",
     "cover": "A sensação de atualizar o LinkedIn e continuar sem saber se está bom",
     "opener": "Quem passa dias tentando reescrever a própria trajetória digital sabe o quanto é difícil olhar para o próprio texto com "
+  },
+  {
+    "topic": "Apresentação da consultoria e oferta do diagnóstico gratuito de LinkedIn",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 0,
+    "format": "oferta",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "TITULO",
+    "cover": "Seu LinkedIn parece um GPS calibrado ou uma bússola sem rumo?",
+    "opener": "É quase impossível ser o autor da própria história e, ao mesmo tempo, o leitor neutro que avalia cada linha. Quando você",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "A clareza sobre o seu valor profissional começa com um olhar neutro"
   }
 ]
