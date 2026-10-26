@@ -184,5 +184,17 @@
     "keyword": "QUERO",
     "cover": "Antes de enviar mais candidaturas, observe estes sinais",
     "opener": "Mandar dezenas de candidaturas sem resposta quase nunca tem relação com a sua capacidade de entrega."
+  },
+  {
+    "topic": "Bastidores e método do nosso trabalho de posicionamento no LinkedIn",
+    "funnel": "meio",
+    "theme": "claro",
+    "variant": 2,
+    "format": "bastidor",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "cta": "convidar a mandar uma DM com a palavra {kw}",
+    "keyword": "PERFIL",
+    "cover": "A sensação de atualizar o LinkedIn e continuar sem saber se está bom",
+    "opener": "Quem passa dias tentando reescrever a própria trajetória digital sabe o quanto é difícil olhar para o próprio texto com "
   }
 ]
