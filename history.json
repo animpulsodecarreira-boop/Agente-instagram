@@ -172,5 +172,17 @@
     "keyword": "AJUDA",
     "cover": "Imagine: 12 anos de carreira traduzidos com precisão",
     "opener": "Ter uma bagagem profissional rica nem sempre significa ter um perfil fácil de compreender."
+  },
+  {
+    "topic": "Sinais de desalinhamento no perfil do LinkedIn",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 1,
+    "format": "tres_sinais",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a mandar o post para alguém que está buscando recolocação",
+    "keyword": "QUERO",
+    "cover": "Antes de enviar mais candidaturas, observe estes sinais",
+    "opener": "Mandar dezenas de candidaturas sem resposta quase nunca tem relação com a sua capacidade de entrega."
   }
 ]
