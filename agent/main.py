@@ -1,8 +1,8 @@
 """Uso:
-  python -m agent.main generate [--funnel topo|meio|fundo]   # gera post + stories, renderiza e manda pro Telegram
+  python -m agent.main generate [--funnel topo|meio|fundo]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj]   # aprova/reprocessa um post pelo GitHub
-  python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2]   # teste local
+  python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
 """
 import argparse
 import json
@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from . import telegram_io as tg
-from .config import QUEUE, STATE_FILE, THEMES
+from .config import QUEUE, STATE_FILE, STORY_FORMATS, THEMES
 from .generate import generate_post, pick_theme, pick_variant, save_history
 from .render_v2 import render_all
 from .video import make_story_video
@@ -32,11 +32,27 @@ MOCK = {
         {"kind": "cta", "title": "Quer saber o que está enfraquecendo o seu LinkedIn?", "body": "Comenta QUERO que eu te mostro o que observar.\n\nSalva e manda para quem precisa."},
     ],
     "stories": [
-        {"kind": "pergunta", "title": "Seu título diz o que você faz?", "body": "Me conta seu cargo e eu dou uma ideia de ajuste."},
-        {"kind": "teaser", "title": "Cargo não é posicionamento.", "body": "Veja o novo post no feed agora."},
+        {"kind": "riscar", "title": "Título do LinkedIn", "antes": "Analista Administrativo",
+         "depois": "Analista Administrativo | Rotinas financeiras e processos"},
     ],
     "caption": "Seu LinkedIn diz o que você faz? 👀\n\nDesliza e confere.\n\nComenta QUERO e salva este post.",
     "hashtags": ["#LinkedIn", "#Carreira", "#PosicionamentoProfissional"],
+}
+
+# Um exemplo de cada formato de story (para `preview --story ...`)
+STORY_SAMPLES = {
+    "digitar": {"kind": "digitar", "title": "Seu perfil fala por você quando você não está na sala.", "highlight": "não está na sala"},
+    "riscar": {"kind": "riscar", "title": "Título do LinkedIn", "antes": "Analista Administrativo",
+               "depois": "Analista Administrativo | Rotinas financeiras e processos"},
+    "chat": {"kind": "chat", "title": "Entrevista", "messages": [
+        {"quem": "outro", "texto": "Me conta um pouco sobre você."},
+        {"quem": "voce", "texto": "Trabalho há 6 anos com rotinas financeiras e quero migrar para análise de dados."},
+        {"quem": "outro", "texto": "E o que você já fez nessa direção?"}]},
+    "checklist": {"kind": "checklist", "title": "Antes de mandar o currículo:",
+                  "items": ["Revisei o título do perfil", "Conferi datas e cargos", "Salvei em PDF"], "body": "Marca aí o que você já faz."},
+    "nota": {"kind": "nota", "title": "Lembrete", "items": ["Você não é o seu cargo.", "Seu perfil é um resumo, não um currículo.", "Clareza vale mais que volume."]},
+    "pergunta": {"kind": "pergunta", "title": "Qual foi o último ajuste que você fez no seu perfil?", "body": "Me conta por DM, eu respondo."},
+    "teaser": {"kind": "teaser", "title": "Cargo não é posicionamento.", "body": "Veja o novo post no feed agora."},
 }
 
 
@@ -81,19 +97,24 @@ def cmd_generate(args):
         post = generate_post(funnel)
         theme, variant = pick_theme(), pick_variant()
         out = QUEUE / post_id
-        paths, story_pngs = render_all(post["slides"], post["stories"], out, theme, variant)
-        videos = [make_story_video(png, out / f"story{i}.mp4", f"{post_id}-{i}") for i, png in enumerate(story_pngs, 1)]
+        paths, clips = render_all(post["slides"], post["stories"], out, theme, variant)
+        videos = [make_story_video(c, out / f"story{i}.mp4", f"{post_id}-{i}") for i, c in enumerate(clips, 1)]
+        shutil.rmtree(out / "_frames", ignore_errors=True)  # quadros intermediários não vão para o repositório
         cap = full_caption(post)
+        src = post["story_recipe"]
         meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "variant": variant, "topic": post["topic"],
-                "caption": cap, "slides": len(paths), "stories": len(videos)}
+                "caption": cap, "slides": len(paths), "stories": len(videos),
+                "story_format": src["format"], "story_mode": src["mode"]}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         rc = post["recipe"]
         save_history(post["topic"], funnel, theme, {
             "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
-            "cover": post["cover"], "opener": post["opener"]})
+            "cover": post["cover"], "opener": post["opener"],
+            "story_format": src["format"], "story_mode": src["mode"], "story_title": post["stories"][0]["title"][:90]})
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.send_for_approval(post_id, paths, cap, funnel, theme, videos)
-        print(f"Post {post_id} gerado ({funnel}, formato {post['recipe']['format']}, estilo {theme}/v{variant}): {post['topic']}")
+        print(f"Post {post_id} gerado ({funnel}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
+              f"story {src['format']}/{src['mode']}): {post['topic']}")
     except Exception:
         err = tg.redact(traceback.format_exc())
         print(err, file=sys.stderr)
@@ -218,13 +239,16 @@ def cmd_approve(args):
 
 
 def cmd_preview(args):
-    post = MOCK if args.mock else generate_post(args.funnel or "topo")
+    post = dict(MOCK if args.mock else generate_post(args.funnel or "topo"))
+    if args.story:
+        post["stories"] = list(STORY_SAMPLES.values()) if args.story == "all" else [STORY_SAMPLES[args.story]]
     theme = args.theme or pick_theme()
     variant = args.variant if args.variant is not None else pick_variant()
     out = QUEUE / "_preview"
-    paths, story_pngs = render_all(post["slides"], post["stories"], out, theme, variant)
-    vids = [make_story_video(p, out / f"story{i}.mp4", f"prev-{i}") for i, p in enumerate(story_pngs, 1)]
-    print("\n".join(map(str, paths + story_pngs + vids)))
+    paths, clips = render_all(post["slides"], post["stories"], out, theme, variant)
+    vids = [make_story_video(c, out / f"story{i}.mp4", f"prev-{i}") for i, c in enumerate(clips, 1)]
+    shutil.rmtree(out / "_frames", ignore_errors=True)
+    print("\n".join(map(str, paths + [c["png"] for c in clips] + vids)))
     print(f"\nEstilo: {theme}/v{variant}\n\n" + full_caption(post))
 
 
@@ -234,7 +258,7 @@ def main():
     g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo"])
     sub.add_parser("poll")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj"], default="ap")
-    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2])
+    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
     {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview}[args.cmd](args)
 
