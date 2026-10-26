@@ -1,11 +1,11 @@
-"""Renderiza carrosséis (1080x1350) e stories (1080x1920) em PNG, com vários estilos visuais."""
+"""Renderiza carrosséis (1080x1350) em PNG e stories (1080x1920) como sequências de quadros animados."""
 import html
 import re
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-from .config import ASSETS, BRAND_NAME, LINK_LABEL
+from .config import ASSETS, BRAND_NAME, LINK_LABEL, STORY_SECONDS
 
 NAVY, BLUE, DEEP, AMBER, WHITE = "#0A0E1A", "#2F6FED", "#0B1E3D", "#E8A33D", "#F5F6FA"
 
@@ -25,6 +25,16 @@ THEMES = {
                        logo="logo.png", chip_bg=AMBER, chip_fg=NAVY, card="rgba(47,111,237,.16)", num_fg=WHITE),
 }
 
+# cores usadas só nos stories (balões, cartões)
+_STORY_COLORS = {
+    "escuro": dict(soft="#16203A", me=BLUE, mefg="#FFFFFF"),
+    "claro": dict(soft="#E6ECF8", me=BLUE, mefg="#FFFFFF"),
+    "azul": dict(soft="rgba(255,255,255,.16)", me=AMBER, mefg=NAVY),
+    "geometrico": dict(soft="#16203A", me=BLUE, mefg="#FFFFFF"),
+}
+for _k, _v in _STORY_COLORS.items():
+    THEMES[_k].update(_v)
+
 
 def deco(theme, h):
     """Elementos decorativos de fundo (SVG) por tema."""
@@ -38,6 +48,52 @@ def deco(theme, h):
     return ""
 
 
+STORY_CSS = """
+/* stories (zona segura: miolo da tela) */
+.story .sc{position:absolute;left:96px;right:96px;top:270px;height:1160px;display:flex;align-items:center;overflow:hidden}
+.story .in{width:100%;display:flex;flex-direction:column;gap:48px;align-items:flex-start}
+.story .slogo{position:absolute;left:50%;top:1478px;height:86px;transform:translateX(-50%)}
+.story .h{opacity:0}
+.story .st{font-size:96px;line-height:1.12;font-weight:700;letter-spacing:-1.5px;overflow-wrap:anywhere}
+.story .st.sm{font-size:72px}
+.story .ss{font-size:44px;line-height:1.35;font-weight:500;color:var(--muted)}
+.story .w{display:inline-block;white-space:nowrap}
+.story .c.hl,.story .wd.hl{color:var(--hl)}
+.story .c.last{position:relative}
+.story .c.last::after{content:'';position:absolute;right:-10px;top:12%;height:78%;width:7px;background:var(--accent);border-radius:3px}
+.story .rl{font-size:32px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.story .rcard{width:100%;border-radius:40px;padding:44px 52px;background:var(--soft);border:4px solid transparent}
+.story .rcard .tag{font-size:26px;font-weight:700;letter-spacing:3px;color:var(--muted);margin-bottom:14px}
+.story .rcard .tx{font-size:58px;line-height:1.25;font-weight:500}
+.story .r1.dim{opacity:.5}
+.story .r1 .sk{background:linear-gradient(#E5645C,#E5645C) no-repeat 0 58%/var(--sw,0%) 8px}
+.story .r2{border-color:var(--accent)} .story .r2 .tag{color:var(--hl)} .story .r2 .tx{font-weight:700}
+.story .hdr{font-size:38px;font-weight:700}
+.story .hdr small{display:block;font-size:26px;font-weight:500;color:var(--muted);margin-top:6px}
+.story .cb{width:100%;display:flex;flex-direction:column;gap:26px}
+.story .row{display:flex;flex-direction:column;width:100%}
+.story .row.me{align-items:flex-end} .story .row.ot{align-items:flex-start}
+.story .who{font-size:26px;font-weight:500;color:var(--muted);margin:0 14px 8px}
+.story .b{max-width:88%;font-size:42px;line-height:1.3;padding:30px 40px;border-radius:44px;font-weight:500}
+.story .ot .b{background:var(--soft);color:var(--fg);border-bottom-left-radius:12px}
+.story .me .b{background:var(--me);color:var(--mefg);border-bottom-right-radius:12px}
+.story .cl{width:100%;display:flex;flex-direction:column;gap:38px}
+.story .ckrow{display:flex;gap:36px;align-items:flex-start}
+.story .ck{flex:none;width:68px;height:68px;border-radius:18px;border:6px solid var(--accent);position:relative;margin-top:4px}
+.story .ck.on{background:var(--accent)}
+.story .ck.on::after{content:'';position:absolute;left:21px;top:5px;width:16px;height:33px;border:solid var(--numfg);border-width:0 8px 8px 0;transform:rotate(45deg)}
+.story .ckt{font-size:50px;line-height:1.25;font-weight:500}
+.story .note{width:100%;background:#FFFBEA;color:#1B2238;border:2px solid #EADFB8;border-radius:36px;padding:52px 60px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.story .nt{font-size:56px;font-weight:700;letter-spacing:-1px;padding-bottom:26px;border-bottom:3px solid rgba(27,34,56,.12);margin-bottom:26px}
+.story .ln{font-size:46px;line-height:1.35;font-weight:500;padding:12px 0 12px 56px;position:relative}
+.story .ln::before{content:'';position:absolute;left:6px;top:36px;width:20px;height:20px;border-radius:50%;background:#E8A33D}
+.story .mk{font-weight:700;background:linear-gradient(transparent 58%,rgba(232,163,61,.5) 58%)}
+.story .pill{font-size:42px;font-weight:700;background:var(--chipbg);color:var(--chipfg);padding:24px 48px;border-radius:60px}
+.story .hint{display:flex;align-items:center;gap:24px;font-size:40px;font-weight:700;color:var(--hl)}
+.story .arrow{width:72px;height:72px}
+"""
+
+
 def css(theme):
     t = THEMES[theme]
     return f"""
@@ -45,7 +101,7 @@ def css(theme):
 @font-face{{font-family:P;src:url(file://{ASSETS}/Poppins-Medium.ttf);font-weight:500}}
 @font-face{{font-family:P;src:url(file://{ASSETS}/Poppins-Regular.ttf);font-weight:400}}
 :root{{--bg:{t['bg']};--fg:{t['fg']};--muted:{t['muted']};--accent:{t['accent']};--hl:{t['hl']};--line:{t['line']};
---cbg:{t['cover_bg']};--cfg:{t['cover_fg']};--chipbg:{t['chip_bg']};--chipfg:{t['chip_fg']};--card:{t['card']};--numfg:{t['num_fg']}}}
+--cbg:{t['cover_bg']};--cfg:{t['cover_fg']};--chipbg:{t['chip_bg']};--chipfg:{t['chip_fg']};--card:{t['card']};--numfg:{t['num_fg']};--soft:{t['soft']};--me:{t['me']};--mefg:{t['mefg']}}}
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{width:1080px;font-family:P,sans-serif;color:var(--fg);background:var(--bg);position:relative;overflow:hidden}}
 body.feed{{height:1350px}} body.story{{height:1920px}}
@@ -108,15 +164,7 @@ h1{{font-weight:700;letter-spacing:-1.5px;line-height:1.08}}
 .v1 .cta .txt,.v2 .cta .txt{{text-align:center;left:96px;right:96px}}
 .v1 .cta .link,.v2 .cta .link{{left:50%;transform:translateX(-50%)}}
 .v1 .cta .logo,.v2 .cta .logo{{left:50%;transform:translateX(-50%)}}
-/* stories */
-.story .logo{{top:250px}}
-.story .lab{{position:absolute;left:96px;top:520px;font-size:32px;font-weight:700;letter-spacing:3px;background:var(--chipbg);color:var(--chipfg);padding:14px 30px;border-radius:40px}}
-.story .sbox{{position:absolute;left:96px;right:96px;top:640px;display:flex;flex-direction:column;align-items:flex-start;gap:56px}}
-.story .st{{font-size:92px;line-height:1.1;font-weight:700;letter-spacing:-1.5px;color:var(--cfg)}}
-.story .ss{{font-size:44px;line-height:1.35;font-weight:500;color:var(--cfg)}}
-.story .pill{{font-size:40px;font-weight:700;background:var(--chipbg);color:var(--chipfg);padding:22px 46px;border-radius:60px}}
-.story .arrow{{width:150px;height:150px}}
-.story .sbrand{{position:absolute;left:96px;top:1640px;font-size:30px;font-weight:500;color:var(--cfg);opacity:.75}}
+{STORY_CSS}
 """
 
 
@@ -187,23 +235,206 @@ def feed_page(s, i, n, theme, variant=0):
             f"<div class='txt'>{body_html(s)}</div>{foot}</div>")
 
 
-def story_page(s, theme):
-    t = THEMES[theme]
-    d = deco(theme, 1920)
-    logo = f"<img class='logo' src='file://{ASSETS}/{t['logo']}'>"
-    brand = f"<div class='sbrand'>{esc(BRAND_NAME)}</div>"
-    k = s.get("kind", "frase")
-    label = {"frase": "PARA REFLETIR", "pergunta": "PERGUNTA DO DIA", "teaser": "NOVO POST NO FEED"}.get(k, "")
+# ---------------------------------------------------------------------------
+# STORIES: cada formato vira uma sequência de quadros (estados) que o ffmpeg junta em vídeo.
+# Layout estável: tudo existe na página desde o início e só aparece (opacity) no momento certo.
+# Zona segura do Instagram (1080x1920): topo ~250 px e base ~340 px ficam cobertos pela interface.
+# ---------------------------------------------------------------------------
+LOGO_T = 1.2   # a logo só aparece nos últimos segundos
+KIND_ALIAS = {"frase": "digitar"}   # nomes antigos
+
+STORY_JS = """
+const $$=s=>[...document.querySelectorAll(s)];
+function show(s){$$(s).forEach(e=>e.classList.remove('h'))}
+function chars(n){const cs=$$('.c');cs.forEach((c,i)=>{c.classList.toggle('h',i>=n);c.classList.toggle('last',n>0&&i===n-1&&n<cs.length)})}
+function words(n){$$('.wd').forEach((c,i)=>c.classList.toggle('h',i>=n))}
+function strike(p){document.documentElement.style.setProperty('--sw',p+'%')}
+function dim(){$$('.r1').forEach(e=>e.classList.add('dim'))}
+function tick(n){$$('.ck').forEach((c,i)=>c.classList.toggle('on',i<n))}
+function lines(n){$$('.ln').forEach((c,i)=>c.classList.toggle('h',i>=n))}
+function msgs(n){$$('.m').forEach((c,i)=>c.classList.toggle('h',i>=n))}
+function bob(n){$$('.arrow').forEach(a=>a.style.transform='translateY('+(n?16:0)+'px)')}
+"""
+
+STORY_FIT_JS = """
+() => {
+  const sc = document.querySelector('.sc'), inn = document.querySelector('.in');
+  const els = [...document.querySelectorAll('[data-fit]')];
+  let guard = 60;
+  while (inn.getBoundingClientRect().height > sc.clientHeight && guard-- > 0) {
+    let changed = false;
+    els.forEach(e => { const fs = parseFloat(getComputedStyle(e).fontSize); if (fs > 34) { e.style.fontSize = (fs - 3) + 'px'; changed = true; } });
+    if (!changed) break;
+  }
+}
+"""
+
+
+def clean(t):
+    return str(t or "").replace("**", "").replace("__", "").strip()
+
+
+def chars_html(text, hl=""):
+    """Letra por letra (efeito de digitação). O trecho 'hl' fica em destaque."""
+    start = text.find(hl) if hl else -1
+    end = start + len(hl) if start >= 0 else -1
+    pos, parts = 0, []
+    for word in text.split(" "):
+        letters = "".join(f"<span class='c h{' hl' if start <= pos + j < end else ''}'>{html.escape(ch)}</span>"
+                          for j, ch in enumerate(word))
+        parts.append(f"<span class='w'>{letters}</span>")
+        pos += len(word) + 1
+    return " ".join(parts)
+
+
+def words_html(text):
+    return " ".join(f"<span class='wd h'>{html.escape(w)}</span>" for w in text.split())
+
+
+def _hold(total, *used):
+    return max(0.4, round(total - sum(used), 3))
+
+
+def story_digitar(s, T):
+    title, hl = clean(s["title"]), clean(s.get("highlight"))
+    body = f"<div class='ss h' data-fit>{html.escape(clean(s.get('body')))}</div>" if clean(s.get("body")) else ""
+    inner = f"<div class='st' data-fit>{chars_html(title, hl)}</div>{body}"
+    n = sum(len(w) for w in title.split(" "))
+    N, dtype, blank = min(24, max(8, n)), 4.2, 0.4
+    steps = [("chars(0)", blank)] + [(f"chars({round(n * i / N)})", dtype / N) for i in range(1, N)]
+    steps.append((f"chars({n});show('.ss')", _hold(T, blank, dtype * (N - 1) / N, LOGO_T)))
+    steps.append((f"chars({n});show('.ss');show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_riscar(s, T):
+    inner = (f"<div class='rl' data-fit>{html.escape(clean(s['title']))}</div>"
+             f"<div class='rcard r1'><div class='tag'>ANTES</div><div class='tx' data-fit><span class='sk'>{html.escape(clean(s['antes']))}</span></div></div>"
+             f"<div class='rcard r2 h'><div class='tag'>DEPOIS</div><div class='tx' data-fit>{html.escape(clean(s['depois']))}</div></div>")
+    steps = [("", 2.0)] + [(f"strike({p})", 0.12) for p in (25, 55, 80, 100)]
+    steps.append(("strike(100);dim()", 0.7))
+    steps.append(("strike(100);dim();show('.r2')", _hold(T, 2.0, 0.48, 0.7, LOGO_T)))
+    steps.append(("strike(100);dim();show('.r2');show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_chat(s, T):
+    msgs = s["messages"][:4]
+    rows, prev = [], None
+    for m in msgs:
+        me = m["quem"] == "voce"
+        who = "" if prev == m["quem"] else f"<div class='who'>{'Você' if me else 'Recrutador(a)'}</div>"
+        rows.append(f"<div class='row m h {'me' if me else 'ot'}'>{who}<div class='b' data-fit>{html.escape(clean(m['texto']))}</div></div>")
+        prev = m["quem"]
+    inner = (f"<div class='hdr' data-fit>{html.escape(clean(s['title']))}<small>conversa fictícia, só um exemplo</small></div>"
+             f"<div class='cb'>{''.join(rows)}</div>")
+    n = len(msgs)
+    each = (T - LOGO_T) / n
+    steps = [(f"msgs({i})", each) for i in range(1, n)]
+    steps.append((f"msgs({n})", _hold(T, each * (n - 1), LOGO_T)))
+    steps.append((f"msgs({n});show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_checklist(s, T):
+    items = [clean(x) for x in s["items"][:4]]
+    rows = "".join(f"<div class='ckrow'><div class='ck'></div><div class='ckt' data-fit>{html.escape(x)}</div></div>" for x in items)
+    body = f"<div class='ss' data-fit>{html.escape(clean(s.get('body')))}</div>" if clean(s.get("body")) else ""
+    inner = f"<div class='st sm' data-fit>{html.escape(clean(s['title']))}</div><div class='cl'>{rows}</div>{body}"
+    n, first = len(items), 1.2
+    each = (T - first - LOGO_T) / n
+    steps = [("tick(0)", first)] + [(f"tick({i})", each) for i in range(1, n)]
+    steps.append((f"tick({n})", _hold(T, first, each * (n - 1), LOGO_T)))
+    steps.append((f"tick({n});show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_nota(s, T):
+    items = [clean(x) for x in s["items"][:4]]
+    ln = []
+    for i, x in enumerate(items):
+        t = f"<span class='mk'>{html.escape(x)}</span>" if i == len(items) - 1 else html.escape(x)
+        ln.append(f"<div class='ln h' data-fit>{t}</div>")
+    inner = f"<div class='note'><div class='nt' data-fit>{html.escape(clean(s['title']))}</div>{''.join(ln)}</div>"
+    n, first = len(items), 1.0
+    each = (T - first - LOGO_T) / n
+    steps = [("lines(0)", first)] + [(f"lines({i})", each) for i in range(1, n)]
+    steps.append((f"lines({n})", _hold(T, first, each * (n - 1), LOGO_T)))
+    steps.append((f"lines({n});show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_pergunta(s, T):
+    title = clean(s["title"])
+    nw = len(title.split())
+    body = f"<div class='ss h' data-fit>{html.escape(clean(s.get('body')))}</div>" if clean(s.get("body")) else ""
+    inner = (f"<div class='st' data-fit>{words_html(title)}</div>{body}"
+             "<div class='pill h'>Responde aqui por DM</div>")
+    blank, typ = 0.3, 2.4
+    steps = [("words(0)", blank)] + [(f"words({max(1, round(nw * i / 6))})", typ / 6) for i in range(1, 7)]
+    steps.append((f"words({nw});show('.ss')", 1.0))
+    steps.append((f"words({nw});show('.ss');show('.pill')", _hold(T, blank, typ, 1.0, LOGO_T)))
+    steps.append((f"words({nw});show('.ss');show('.pill');show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+def story_teaser(s, T):
+    title = clean(s["title"])
+    nw = len(title.split())
+    body = f"<div class='ss h' data-fit>{html.escape(clean(s.get('body')))}</div>" if clean(s.get("body")) else ""
     arrow = ("<svg class='arrow' viewBox='0 0 160 160'><path d='M80 20 L80 120 M36 78 L80 124 L124 78' fill='none' "
-             f"stroke='{AMBER}' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>")
-    extra = ""
-    if k == "pergunta":
-        extra = "<div class='pill'>Responda por DM</div>"
-    if k == "teaser":
-        extra = arrow
-    body = f"<div class='ss'>{esc(s.get('body'))}</div>" if s.get("body") else ""
-    return (f"<div class='bgc'></div>{d}{logo}<div class='lab'>{label}</div>"
-            f"<div class='sbox'><div class='st'>{esc(s['title'])}</div>{body}{extra}</div>{brand}")
+             f"stroke='{AMBER}' stroke-width='14' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+    inner = (f"<div class='st' data-fit>{words_html(title)}</div>{body}"
+             f"<div class='hint h'>{arrow}<span>Novo no feed</span></div>")
+    blank, typ = 0.3, 2.2
+    steps = [("words(0)", blank)] + [(f"words({max(1, round(nw * i / 5))})", typ / 5) for i in range(1, 6)]
+    base = f"words({nw});show('.ss');"
+    steps.append((base, 1.3))
+    left = _hold(T, blank, typ, 1.3, LOGO_T)
+    steps.append((base + "show('.hint');bob(0)", left / 2))
+    steps.append((base + "show('.hint');bob(1)", left / 2))
+    steps.append((base + "show('.hint');bob(0);show('.slogo')", LOGO_T))
+    return inner, steps
+
+
+STORY_BUILDERS = {"digitar": story_digitar, "riscar": story_riscar, "chat": story_chat, "checklist": story_checklist,
+                  "nota": story_nota, "pergunta": story_pergunta, "teaser": story_teaser}
+
+
+def story_page(s, theme):
+    kind = KIND_ALIAS.get(s.get("kind"), s.get("kind"))
+    builder = STORY_BUILDERS.get(kind, story_digitar)
+    inner, steps = builder(s, STORY_SECONDS)
+    t = THEMES[theme]
+    body = (f"<div class='sc'><div class='in'>{inner}</div></div>"
+            f"<img class='slogo h' src='file://{ASSETS}/{t['logo']}'>")
+    return body, steps
+
+
+def shoot_story(pg, s, theme, outdir: Path, idx: int):
+    """Renderiza um story como sequência de quadros. Retorna {'png': último quadro, 'frames': [(arquivo, segundos)]}."""
+    body, steps = story_page(s, theme)
+    frames_dir = outdir / "_frames"
+    frames_dir.mkdir(parents=True, exist_ok=True)
+    doc = (f"<html><head><meta charset='utf-8'><style>{css(theme)}</style></head>"
+           f"<body class='story {theme}'>{body}<script>{STORY_JS}</script></body></html>")
+    f = frames_dir / f"s{idx}.html"
+    f.write_text(doc, encoding="utf-8")
+    pg.set_viewport_size({"width": 1080, "height": 1920})
+    pg.goto(f"file://{f}")
+    pg.wait_for_timeout(250)
+    pg.evaluate(STORY_FIT_JS)
+    frames = []
+    for k, (js, dur) in enumerate(steps):
+        if js:
+            pg.evaluate("() => {" + js + "}")
+        fp = frames_dir / f"s{idx}_{k:03d}.png"
+        pg.screenshot(path=str(fp))
+        frames.append((fp, round(dur, 3)))
+    f.unlink()
+    final = outdir / f"story{idx}.png"
+    final.write_bytes(frames[-1][0].read_bytes())   # último quadro = imagem de reserva do story
+    return {"png": final, "frames": frames}
 
 
 FIT_JS = """
@@ -221,7 +452,6 @@ FEED_FIT = [[".cover h1", 990, 60], [".v0 .content h1,.v2 .content h1,.check h1,
             [".content .txt", 1230, 30], [".cta .txt", 1040, 30], [".check li", 1070, 28],
             [".quote .q", 980, 40], [".quote .qsub", 1230, 28], [".v1", 830, 26], [".v2", 1200, 26],
             [".list .lt", 1200, 26]]
-STORY_FIT = [[".story .st", 1150, 50], [".story .ss", 1450, 28]]
 
 
 def _shoot(pg, items, outdir, prefix, build, fit, viewport, variant=0):
@@ -245,7 +475,7 @@ def _shoot(pg, items, outdir, prefix, build, fit, viewport, variant=0):
 
 
 def render_all(slides, stories, outdir: Path, theme: str, variant: int = 0):
-    """Retorna (caminhos dos slides, caminhos dos stories)."""
+    """Retorna (caminhos dos slides, clipes dos stories). Cada clipe: {'png': ..., 'frames': [(arquivo, segundos)]}."""
     outdir.mkdir(parents=True, exist_ok=True)
     n = len(slides)
     with sync_playwright() as p:
@@ -253,7 +483,6 @@ def render_all(slides, stories, outdir: Path, theme: str, variant: int = 0):
         pg = browser.new_page()
         feed = _shoot(pg, [(i, theme, s) for i, s in enumerate(slides, 1)], outdir, "slide",
                       lambda s, i: feed_page(s, i, n, theme, variant), FEED_FIT, {"width": 1080, "height": 1350}, variant)
-        story = _shoot(pg, [(i, theme, s) for i, s in enumerate(stories, 1)], outdir, "story",
-                       lambda s, i: story_page(s, theme), STORY_FIT, {"width": 1080, "height": 1920}) if stories else []
+        clips = [shoot_story(pg, s, theme, outdir, i) for i, s in enumerate(stories or [], 1)]
         browser.close()
-    return feed, story
+    return feed, clips
