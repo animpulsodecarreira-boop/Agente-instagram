@@ -211,5 +211,20 @@
     "story_format": "digitar",
     "story_mode": "acompanha",
     "story_title": "A clareza sobre o seu valor profissional começa com um olhar neutro"
+  },
+  {
+    "topic": "Por que seu perfil atrai curiosos em vez de quem decide contratar",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 1,
+    "format": "pergunta",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é o seu título hoje?)",
+    "keyword": "CHECK",
+    "cover": "Por que seu perfil atrai muitas visitas, mas nenhuma mensagem de quem decide?",
+    "opener": "Muitas pessoas chegam até a nossa consultoria frustradas porque o perfil recebe visitas, mas o chat continua vazio. A qu",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Falar sobre café no trabalho"
   }
 ]
