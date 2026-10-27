@@ -256,5 +256,20 @@
     "story_format": "chat",
     "story_mode": "paralela",
     "story_title": "Café da tarde"
+  },
+  {
+    "topic": "Comparativo prático de perfis e oferta do diagnóstico gratuito",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 1,
+    "format": "comparativo",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "apontar o link na bio para o diagnóstico",
+    "keyword": "PERFIL",
+    "cover": "2 decisões de apresentação que trazem clareza ao seu LinkedIn",
+    "opener": "Quando você tenta falar sobre absolutamente tudo no LinkedIn, a impressão imediata é de dispersão.",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Anotação de bancada"
   }
 ]
