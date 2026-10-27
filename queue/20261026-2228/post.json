@@ -1,6 +1,6 @@
 {
   "id": "20261026-2228",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "geometrico",
   "variant": 1,
@@ -9,5 +9,7 @@
   "slides": 5,
   "stories": 1,
   "story_format": "riscar",
-  "story_mode": "paralela"
+  "story_mode": "paralela",
+  "media_id": "17963190408216284",
+  "stories_published": 1
 }
