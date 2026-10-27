@@ -226,5 +226,20 @@
     "story_format": "riscar",
     "story_mode": "paralela",
     "story_title": "Falar sobre café no trabalho"
+  },
+  {
+    "topic": "Sinais silenciosos de que o seu LinkedIn precisa de revisão",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 2,
+    "format": "checklist",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "convidar a seguir o perfil para a próxima dica",
+    "keyword": "AJUDA",
+    "cover": "Você já teve a sensação de que o seu perfil profissional não reflete quem você realmente é?",
+    "opener": "Olhar para a própria trajetória com neutralidade é um dos maiores desafios de quem está buscando novos horizontes na car",
+    "story_format": "checklist",
+    "story_mode": "acompanha",
+    "story_title": "Como está o seu perfil hoje?"
   }
 ]
