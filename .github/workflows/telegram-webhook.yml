@@ -1,0 +1,46 @@
+name: Telegram webhook
+on:
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "O que fazer"
+        required: true
+        default: "status"
+        type: choice
+        options: ["status", "ativar", "desativar"]
+      url:
+        description: "URL do Worker da Cloudflare (só para 'ativar')"
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Executar
+        env:
+          T: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          S: ${{ secrets.WEBHOOK_SECRET }}
+          ACAO: ${{ inputs.acao }}
+          URL: ${{ inputs.url }}
+        run: |
+          set -u
+          API="https://api.telegram.org/bot${T}"
+          case "$ACAO" in
+            ativar)
+              case "$URL" in https://*) ;; *) echo "Informe a URL do Worker começando com https://"; exit 1 ;; esac
+              [ -n "$S" ] || { echo "Falta o segredo WEBHOOK_SECRET no repositório"; exit 1; }
+              curl -s --max-time 20 "$API/setWebhook" \
+                --data-urlencode "url=${URL}" \
+                --data-urlencode "secret_token=${S}" \
+                --data-urlencode 'allowed_updates=["callback_query"]'
+              echo ;;
+            desativar)
+              curl -s --max-time 20 "$API/deleteWebhook"
+              echo ;;
+          esac
+          echo "--- estado atual do webhook ---"
+          curl -s --max-time 20 "$API/getWebhookInfo"
+          echo
