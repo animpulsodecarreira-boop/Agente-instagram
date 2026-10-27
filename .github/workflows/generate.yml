@@ -19,7 +19,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -41,6 +41,7 @@ jobs:
           fi
           echo "funnel=$F" >> "$GITHUB_OUTPUT"
       - name: Gerar, renderizar e enviar para o Telegram
+        timeout-minutes: 8
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -56,5 +57,15 @@ jobs:
         run: |
           git config user.name "agente-instagram"
           git config user.email "agente@users.noreply.github.com"
+          rm -rf queue/*/_frames
           git add -A queue history.json 2>/dev/null || true
           git diff --cached --quiet || (git commit -m "novo post" && git pull --rebase && git push)
+      - name: Avisar no Telegram se algo falhou
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Alerta automático: o workflow 'Gerar post' falhou ou travou. Detalhes: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
