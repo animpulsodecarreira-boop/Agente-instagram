@@ -1,7 +1,7 @@
 name: Verificar aprovações
+# Com o webhook ativo, os toques chegam na hora pelo Worker e este fluxo NÃO roda sozinho.
+# Use-o só como reserva: primeiro rode "Telegram webhook -> desativar", depois este fluxo manualmente.
 on:
-  schedule:
-    - cron: "*/10 * * * *"   # a cada ~10 min (o GitHub pode atrasar alguns minutos)
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,7 +11,7 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +19,7 @@ jobs:
           python-version: "3.12"
       - run: pip install requests playwright
       - name: Processar aprovações e publicar
+        timeout-minutes: 4
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
