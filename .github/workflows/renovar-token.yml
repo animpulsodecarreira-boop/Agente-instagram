@@ -1,0 +1,42 @@
+name: Renovar token do Instagram
+on:
+  schedule:
+    - cron: "0 12 1,15 * *"   # dias 1 e 15 de cada mês (o token vale 60 dias e é renovado por mais 60)
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  renovar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Renovar e atualizar o segredo IG_ACCESS_TOKEN
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT_SECRETS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          notify() {
+            curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" --data-urlencode "text=$1" || true
+          }
+          # um único aviso se o script terminar com erro, seja qual for o passo que falhou
+          trap 'rc=$?; if [ "$rc" -ne 0 ]; then notify "⚠️ Não consegui renovar o token do Instagram. Se ele vencer, os posts param. Detalhes: ${RUN_URL}"; fi' EXIT
+
+          [ -n "${GH_TOKEN}" ] || { echo "Falta o segredo GH_PAT_SECRETS"; false; }
+          TOKEN="$(printf '%s' "$IG_ACCESS_TOKEN" | tr -d '[:space:]')"
+          RESP="$(curl -s --max-time 30 -G "https://graph.instagram.com/refresh_access_token" \
+                    --data-urlencode "grant_type=ig_refresh_token" --data-urlencode "access_token=${TOKEN}")"
+          NEW="$(printf '%s' "$RESP" | jq -r '.access_token // empty')"
+          if [ -z "$NEW" ]; then
+            echo "A Meta não devolveu token novo. Erro: $(printf '%s' "$RESP" | jq -c '.error // "resposta sem access_token"')"
+            false
+          fi
+          echo "::add-mask::$NEW"
+          DAYS="$(printf '%s' "$RESP" | jq -r '(.expires_in // 0) / 86400 | floor')"
+          printf '%s' "$NEW" | gh secret set IG_ACCESS_TOKEN --repo "$GITHUB_REPOSITORY"
+          echo "Token renovado; vale por cerca de ${DAYS} dias."
+          notify "✅ Token do Instagram renovado (vale mais ~${DAYS} dias)."
