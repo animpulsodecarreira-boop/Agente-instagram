@@ -264,4 +264,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Encerra o processo assim que o trabalho termina. Evita que o job do GitHub fique pendurado
+    # (processo filho ou conexão aberta) até estourar o limite de tempo, como aconteceu no generate.
+    code = 0
+    try:
+        main()
+    except SystemExit as e:
+        code = e.code if isinstance(e.code, int) else (0 if e.code is None else 1)
+    finally:
+        sys.stdout.flush()
+        sys.stderr.flush()
+    os._exit(code)
