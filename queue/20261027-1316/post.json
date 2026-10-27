@@ -1,6 +1,6 @@
 {
   "id": "20261027-1316",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "claro",
   "variant": 0,
@@ -9,5 +9,7 @@
   "slides": 5,
   "stories": 1,
   "story_format": "chat",
-  "story_mode": "paralela"
+  "story_mode": "paralela",
+  "media_id": "18635220712002282",
+  "stories_published": 1
 }
