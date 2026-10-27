@@ -1,6 +1,6 @@
 {
   "id": "20261027-1901",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "azul",
   "variant": 1,
@@ -9,5 +9,7 @@
   "slides": 5,
   "stories": 1,
   "story_format": "nota",
-  "story_mode": "acompanha"
+  "story_mode": "acompanha",
+  "media_id": "18198645586384067",
+  "stories_published": 1
 }
