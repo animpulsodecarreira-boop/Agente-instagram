@@ -44,23 +44,22 @@ def _album(kind, paths):
     if not paths:
         return ""
     media_type = "photo" if kind == "photo" else "video"
-    files, media = {}, []
-    try:
-        for i, p in enumerate(paths):
-            files[f"f{i}"] = open(p, "rb")
-            item = {"type": media_type, "media": f"attach://f{i}"}
-            if kind == "video":
-                item["supports_streaming"] = True
-            media.append(item)
-        if len(paths) >= 2:
+    if len(paths) >= 2:  # álbum só faz sentido com 2 ou mais itens; com 1, envia direto
+        files, media = {}, []
+        try:
+            for i, p in enumerate(paths):
+                files[f"f{i}"] = open(p, "rb")
+                item = {"type": media_type, "media": f"attach://f{i}"}
+                if kind == "video":
+                    item["supports_streaming"] = True
+                media.append(item)
             _call("sendMediaGroup", data={"chat_id": chat_id(), "media": json.dumps(media)}, files=files)
             return ""
-        raise RuntimeError("álbum precisa de 2 itens")
-    except Exception as e:
-        print(f"[telegram] álbum de {kind} falhou ({redact(e)}); enviando um a um")
-    finally:
-        for f in files.values():
-            f.close()
+        except Exception as e:
+            print(f"[telegram] álbum de {kind} falhou ({redact(e)}); enviando um a um")
+        finally:
+            for f in files.values():
+                f.close()
     notes = []
     for p in paths:
         sent = False
@@ -81,11 +80,12 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
     notes = [_album("photo", paths), _album("video", story_videos or [])]
     notes = "\n".join(n for n in notes if n)
     extra = f" · estilo {theme}" if theme else ""
-    stories_note = f"\n\n🎬 + {len(story_videos)} stories em vídeo (acima)" if story_videos else ""
+    stories_note = (f"\n\n🎬 + {len(story_videos)} {'story' if len(story_videos) == 1 else 'stories'} em vídeo (acima)"
+                    if story_videos else "")
     warn = f"\n\n{notes}\nO post foi salvo mesmo assim; você pode aprovar normalmente." if notes else ""
     text = redact(f"📝 Post {post_id}  ({funnel.upper()}{extra}){stories_note}{warn}\n\n{caption_full}")[:4000]
     kb = {"inline_keyboard": [
-        [{"text": "✅ Aprovar post + stories", "callback_data": f"ap:{post_id}"}],
+        [{"text": "✅ Aprovar post + story", "callback_data": f"ap:{post_id}"}],
         [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
          {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"}],
     ]}
