@@ -241,5 +241,20 @@
     "story_format": "checklist",
     "story_mode": "acompanha",
     "story_title": "Como está o seu perfil hoje?"
+  },
+  {
+    "topic": "Como transformamos o título e o resumo de um perfil no diagnóstico",
+    "funnel": "meio",
+    "theme": "claro",
+    "variant": 0,
+    "format": "antes_depois",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a responder o story do dia",
+    "keyword": "QUERO",
+    "cover": "Experiência de sobra nem sempre gera clareza imediata",
+    "opener": "Achar que quanto mais palavras você usar para explicar o seu trabalho, mais inteligente o seu perfil vai parecer é um en",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "Café da tarde"
   }
 ]
