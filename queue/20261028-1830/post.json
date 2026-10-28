@@ -1,6 +1,6 @@
 {
   "id": "20261028-1830",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "azul",
   "variant": 2,
@@ -9,5 +9,7 @@
   "slides": 6,
   "stories": 1,
   "story_format": "chat",
-  "story_mode": "acompanha"
+  "story_mode": "acompanha",
+  "media_id": "18182073220436028",
+  "stories_published": 1
 }
