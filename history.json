@@ -271,5 +271,20 @@
     "story_format": "nota",
     "story_mode": "acompanha",
     "story_title": "Anotação de bancada"
+  },
+  {
+    "topic": "Desmentindo mitos comuns sobre como funciona o LinkedIn na transição de carreira",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 2,
+    "format": "mito_verdade",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a comentar a palavra-chave {kw}",
+    "keyword": "TITULO",
+    "cover": "Pare de seguir estas regras falsas do LinkedIn",
+    "opener": "Muitas das orientações que circulam sobre o LinkedIn acabam gerando mais confusão do que clareza na hora da transição. T",
+    "story_format": "pergunta",
+    "story_mode": "paralela",
+    "story_title": "Qual foi a melhor dica de carreira que você recebeu nos últimos anos?"
   }
 ]
