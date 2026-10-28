@@ -1,6 +1,6 @@
 {
   "id": "20261028-0836",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "geometrico",
   "variant": 2,
@@ -9,5 +9,7 @@
   "slides": 6,
   "stories": 1,
   "story_format": "pergunta",
-  "story_mode": "paralela"
+  "story_mode": "paralela",
+  "media_id": "18127470589868945",
+  "stories_published": 1
 }
