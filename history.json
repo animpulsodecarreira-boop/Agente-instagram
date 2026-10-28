@@ -316,5 +316,20 @@
     "story_format": "digitar",
     "story_mode": "paralela",
     "story_title": "Às vezes a gente gasta mais energia explicando o que faz do que fazendo o trabalho em si."
+  },
+  {
+    "topic": "Apresentação da consultoria e oferta de diagnóstico gratuito com caso fictício",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 2,
+    "format": "caso_hipotetico",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "QUERO",
+    "cover": "Imagine ter anos de carreira e um perfil confuso",
+    "opener": "Guardar dez anos de experiência em um texto genérico afasta boas conversas antes mesmo do primeiro contato.",
+    "story_format": "chat",
+    "story_mode": "acompanha",
+    "story_title": "Mensagem inesperada"
   }
 ]
