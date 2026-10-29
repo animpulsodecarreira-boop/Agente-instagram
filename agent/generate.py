@@ -155,36 +155,71 @@ def pick_story_recipe(funnel, post_format, hist=None):
     return {"mode": mode, "format": fmt}
 
 
+# Perfis de "pensamento": o primeiro usa o padrão do modelo; se a resposta vier vazia (o pensamento interno gasta o limite de
+# saída), os seguintes pedem menos pensamento. Modelos novos usam thinkingLevel; os 2.5 usam thinkingBudget.
+THINKING_PROFILES = [None, {"thinkingLevel": "low"}, {"thinkingBudget": 512}]
+MAX_OUTPUT_TOKENS = 16384
+GEMINI_DEADLINE = 360  # segundos no total, para o passo do GitHub nunca estourar o limite
+
+
+def _extract(data):
+    """Tira o JSON da resposta. Devolve (texto, motivo): se não veio texto, o motivo explica o porquê."""
+    fb = data.get("promptFeedback") or {}
+    if fb.get("blockReason"):
+        return None, f"bloqueado ({fb['blockReason']})"
+    cands = data.get("candidates") or []
+    if not cands:
+        return None, "sem candidatos"
+    c = cands[0]
+    fin = c.get("finishReason", "?")
+    usage = data.get("usageMetadata") or {}
+    info = f"finishReason={fin}, pensamento={usage.get('thoughtsTokenCount')}, saida={usage.get('candidatesTokenCount')}"
+    parts = (c.get("content") or {}).get("parts") or []
+    text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
+    if not text.strip():
+        return None, f"resposta vazia ({info})"
+    if fin == "MAX_TOKENS":
+        return None, f"cortada pelo limite ({info})"
+    return text, info
+
+
 def call_gemini(prompt):
     key = os.environ["GEMINI_API_KEY"]
-    body = {
-        "systemInstruction": {"parts": [{"text": SYSTEM}]},
-        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"responseMimeType": "application/json", "responseSchema": SCHEMA,
-                             "temperature": 0.9},
-    }
-    last = None
+    start = time.time()
+    errors = []
     for model in GEMINI_MODELS:
-        for attempt in range(3):
-            try:
-                r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(15, 240))
-            except requests.exceptions.RequestException as e:  # timeout, conexão caiu etc.
-                last = f"{model}: {type(e).__name__}"
-                time.sleep(2 ** attempt * 5)
-                continue
-            if r.status_code == 200:
-                data = r.json()
+        for pi, profile in enumerate(THINKING_PROFILES):
+            for attempt in range(2):  # falhas momentâneas (429/5xx/conexão) tentam de novo no mesmo perfil
+                if time.time() - start > GEMINI_DEADLINE:
+                    raise RuntimeError("Gemini falhou (tempo esgotado): " + " | ".join(errors[-4:])[-700:])
+                gen = {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0.9,
+                       "maxOutputTokens": MAX_OUTPUT_TOKENS}
+                if profile:
+                    gen["thinkingConfig"] = profile
+                body = {"systemInstruction": {"parts": [{"text": SYSTEM}]},
+                        "contents": [{"role": "user", "parts": [{"text": prompt}]}], "generationConfig": gen}
+                tag = f"{model}/perfil{pi}"
                 try:
-                    return json.loads(data["candidates"][0]["content"]["parts"][0]["text"])
-                except (KeyError, IndexError, json.JSONDecodeError) as e:
-                    last = f"{model}: resposta inválida ({e})"
-                    break
-            last = f"{model}: HTTP {r.status_code} {r.text[:200]}"
-            if r.status_code in (429, 500, 503):
-                time.sleep(2 ** attempt * 5)
-                continue
-            break  # erro não recuperável neste modelo -> tenta o próximo
-    raise RuntimeError(f"Gemini falhou: {last}")
+                    r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(15, 120))
+                except requests.exceptions.RequestException as e:  # timeout, conexão caiu etc.
+                    errors.append(f"{tag}: {type(e).__name__}")
+                    time.sleep(2 ** attempt * 4)
+                    continue
+                if r.status_code == 200:
+                    text, why = _extract(r.json())
+                    if text:
+                        try:
+                            return json.loads(text)
+                        except json.JSONDecodeError as e:
+                            why = f"JSON inválido ({e})"
+                    errors.append(f"{tag}: {why}")
+                    break  # resposta vazia/cortada: o próximo perfil pede menos pensamento
+                errors.append(f"{tag}: HTTP {r.status_code} {r.text[:120]}")
+                if r.status_code in (429, 500, 503):
+                    time.sleep(2 ** attempt * 5)
+                    continue
+                break  # ex.: 400 (o modelo não aceita esse perfil de pensamento): tenta o próximo perfil
+    raise RuntimeError("Gemini falhou: " + " | ".join(errors[-4:])[-700:])
 
 
 def validate_story(st, kind):
