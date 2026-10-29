@@ -4,13 +4,15 @@ on:
     - cron: "0 11 * * 1-5"    # 08:00 Brasília -> TOPO
     - cron: "30 15 * * 1-5"   # 12:30 Brasília -> MEIO
     - cron: "0 21 * * 1-5"    # 18:00 Brasília -> FUNDO
+    - cron: "30 13 * * 6,0"   # sábado e domingo 10:30 Brasília -> LEVE
+    - cron: "0 20 * * 6,0"    # sábado e domingo 17:00 Brasília -> LEVE
   workflow_dispatch:
     inputs:
       funnel:
         description: "Etapa do funil (vazio = pela hora atual)"
         required: false
         type: choice
-        options: ["", "topo", "meio", "fundo"]
+        options: ["", "topo", "meio", "fundo", "leve"]
 permissions:
   contents: write
 concurrency:
@@ -37,6 +39,8 @@ jobs:
               "0 11 * * 1-5") F="topo" ;;
               "30 15 * * 1-5") F="meio" ;;
               "0 21 * * 1-5") F="fundo" ;;
+              "30 13 * * 6,0") F="leve" ;;
+              "0 20 * * 6,0") F="leve" ;;
             esac
           fi
           echo "funnel=$F" >> "$GITHUB_OUTPUT"
@@ -69,3 +73,4 @@ jobs:
           curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=⚠️ Alerta automático: o workflow 'Gerar post' falhou ou travou. Detalhes: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
