@@ -25,7 +25,7 @@ FUNNEL = {
 }
 # Missão de cada tipo de post (o que a pessoa precisa saber depois de ver)
 MISSIONS = {
-    "topo": "Que eu existo: dor/erro comum de LinkedIn que gera identificação.",
+    "topo": "Que eu existo: dor/erro comum do tema do dia que gera identificação.",
     "meio": "Quem eu sou e o que eu faço: como o diagnóstico funciona, antes/depois, bastidores.",
     "fundo": "O que eu vendo: a oferta, para quem é, o que a pessoa recebe.",
 }
@@ -103,32 +103,82 @@ STORY_MODE_TEXT = {
                  "sem relação direta com o post, sem tom de venda e sem mencionar o post."),
 }
 
+# ---------- Pilares de conteúdo (o código sorteia o pilar; o Gemini escreve dentro dele) ----------
+# weight: peso do sorteio (somam 100; o LinkedIn fica como pilar principal, mas não único).
+# funnels: em quais etapas o pilar pode aparecer. O fundo é a oferta do diagnóstico de LinkedIn,
+#          então só aceita pilares ligados a ela.
+# capa_sem_linkedin: True = a capa não deve citar LinkedIn (o tema é outro; a ponte com a marca vem depois).
+# angulos: ideias para o Gemini escolher (ele não repete temas já usados).
+# ponte: como ligar o tema à marca de forma natural e curta (opcional no post).
+PILLARS = {
+    "linkedin": dict(
+        nome="LinkedIn e posicionamento", weight=25, funnels=["topo", "meio", "fundo"], capa_sem_linkedin=False,
+        descricao="Perfil, título, Sobre, experiências, conexões e como o perfil é percebido por recrutadores.",
+        angulos=["título e Sobre", "experiências e conquistas", "foto, banner e primeira impressão", "palavras-chave", "rede de contatos", "mensagens a recrutadores"],
+        ponte="Este é o tema central da marca: pode citar o diagnóstico e o posicionamento livremente."),
+    "curriculo": dict(
+        nome="Currículo e candidatura", weight=15, funnels=["topo", "meio"], capa_sem_linkedin=True,
+        descricao="Como montar e adaptar o currículo e se candidatar com mais clareza.",
+        angulos=["resumo profissional", "conquistas sem inventar números", "adaptar o currículo a cada vaga", "tamanho e formato", "lacunas no histórico", "carta ou mensagem de apresentação"],
+        ponte="Currículo e LinkedIn precisam contar a mesma história; só mencione isso se for natural."),
+    "entrevista": dict(
+        nome="Entrevistas e conversa com recrutador", weight=15, funnels=["topo", "meio"], capa_sem_linkedin=True,
+        descricao="Preparação, respostas e postura em entrevistas e contatos com recrutadores.",
+        angulos=["'fale sobre você'", "perguntas difíceis", "como falar de uma saída ou lacuna", "perguntas para fazer ao recrutador", "primeiros minutos da conversa", "acompanhamento depois da entrevista"],
+        ponte="O que a pessoa diz na entrevista deve bater com o que o perfil mostra; só mencione se for natural."),
+    "transicao": dict(
+        nome="Transição e recolocação de carreira", weight=12, funnels=["topo", "meio", "fundo"], capa_sem_linkedin=False,
+        descricao="Mudar de área, voltar ao mercado e se reposicionar depois de uma pausa ou demissão.",
+        angulos=["como contar a história da transição", "habilidades transferíveis", "lidar com a ansiedade da busca", "reorganizar a rotina de busca", "o que fazer nas primeiras semanas", "reposicionar a experiência anterior"],
+        ponte="Mostre como posicionar a trajetória com clareza; pode citar o perfil profissional."),
+    "produtividade": dict(
+        nome="Rotina, produtividade e foco", weight=9, funnels=["topo"], capa_sem_linkedin=True,
+        descricao="Organização, foco e hábitos de quem trabalha ou busca trabalho.",
+        angulos=["rotina de busca de emprego", "prioridades da semana", "como lidar com distrações", "pausas e energia", "metas pequenas", "fechar o dia com clareza"],
+        ponte="Opcional: organização também ajuda a manter o perfil e a rede de contatos em dia."),
+    "comunicacao": dict(
+        nome="Comunicação e presença no trabalho", weight=9, funnels=["topo"], capa_sem_linkedin=True,
+        descricao="Como se expressar com clareza, escrever mensagens e se fazer entender.",
+        angulos=["mensagens objetivas", "falar de conquistas sem exagero", "pedir ajuda ou indicação", "feedback", "reuniões", "networking sem constrangimento"],
+        ponte="Opcional: a mesma clareza vale para a forma como o perfil se apresenta."),
+    "negociacao": dict(
+        nome="Negociação e limites", weight=8, funnels=["topo"], capa_sem_linkedin=True,
+        descricao="Conversar sobre salário, proposta, prazos e limites com segurança.",
+        angulos=["preparar a conversa sobre salário", "avaliar uma proposta", "dizer não com educação", "pedir tempo para decidir", "benefícios além do salário", "alinhar expectativas"],
+        ponte="Opcional: um perfil claro ajuda a chegar mais forte nessa conversa."),
+    "aprendizado": dict(
+        nome="Desenvolvimento e aprendizado contínuo", weight=7, funnels=["topo"], capa_sem_linkedin=True,
+        descricao="Estudar, atualizar habilidades e crescer na carreira sem se perder.",
+        angulos=["escolher o que aprender", "mostrar o que aprendeu", "aprender fazendo", "mentoria e troca", "constância nos estudos", "transformar curso em resultado visível"],
+        ponte="Opcional: mostrar o que se aprende no perfil também faz parte do posicionamento."),
+}
+
 # ---------- Variedade de conteúdo (o código sorteia; o Gemini só executa) ----------
 # Cada formato é uma "receita" diferente de post. O agente alterna, evitando repetir os últimos.
 FORMATS = {
     "mito_verdade": dict(funnels=["topo"], nome="Mito vs. verdade",
-                         plano="cover; 3 slides 'versus' ou 'content' desmentindo um mito de LinkedIn por slide; 1 slide 'quote' com a conclusão; cta"),
+                         plano="cover; 3 slides 'versus' ou 'content' desmentindo um mito comum do tema do dia por slide; 1 slide 'quote' com a conclusão; cta"),
     "erro_correcao": dict(funnels=["topo"], nome="Erros e como corrigir",
                           plano="cover; 2 a 3 slides 'versus' (erro -> melhor versão); 1 slide 'list' com o resumo; cta"),
-    "antes_depois": dict(funnels=["topo", "meio"], nome="Antes e depois de um trecho do perfil",
-                         plano="cover; 1 slide 'versus' com um EXEMPLO FICTÍCIO de antes/depois; 2 slides 'content' explicando o que mudou; cta"),
+    "antes_depois": dict(funnels=["topo", "meio"], nome="Antes e depois de um trecho (perfil, currículo, mensagem ou resposta)",
+                         plano="cover; 1 slide 'versus' com um EXEMPLO FICTÍCIO de antes/depois de um trecho ligado ao tema do dia; 2 slides 'content' explicando o que mudou; cta"),
     "tres_sinais": dict(funnels=["topo"], nome="Sinais de que algo está errado",
                         plano="cover; 3 a 4 slides 'content' (um sinal por slide, com exemplo curto); 1 slide 'check'; cta"),
     "pergunta": dict(funnels=["topo"], nome="Pergunta provocativa respondida",
                      plano="cover em forma de pergunta; 3 slides 'content' ou 'quote' respondendo; cta (sem slide de conexão)"),
     "mini_aula": dict(funnels=["topo", "meio"], nome="Mini-aula com analogia",
                       plano="cover; 1 slide 'quote' com a ideia central; 2 a 3 slides 'content' usando uma analogia do dia a dia; 1 slide 'list'; cta"),
-    "comparativo": dict(funnels=["topo", "fundo"], nome="Perfil A vs. perfil B",
-                        plano="cover; 2 slides 'versus' comparando dois perfis FICTÍCIOS ou dois jeitos de se apresentar; 1 slide 'content' com a lição; cta"),
+    "comparativo": dict(funnels=["topo", "fundo"], nome="Jeito A vs. jeito B",
+                        plano="cover; 2 slides 'versus' comparando duas pessoas FICTÍCIAS ou dois jeitos de lidar com o tema do dia; 1 slide 'content' com a lição; cta"),
     "checklist": dict(funnels=["topo"], nome="Checklist de autoavaliação",
                       plano="cover; 1 slide 'check'; 2 a 3 slides 'content' explicando os itens mais negligenciados; cta"),
     "passo_a_passo": dict(funnels=["meio"], nome="Passo a passo prático",
                           plano="cover; 1 slide 'list' com os passos; 3 slides 'content' detalhando os passos mais importantes; cta"),
-    "bastidor": dict(funnels=["meio"], nome="Como funciona o trabalho (bastidores do método)",
+    "bastidor": dict(funnels=["meio"], pillars=["linkedin"], nome="Como funciona o trabalho (bastidores do método)",
                      plano="cover; 3 a 4 slides 'content' mostrando as etapas de uma consultoria de LinkedIn (SEM casos reais, SEM resultados prometidos); cta para DM"),
     "caso_hipotetico": dict(funnels=["meio", "fundo"], nome="Mini-caso hipotético",
                             plano="cover com 'Imagine...'; 3 slides 'content' contando um caso FICTÍCIO (deixe claro que é um exemplo); 1 slide 'quote' com a lição; cta"),
-    "oferta": dict(funnels=["fundo"], nome="Apresentação da oferta",
+    "oferta": dict(funnels=["fundo"], pillars=["linkedin", "transicao"], nome="Apresentação da oferta",
                    plano="cover; 1 slide 'content' sobre para quem é; 1 slide 'list' com o que a pessoa recebe; 1 slide 'content' de como funciona; cta com link na bio"),
 }
 
@@ -145,9 +195,9 @@ HOOKS = [
 CTAS = {
     "topo": [
         "convidar a comentar a palavra-chave {kw}",
-        "convidar a salvar para consultar antes de mexer no perfil",
+        "convidar a salvar para consultar na hora de aplicar a dica",
         "convidar a mandar o post para alguém que está buscando recolocação",
-        "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é o seu título hoje?)",
+        "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é a sua maior dúvida sobre o tema?)",
         "convidar a seguir o perfil para a próxima dica",
     ],
     "meio": [
