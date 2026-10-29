@@ -8,7 +8,7 @@ import requests
 
 from .config import (BANNED_PHRASES, BRAND_NAME, CTAS, FORMATS, FUNNEL, GEMINI_MODELS, HISTORY_FILE, HOOKS,
                      KEYWORDS, MAX_HASHTAGS, MAX_SLIDES, MIN_SLIDES, MISSIONS, OFFER, STORY_FORMATS, STORY_MODES,
-                     STORY_MODE_TEXT, THEMES, PILLARS)
+                     STORY_MODE_TEXT, THEMES, PILLARS, LEVE_BANNED, LEVE_HOOKS, LEVE_THEMES)
 
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
@@ -17,6 +17,12 @@ profissional no LinkedIn para pessoas em transição/recolocação. Escreva em p
 direto e acolhedor, sem jargão e sem promessas de resultado garantido. NÃO use markdown (nada de ** ou #) nos textos dos slides.
 Parte dos posts trata de temas profissionais em geral (currículo, entrevista, rotina, comunicação, negociação, aprendizado),
 sempre com o olhar de quem ajuda pessoas a se posicionarem melhor no mercado. O PILAR do dia vem na mensagem do usuário: SIGA-O.
+
+MODO LEVE (quando a etapa do funil for LEVE, aos fins de semana): tom de conversa de amigo, humor suave e acolhedor, frases curtas,
+sem jargão de carreira. NÃO venda nada: nada de diagnóstico, consultoria, link na bio, palavra-chave de oferta nem LinkedIn.
+Nunca faça piada com quem está desempregado ou buscando recolocação, com grupos de pessoas, com cargos ou com empresas reais;
+sem estereótipos. Sem estatísticas, estudos, livros, filmes ou autores citados. O objetivo é identificação, um sorriso e conversa.
+No modo leve o CTA é só interação (comentar, marcar alguém, salvar para a segunda).
 
 REGRAS DE CONTEÚDO
 - Nunca invente estatísticas, depoimentos, nomes ou resultados. Use só generalizações seguras.
@@ -28,7 +34,7 @@ TIPOS DE SLIDE (campo "kind")
 - cover: gancho (title) + subtítulo curto (body). Sempre o PRIMEIRO.
 - content: um ponto por slide (title + body; "highlight" opcional = frase final de impacto).
 - quote: frase de impacto grande (title) + apoio curto (body).
-- versus: contraste "em vez de / faça assim": title + left (o erro, curto) + right (a melhor versão, curta).
+- versus: contraste "em vez de / faça assim": title + left (o erro, curto) + right (a melhor versão, curta). Opcional: left_label e right_label (até 18 caracteres, em maiúsculas) para trocar os rótulos, quando o contraste não for erro x acerto (ex.: 'DOMINGO À NOITE' / 'SEGUNDA CEDO').
 - list: título + items (3 a 4 passos curtos, até 70 caracteres cada).
 - check: checklist (title + items com 3 a 4 itens + note curta).
 - cta: chamada final (title + body). Sempre o ÚLTIMO.
@@ -55,12 +61,13 @@ SCHEMA = {
             "title": {"type": "STRING"}, "body": {"type": "STRING"},
             "highlight": {"type": "STRING"}, "note": {"type": "STRING"},
             "left": {"type": "STRING"}, "right": {"type": "STRING"},
+            "left_label": {"type": "STRING"}, "right_label": {"type": "STRING"},
             "items": {"type": "ARRAY", "items": {"type": "STRING"}},
         }, "required": ["kind", "title"]}},
         "stories": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
             "kind": {"type": "STRING", "enum": list(STORY_FORMATS)},
             "title": {"type": "STRING"}, "body": {"type": "STRING"}, "highlight": {"type": "STRING"},
-            "antes": {"type": "STRING"}, "depois": {"type": "STRING"},
+            "antes": {"type": "STRING"}, "depois": {"type": "STRING"}, "outro_label": {"type": "STRING"},
             "items": {"type": "ARRAY", "items": {"type": "STRING"}},
             "messages": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
                 "quem": {"type": "STRING", "enum": ["outro", "voce"]}, "texto": {"type": "STRING"},
@@ -98,12 +105,19 @@ def _lru(options, key, history=None):
     return min(pool, key=lambda o: (age(o), options.index(o)))
 
 
-def pick_theme():
-    return _lru(THEMES, "theme")
+def hist_for(funnel, hist=None):
+    """O modo leve (fim de semana) tem rotação própria: não se mistura com o histórico dos posts de semana."""
+    hist = load_history() if hist is None else hist
+    leve = funnel == "leve"
+    return [h for h in hist if (h.get("funnel") == "leve") == leve]
 
 
-def pick_variant():
-    return _lru([0, 1, 2], "variant")
+def pick_theme(funnel=None):
+    return _lru(LEVE_THEMES if funnel == "leve" else THEMES, "theme", hist_for(funnel))
+
+
+def pick_variant(funnel=None):
+    return _lru([0, 1, 2], "variant", hist_for(funnel))
 
 
 def pick_pillar(funnel, hist=None, rng=random):
@@ -123,7 +137,7 @@ def pick_recipe(funnel, pillar="linkedin", hist=None):
     hist = load_history() if hist is None else hist
     fmts = [k for k, v in FORMATS.items() if funnel in v["funnels"] and (not v.get("pillars") or pillar in v["pillars"])]
     fmt = _lru(fmts, "format", hist)
-    hook = _lru(HOOKS, "hook", hist)
+    hook = _lru(LEVE_HOOKS if funnel == "leve" else HOOKS, "hook", hist)
     cta_opts = CTAS[funnel]
     cta = _lru(cta_opts, "cta", hist)
     kw = _lru(KEYWORDS, "keyword", hist)
@@ -186,6 +200,8 @@ def validate_story(st, kind):
         assert st.get("antes", "").strip() and st.get("depois", "").strip(), "riscar precisa de antes e depois"
         assert len(st["antes"]) <= 110 and len(st["depois"]) <= 120, "antes/depois longos demais"
     elif kind == "chat":
+        if len(st.get("outro_label", "")) > 20:
+            st["outro_label"] = ""
         m = st.get("messages") or []
         assert 2 <= len(m) <= 4, "chat precisa de 2 a 4 mensagens"
         for x in m:
@@ -205,7 +221,7 @@ def fallback_story(post):
     return {"kind": "teaser", "title": post["slides"][0]["title"][:80], "body": "Veja o novo post no feed agora."}
 
 
-def validate(post, strict=True, story_kind=None, pillar=None):
+def validate(post, strict=True, story_kind=None, pillar=None, funnel=None):
     s = post["slides"]
     assert MIN_SLIDES <= len(s) <= MAX_SLIDES, f"{len(s)} slides"
     assert s[0]["kind"] == "cover" and s[-1]["kind"] == "cta", "primeiro deve ser cover e último cta"
@@ -214,6 +230,9 @@ def validate(post, strict=True, story_kind=None, pillar=None):
         assert len(x.get("body", "")) <= 400, "corpo longo demais"
         if x["kind"] == "versus":
             assert x.get("left") and x.get("right"), "versus precisa de left e right"
+            for lab in ("left_label", "right_label"):
+                if len(x.get(lab, "")) > 20:
+                    x[lab] = ""  # rótulo longo demais: volta ao padrão
         if x["kind"] in ("list", "check"):
             assert 3 <= len(x.get("items", [])) <= 5, f"{x['kind']} precisa de 3 a 5 itens"
     tags = ["#" + t.lstrip("#").replace(" ", "") for t in post["hashtags"]][:MAX_HASHTAGS]
@@ -235,12 +254,16 @@ def validate(post, strict=True, story_kind=None, pillar=None):
         blob = " ".join([post["caption"], sblob] + [x["title"] + " " + x.get("body", "") + " " + x.get("highlight", "") for x in s]).lower()
         hit = [p for p in BANNED_PHRASES if p in blob]
         assert not hit, f"usou fórmulas repetidas: {hit}"
+        if funnel == "leve":
+            sales = [w for w in LEVE_BANNED if w in blob]
+            assert not sales, f"o modo leve não pode citar: {sales}"
     return post
 
 
 def generate_post(funnel, extra_instruction=""):
-    hist = load_history()
-    used = [h["topic"] for h in hist[-40:]]
+    hist_all = load_history()
+    used = [h["topic"] for h in hist_all[-40:]]
+    hist = hist_for(funnel, hist_all)  # semana e fim de semana giram separados
     recent_hooks = [h.get("cover") for h in hist[-14:] if h.get("cover")]
     recent_openers = [h.get("opener") for h in hist[-14:] if h.get("opener")]
     recent_stories = [h.get("story_title") for h in hist[-14:] if h.get("story_title")]
@@ -251,13 +274,16 @@ def generate_post(funnel, extra_instruction=""):
     sf = STORY_FORMATS[story_rc["format"]]
     fmt = FORMATS[recipe["format"]]
     cta = recipe["cta"].replace("{kw}", f"“{recipe['keyword']}”")
-    pillar_rule = "" if pillar == "linkedin" else (
+    leve = funnel == "leve"
+    offer_line = ("Oferta: NÃO mencione oferta, diagnóstico, consultoria, link na bio nem palavra-chave.\n\n" if leve
+                  else f"Oferta (só use em post de FUNDO): {OFFER}\n\n")
+    pillar_rule = "- Modo LEVE: não cite LinkedIn nem a consultoria; humor suave e acolhedor.\n" if leve else "" if pillar == "linkedin" else (
         "- Este pilar NÃO é sobre LinkedIn: o post fala do tema profissional em geral. Cite o LinkedIn só na ponte, "
         "de forma natural e curta (no máximo em um slide) ou não cite. A missão do funil vale, aplicada a este tema.\n"
         + ("- NÃO use a palavra LinkedIn na capa.\n" if pl["capa_sem_linkedin"] else ""))
     prompt = (
         f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
-        f"Missão do post: {MISSIONS[funnel]}\nOferta (só use em post de FUNDO): {OFFER}\n\n"
+        f"Missão do post: {MISSIONS[funnel]}\n{offer_line}"
         f"PILAR DO DIA: {pl['nome']}. {pl['descricao']}\n"
         f"- Ângulos possíveis (escolha UM que ainda não foi usado): {'; '.join(pl['angulos'])}\n"
         f"- Ponte com a marca: {pl['ponte']}\n"
@@ -278,10 +304,10 @@ def generate_post(funnel, extra_instruction=""):
     for attempt in range(3):  # se a validação falhar, pede de novo
         post = call_gemini(prompt)
         try:
-            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=pillar)  # na última tentativa aceita, para não ficar sem post
+            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=pillar, funnel=funnel)  # na última tentativa aceita, para não ficar sem post
             post["funnel"] = funnel
             last = post["slides"][-1]
-            last["show_link"] = funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower()
+            last["show_link"] = funnel != "leve" and (funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower())
             post["recipe"] = recipe
             post["pillar"] = pillar
             post["story_recipe"] = {**story_rc, "format": post["stories"][0]["kind"]}  # reflete o fallback, se houve
