@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 from . import telegram_io as tg
-from .config import QUEUE, STATE_FILE, STORY_FORMATS, THEMES
+from .config import PILLARS, QUEUE, STATE_FILE, STORY_FORMATS, THEMES
 from .generate import generate_post, pick_theme, pick_variant, save_history
 from .render_v2 import render_all
 from .video import make_story_video
@@ -104,16 +104,17 @@ def cmd_generate(args):
         src = post["story_recipe"]
         meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "variant": variant, "topic": post["topic"],
                 "caption": cap, "slides": len(paths), "stories": len(videos),
-                "story_format": src["format"], "story_mode": src["mode"]}
+                "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"]}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         rc = post["recipe"]
         save_history(post["topic"], funnel, theme, {
             "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
             "cover": post["cover"], "opener": post["opener"],
-            "story_format": src["format"], "story_mode": src["mode"], "story_title": post["stories"][0]["title"][:90]})
+            "story_format": src["format"], "story_mode": src["mode"], "story_title": post["stories"][0]["title"][:90],
+            "pillar": post["pillar"]})
         if os.getenv("SKIP_TELEGRAM") != "1":
-            tg.send_for_approval(post_id, paths, cap, funnel, theme, videos)
-        print(f"Post {post_id} gerado ({funnel}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
+            tg.send_for_approval(post_id, paths, cap, f"{funnel} · {PILLARS[post['pillar']]['nome']}", theme, videos)
+        print(f"Post {post_id} gerado ({funnel}, pilar {post['pillar']}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
               f"story {src['format']}/{src['mode']}): {post['topic']}")
     except Exception:
         err = tg.redact(traceback.format_exc())
