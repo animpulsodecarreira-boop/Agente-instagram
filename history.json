@@ -363,5 +363,21 @@
     "story_mode": "paralela",
     "story_title": "Pensamento para o fim de semana",
     "pillar": "leve_carreira"
+  },
+  {
+    "topic": "Como reposicionar sua bagagem profissional na transição e a nossa oferta de diagnóstico",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 0,
+    "format": "oferta",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "PERFIL",
+    "cover": "Está difícil resumir sua trajetória sem parecer que começou do zero?",
+    "opener": "A sensação de recomeçar do zero ao buscar um novo caminho profissional quase sempre é ilusória.",
+    "story_format": "nota",
+    "story_mode": "paralela",
+    "story_title": "Sobre rotina e pausas",
+    "pillar": "transicao"
   }
 ]
