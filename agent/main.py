@@ -1,5 +1,5 @@
 """Uso:
-  python -m agent.main generate [--funnel topo|meio|fundo]   # gera post + story, renderiza e manda pro Telegram
+  python -m agent.main generate [--funnel topo|meio|fundo|leve]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj]   # aprova/reprocessa um post pelo GitHub
   python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
@@ -66,8 +66,10 @@ def raw_url(post_id, filename):
     return f"https://raw.githubusercontent.com/{repo}/{branch}/queue/{post_id}/{filename}"
 
 
-def funnel_by_hour(hour):
-    """08h topo, 12h30 meio, 18h fundo (usado quando você roda manualmente sem escolher)."""
+def funnel_by_hour(hour, weekday=0):
+    """Seg a sex: 08h topo, 12h30 meio, 18h fundo. Sábado e domingo: leve (usado quando você roda sem escolher)."""
+    if weekday >= 5:
+        return "leve"
     return "topo" if hour < 11 else "meio" if hour < 16 else "fundo"
 
 
@@ -90,14 +92,15 @@ def prune(days=10):
 
 def cmd_generate(args):
     now = datetime.now(TZ)
-    funnel = args.funnel or funnel_by_hour(now.hour)
+    funnel = args.funnel or funnel_by_hour(now.hour, now.weekday())
     post_id = now.strftime("%Y%m%d-%H%M")
     try:
         prune()
         post = generate_post(funnel)
-        theme, variant = pick_theme(), pick_variant()
+        theme, variant = pick_theme(funnel), pick_variant(funnel)
         out = QUEUE / post_id
-        paths, clips = render_all(post["slides"], post["stories"], out, theme, variant)
+        # no modo leve a logo grande some do feed (a marca fica só no rodapé e no story)
+        paths, clips = render_all(post["slides"], post["stories"], out, theme, variant, brand_logo=funnel != "leve")
         videos = [make_story_video(c, out / f"story{i}.mp4", f"{post_id}-{i}") for i, c in enumerate(clips, 1)]
         shutil.rmtree(out / "_frames", ignore_errors=True)  # quadros intermediários não vão para o repositório
         cap = full_caption(post)
@@ -243,10 +246,11 @@ def cmd_preview(args):
     post = dict(MOCK if args.mock else generate_post(args.funnel or "topo"))
     if args.story:
         post["stories"] = list(STORY_SAMPLES.values()) if args.story == "all" else [STORY_SAMPLES[args.story]]
-    theme = args.theme or pick_theme()
-    variant = args.variant if args.variant is not None else pick_variant()
+    funnel = args.funnel or "topo"
+    theme = args.theme or pick_theme(funnel)
+    variant = args.variant if args.variant is not None else pick_variant(funnel)
     out = QUEUE / "_preview"
-    paths, clips = render_all(post["slides"], post["stories"], out, theme, variant)
+    paths, clips = render_all(post["slides"], post["stories"], out, theme, variant, brand_logo=funnel != "leve")
     vids = [make_story_video(c, out / f"story{i}.mp4", f"prev-{i}") for i, c in enumerate(clips, 1)]
     shutil.rmtree(out / "_frames", ignore_errors=True)
     print("\n".join(map(str, paths + [c["png"] for c in clips] + vids)))
@@ -256,10 +260,10 @@ def cmd_preview(args):
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
-    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo"])
+    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"])
     sub.add_parser("poll")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj"], default="ap")
-    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
+    p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
     {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview}[args.cmd](args)
 
