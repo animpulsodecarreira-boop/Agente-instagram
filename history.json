@@ -331,5 +331,21 @@
     "story_format": "chat",
     "story_mode": "acompanha",
     "story_title": "Mensagem inesperada"
+  },
+  {
+    "topic": "Manias e rituais engraçados da rotina de trabalho",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 0,
+    "format": "time_quiz",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "cta": "pedir para comentar qual opção ou time a pessoa é",
+    "keyword": "QUERO",
+    "cover": "Você é de qual time na rotina de trabalho?",
+    "opener": "A verdade é que todo mundo tem um ritual curioso para conseguir produzir.",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "Fechar todas as janelas do computador no fim da semana é puro alívio mental",
+    "pillar": "leve_rotina"
   }
 ]
