@@ -1,6 +1,6 @@
 {
   "id": "20261029-1832",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "geometrico",
   "variant": 0,
@@ -10,5 +10,7 @@
   "stories": 1,
   "story_format": "nota",
   "story_mode": "paralela",
-  "pillar": "transicao"
+  "pillar": "transicao",
+  "media_id": "18184002370439209",
+  "stories_published": 1
 }
