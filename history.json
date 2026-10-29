@@ -379,5 +379,21 @@
     "story_mode": "paralela",
     "story_title": "Sobre rotina e pausas",
     "pillar": "transicao"
+  },
+  {
+    "topic": "Bastidores do método da consultoria de LinkedIn",
+    "funnel": "meio",
+    "theme": "escuro",
+    "variant": 1,
+    "format": "bastidor",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a responder o story do dia",
+    "keyword": "TITULO",
+    "cover": "Um bom perfil no LinkedIn não nasce na tela do computador",
+    "opener": "A maior parte das pessoas abre o LinkedIn disposta a reescrever o perfil na base da tentativa e erro.",
+    "story_format": "pergunta",
+    "story_mode": "acompanha",
+    "story_title": "Se você pudesse destravar apenas uma parte do seu perfil agora, qual seria?",
+    "pillar": "linkedin"
   }
 ]
