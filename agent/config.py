@@ -22,12 +22,14 @@ FUNNEL = {
     "topo": "Atrai gente nova, sem pedir nada. CTA: comentar QUERO / salvar / compartilhar.",
     "meio": "Mostra bastidores, método e dia a dia da consultoria. CTA: chamar na DM.",
     "fundo": "Mostra o que a consultoria vende e a oferta. CTA: acessar o link na bio.",
+    "leve": "Fim de semana: conteúdo leve, descontraído e fora da bolha da carreira. Sem venda, sem link na bio e sem palavra-chave de oferta. CTA: interação (comentar, marcar alguém, salvar para a segunda).",
 }
 # Missão de cada tipo de post (o que a pessoa precisa saber depois de ver)
 MISSIONS = {
     "topo": "Que eu existo: dor/erro comum do tema do dia que gera identificação.",
     "meio": "Quem eu sou e o que eu faço: como o diagnóstico funciona, antes/depois, bastidores.",
     "fundo": "O que eu vendo: a oferta, para quem é, o que a pessoa recebe.",
+    "leve": "Ser uma companhia leve no fim de semana: gerar identificação, um sorriso e conversa, sem vender nada.",
 }
 
 # (agenda atual) 3 posts por dia, de segunda a sexta (os horários ficam em .github/workflows/generate.yml):
@@ -64,36 +66,37 @@ STORY_MODES = ["acompanha", "paralela"]
 #   instrucao:    o que o Gemini deve preencher
 STORY_FORMATS = {
     "digitar": dict(
-        nome="Frase que se escreve", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        nome="Frase que se escreve", funnels=["topo", "meio", "fundo", "leve"], modes=["acompanha", "paralela"], post_formats=None,
         instrucao=("title = UMA frase de impacto, até 90 caracteres, uma ideia só (sem lista). "
                    "highlight = trecho do FINAL da própria frase (1 a 4 palavras, copiado EXATAMENTE como aparece em title) que ganha destaque. "
                    "body = vazio ou uma linha curta de apoio (até 80 caracteres).")),
     "riscar": dict(
-        nome="Riscar e reescrever", funnels=["topo", "meio"], modes=["acompanha", "paralela"],
-        post_formats=["erro_correcao", "antes_depois", "comparativo", "mito_verdade"],
+        nome="Riscar e reescrever", funnels=["topo", "meio", "leve"], modes=["acompanha", "paralela"],
+        post_formats=["erro_correcao", "antes_depois", "comparativo", "mito_verdade", "mitos_trabalho", "tradutor_corporativo", "domingo_segunda"],
         instrucao=("title = rótulo curto do que está sendo reescrito (ex.: 'Título do LinkedIn', 'Frase do currículo'), até 40 caracteres. "
                    "antes = versão fraca, curta, até 70 caracteres. depois = versão melhor, curta, até 85 caracteres. Exemplo FICTÍCIO.")),
     "chat": dict(
-        nome="Conversa de chat", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"],
-        post_formats=["pergunta", "caso_hipotetico", "bastidor", "mini_aula", "tres_sinais"],
+        nome="Conversa de chat", funnels=["topo", "meio", "fundo", "leve"], modes=["acompanha", "paralela"],
+        post_formats=["pergunta", "caso_hipotetico", "bastidor", "mini_aula", "tres_sinais", "time_quiz", "primeira_semana", "pergunta_leve"],
         instrucao=("title = contexto curto (ex.: 'Entrevista', 'Mensagem no LinkedIn'), até 40 caracteres. "
                    "messages = de 2 a 4 mensagens alternando quem ('outro' = recrutador(a) ou colega; 'voce' = a pessoa), "
-                   "cada texto com até 90 caracteres, tom natural de conversa. Conversa FICTÍCIA.")),
+                   "cada texto com até 90 caracteres, tom natural de conversa. Conversa FICTÍCIA. "
+                   "outro_label = quem é a outra pessoa (ex.: 'Recrutadora', 'Colega', 'Chefe', 'Amiga'), até 14 caracteres.")),
     "checklist": dict(
-        nome="Checklist que se marca sozinho", funnels=["topo", "meio"], modes=["acompanha", "paralela"],
-        post_formats=["checklist", "tres_sinais", "passo_a_passo", "mini_aula"],
+        nome="Checklist que se marca sozinho", funnels=["topo", "meio", "leve"], modes=["acompanha", "paralela"],
+        post_formats=["checklist", "tres_sinais", "passo_a_passo", "mini_aula", "descanso", "primeira_semana"],
         instrucao=("title = chamada curta (até 60 caracteres). items = 3 ou 4 itens, até 50 caracteres cada. "
                    "body = convite curto e opcional (até 60 caracteres), sem repetir fórmulas proibidas.")),
     "nota": dict(
-        nome="Nota do celular", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        nome="Nota do celular", funnels=["topo", "meio", "fundo", "leve"], modes=["acompanha", "paralela"], post_formats=None,
         instrucao=("title = título da nota (até 40 caracteres, ex.: 'Lembrete'). "
                    "items = de 2 a 4 linhas curtas, até 60 caracteres cada; a ÚLTIMA linha é a mais importante (vai ganhar destaque).")),
     "pergunta": dict(
-        nome="Pergunta aberta", funnels=["topo", "meio", "fundo"], modes=["acompanha", "paralela"], post_formats=None,
+        nome="Pergunta aberta", funnels=["topo", "meio", "fundo", "leve"], modes=["acompanha", "paralela"], post_formats=None,
         instrucao=("title = pergunta aberta que a pessoa responde por DM, até 90 caracteres. "
                    "body = vazio ou uma linha curta (até 80 caracteres) dizendo que você responde.")),
     "teaser": dict(
-        nome="Teaser do post", funnels=["topo", "meio", "fundo"], modes=["acompanha"], post_formats=None,
+        nome="Teaser do post", funnels=["topo", "meio", "fundo", "leve"], modes=["acompanha"], post_formats=None,
         instrucao=("title = gancho curto tirado do post (até 80 caracteres, diferente da capa palavra por palavra). "
                    "body = convite curto para ver o novo post no feed (até 70 caracteres), diferente a cada dia.")),
 }
@@ -151,6 +154,32 @@ PILLARS = {
         descricao="Estudar, atualizar habilidades e crescer na carreira sem se perder.",
         angulos=["escolher o que aprender", "mostrar o que aprendeu", "aprender fazendo", "mentoria e troca", "constância nos estudos", "transformar curso em resultado visível"],
         ponte="Opcional: mostrar o que se aprende no perfil também faz parte do posicionamento."),
+    # ---- modo leve (fim de semana) ----
+    "leve_rotina": dict(
+        nome="Rotina e manias do trabalho", weight=25, funnels=["leve"], capa_sem_linkedin=True,
+        descricao="Pequenas manias e rituais do trabalho (café, abas abertas, lista de tarefas) contadas com humor acolhedor.",
+        angulos=["a lista de tarefas que nunca zera", "abas abertas", "o café que esfria", "o 'só mais um minutinho'", "mensagem que poderia ser um e-mail", "o que a mesa diz sobre a pessoa"],
+        ponte="Opcional e bem leve: uma frase final que lembre que a rotina também pode ser gentil com a gente."),
+    "leve_descanso": dict(
+        nome="Descanso e recarga", weight=20, funnels=["leve"], capa_sem_linkedin=True,
+        descricao="Pausas, sono, lazer e formas simples de recarregar a energia no fim de semana.",
+        angulos=["desligar de verdade", "pausa sem culpa", "um passeio sem objetivo", "dormir sem alarme", "hobby que não precisa dar resultado", "domingo sem a ansiedade de segunda"],
+        ponte="Opcional e bem leve: descansar também faz parte de cuidar da carreira, sem vender nada."),
+    "leve_mundo": dict(
+        nome="Situações do dia a dia no trabalho", weight=25, funnels=["leve"], capa_sem_linkedin=True,
+        descricao="Cenas comuns do mundo do trabalho (reunião, segunda-feira, mensagens, 'corporativês') com humor suave.",
+        angulos=["segunda-feira", "reunião que podia ser mensagem", "frases de corporativês", "a primeira semana em um trabalho novo", "o grupo do trabalho", "o silêncio na chamada de vídeo"],
+        ponte="Sem ponte com a marca: aqui o objetivo é só identificação e sorriso."),
+    "leve_carreira": dict(
+        nome="Carreira sem pressão", weight=15, funnels=["leve"], capa_sem_linkedin=True,
+        descricao="Reflexões leves: ritmo próprio, não se comparar com os outros, recomeços e pequenas vitórias.",
+        angulos=["cada um tem o seu ritmo", "comparar-se com os outros", "recomeçar não é voltar à estaca zero", "comemorar pequenas vitórias", "não ter tudo resolvido", "mudar de ideia sobre a carreira"],
+        ponte="Opcional e bem leve: uma frase acolhedora, sem prometer resultado e sem vender nada."),
+    "leve_fora": dict(
+        nome="Fora da bolha: hobbies e fim de semana", weight=15, funnels=["leve"], capa_sem_linkedin=True,
+        descricao="Assuntos fora do trabalho: hobbies, curiosidades do dia a dia, programas simples e gratidão.",
+        angulos=["um hobby novo", "cozinhar sem pressa", "uma música para o fim de semana", "caminhar sem fone", "reencontrar alguém", "pequenas coisas pelas quais agradecer"],
+        ponte="Sem ponte com a marca: assunto livre e leve. NÃO cite livros, filmes, autores, estudos nem números."),
 }
 
 # ---------- Variedade de conteúdo (o código sorteia; o Gemini só executa) ----------
@@ -180,6 +209,23 @@ FORMATS = {
                             plano="cover com 'Imagine...'; 3 slides 'content' contando um caso FICTÍCIO (deixe claro que é um exemplo); 1 slide 'quote' com a lição; cta"),
     "oferta": dict(funnels=["fundo"], pillars=["linkedin", "transicao"], nome="Apresentação da oferta",
                    plano="cover; 1 slide 'content' sobre para quem é; 1 slide 'list' com o que a pessoa recebe; 1 slide 'content' de como funciona; cta com link na bio"),
+    # ---- modo leve (fim de semana) ----
+    "time_quiz": dict(funnels=["leve"], nome="Você é do time...? (quiz de personalidade profissional)",
+                      plano="cover em forma de pergunta 'Você é do time...?'; 3 a 4 slides 'content' (um 'time' por slide, com título engraçado e 1 a 2 frases descrevendo a mania); cta pedindo para comentar qual time a pessoa é"),
+    "mitos_trabalho": dict(funnels=["leve"], nome="Mitos engraçados do mundo do trabalho",
+                           plano="cover; 3 slides 'versus' (left = o mito, right = a realidade, com humor suave; left_label 'O MITO' e right_label 'A REALIDADE'); 1 slide 'quote' com uma conclusão leve; cta"),
+    "primeira_semana": dict(funnels=["leve"], nome="Coisas que ninguém avisa na primeira semana de um trabalho novo",
+                            plano="cover; 4 slides 'content' curtos (uma situação por slide, com humor acolhedor); cta convidando a contar a sua"),
+    "domingo_segunda": dict(funnels=["leve"], nome="Domingo à noite vs. segunda cedo",
+                            plano="cover; 3 slides 'versus' (left_label 'DOMINGO À NOITE', right_label 'SEGUNDA CEDO'); 1 slide 'content' com um respiro gentil; cta"),
+    "descanso": dict(funnels=["leve"], nome="Dica de descanso e recarga",
+                     plano="cover; 1 slide 'list' com 3 a 4 hábitos pequenos de recarga; 2 slides 'content' explicando os melhores; cta"),
+    "recomendacao": dict(funnels=["leve"], nome="Hábito ou ideia para a semana",
+                         plano="cover; 3 slides 'content' (um hábito simples ou reflexão por slide; NÃO cite livros, autores, estudos nem números); 1 slide 'quote'; cta"),
+    "tradutor_corporativo": dict(funnels=["leve"], nome="Tradutor de corporativês",
+                                 plano="cover; 3 slides 'versus' (left = frase corporativa comum, right = o que costuma significar, com humor suave e sem apontar pessoas ou empresas; left_label 'ELE DISSE', right_label 'SIGNIFICA'); cta"),
+    "pergunta_leve": dict(funnels=["leve"], nome="Pergunta divertida de fim de semana",
+                          plano="cover em forma de pergunta divertida; 3 slides 'content' com opções ou respostas de brincadeira; cta convidando a responder"),
 }
 
 HOOKS = [
@@ -210,7 +256,28 @@ CTAS = {
         "convidar a comentar {kw} para receber o diagnóstico",
         "convidar a mandar DM com a palavra {kw}",
     ],
+    "leve": [
+        "pedir para comentar qual opção ou time a pessoa é",
+        "convidar a marcar ou mandar para um colega que se identifica",
+        "perguntar o que a pessoa vai fazer no fim de semana",
+        "convidar a salvar para ler na segunda-feira",
+        "pedir uma palavra que resuma a semana da pessoa",
+        "convidar a contar nos comentários a situação mais engraçada que já viveu no trabalho (sem citar empresas ou pessoas)",
+    ],
 }
+# ---------- Modo leve (fim de semana) ----------
+LEVE_THEMES = ["claro", "azul"]  # visual mais claro e leve (alternam)
+LEVE_HOOKS = [
+    "pergunta bem-humorada que gera identificação",
+    "observação engraçada do dia a dia no trabalho",
+    "exagero de brincadeira (deixe claro que é brincadeira)",
+    "comparação inesperada entre duas situações",
+    "confissão leve ('ninguém fala, mas...')",
+    "convite para escolher um lado ('time X ou time Y?')",
+]
+# Palavras que não podem aparecer em conteúdo leve (nada de venda nem de LinkedIn).
+LEVE_BANNED = ["diagnóstico", "link na bio", "consultoria", "agende", "contrate", "linkedin"]
+
 KEYWORDS = ["QUERO", "PERFIL", "TITULO", "CHECK", "AJUDA"]
 
 # Fórmulas que ficaram repetitivas: o Gemini é instruído a não usá-las.
