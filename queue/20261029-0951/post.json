@@ -1,6 +1,6 @@
 {
   "id": "20261029-0951",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "azul",
   "variant": 1,
@@ -10,5 +10,6 @@
   "stories": 1,
   "story_format": "riscar",
   "story_mode": "paralela",
-  "pillar": "leve_carreira"
+  "pillar": "leve_carreira",
+  "media_id": "18095251265182443"
 }
