@@ -1,19 +1,22 @@
 """Gera o conteúdo (carrossel + stories + legenda) com a API gratuita do Gemini."""
 import json
 import os
+import random
 import time
 
 import requests
 
 from .config import (BANNED_PHRASES, BRAND_NAME, CTAS, FORMATS, FUNNEL, GEMINI_MODELS, HISTORY_FILE, HOOKS,
                      KEYWORDS, MAX_HASHTAGS, MAX_SLIDES, MIN_SLIDES, MISSIONS, OFFER, STORY_FORMATS, STORY_MODES,
-                     STORY_MODE_TEXT, THEMES)
+                     STORY_MODE_TEXT, THEMES, PILLARS)
 
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 SYSTEM = f"""Você é o estrategista de conteúdo de Instagram da marca "{BRAND_NAME}", consultoria de posicionamento
 profissional no LinkedIn para pessoas em transição/recolocação. Escreva em português do Brasil, tom humano,
 direto e acolhedor, sem jargão e sem promessas de resultado garantido. NÃO use markdown (nada de ** ou #) nos textos dos slides.
+Parte dos posts trata de temas profissionais em geral (currículo, entrevista, rotina, comunicação, negociação, aprendizado),
+sempre com o olhar de quem ajuda pessoas a se posicionarem melhor no mercado. O PILAR do dia vem na mensagem do usuário: SIGA-O.
 
 REGRAS DE CONTEÚDO
 - Nunca invente estatísticas, depoimentos, nomes ou resultados. Use só generalizações seguras.
@@ -40,7 +43,7 @@ tom de amigo que entende do assunto, frases curtas, sem tom de anúncio e sem li
 cada campo vêm na receita do dia: SIGA-OS. Conversas e exemplos são FICTÍCIOS e nunca prometem resultado.
 
 LEGENDA: 1ª linha é um gancho forte e diferente das anteriores; corpo curto; termine com a chamada do CTA da receita (não repita o mesmo pedido todo dia); até 1500 caracteres.
-HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português e relevantes ao LinkedIn/carreira.
+HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português, relevantes ao tema do dia e à carreira (#LinkedIn só se o tema ou o post citar a plataforma).
 """
 
 SCHEMA = {
@@ -103,10 +106,23 @@ def pick_variant():
     return _lru([0, 1, 2], "variant")
 
 
-def pick_recipe(funnel):
+def pick_pillar(funnel, hist=None, rng=random):
+    """Sorteia o pilar do post por peso, respeitando as etapas do funil.
+    Não repete pilares dos 2 últimos posts (o LinkedIn só fica de fora se saiu nos 2 últimos)."""
+    hist = load_history() if hist is None else hist
+    cands = {k: v for k, v in PILLARS.items() if funnel in v["funnels"]}
+    recent = [h.get("pillar") for h in hist[-2:] if h.get("pillar")]
+    pool = {k: v for k, v in cands.items() if k not in recent or (k == "linkedin" and recent.count("linkedin") < 2)}
+    pool = pool or cands
+    keys = list(pool)
+    return rng.choices(keys, weights=[pool[k]["weight"] for k in keys])[0]
+
+
+def pick_recipe(funnel, pillar="linkedin", hist=None):
     """Sorteia a 'receita' do post: formato, gancho, estilo de CTA e palavra-chave."""
-    hist = load_history()
-    fmt = _lru([k for k, v in FORMATS.items() if funnel in v["funnels"]], "format", hist)
+    hist = load_history() if hist is None else hist
+    fmts = [k for k, v in FORMATS.items() if funnel in v["funnels"] and (not v.get("pillars") or pillar in v["pillars"])]
+    fmt = _lru(fmts, "format", hist)
     hook = _lru(HOOKS, "hook", hist)
     cta_opts = CTAS[funnel]
     cta = _lru(cta_opts, "cta", hist)
@@ -189,7 +205,7 @@ def fallback_story(post):
     return {"kind": "teaser", "title": post["slides"][0]["title"][:80], "body": "Veja o novo post no feed agora."}
 
 
-def validate(post, strict=True, story_kind=None):
+def validate(post, strict=True, story_kind=None, pillar=None):
     s = post["slides"]
     assert MIN_SLIDES <= len(s) <= MAX_SLIDES, f"{len(s)} slides"
     assert s[0]["kind"] == "cover" and s[-1]["kind"] == "cta", "primeiro deve ser cover e último cta"
@@ -213,6 +229,8 @@ def validate(post, strict=True, story_kind=None):
         story = fallback_story(post)  # última tentativa: não fica sem story
     post["stories"] = [story]
     if strict:
+        if pillar and PILLARS[pillar]["capa_sem_linkedin"]:
+            assert "linkedin" not in s[0]["title"].lower(), "a capa de um tema fora do LinkedIn não deve citar o LinkedIn"
         sblob = " ".join(str(v) for v in story.values() if isinstance(v, (str, list)))
         blob = " ".join([post["caption"], sblob] + [x["title"] + " " + x.get("body", "") + " " + x.get("highlight", "") for x in s]).lower()
         hit = [p for p in BANNED_PHRASES if p in blob]
@@ -226,15 +244,25 @@ def generate_post(funnel, extra_instruction=""):
     recent_hooks = [h.get("cover") for h in hist[-14:] if h.get("cover")]
     recent_openers = [h.get("opener") for h in hist[-14:] if h.get("opener")]
     recent_stories = [h.get("story_title") for h in hist[-14:] if h.get("story_title")]
-    recipe = pick_recipe(funnel)
+    pillar = pick_pillar(funnel, hist)
+    pl = PILLARS[pillar]
+    recipe = pick_recipe(funnel, pillar, hist)
     story_rc = pick_story_recipe(funnel, recipe["format"], hist)
     sf = STORY_FORMATS[story_rc["format"]]
     fmt = FORMATS[recipe["format"]]
     cta = recipe["cta"].replace("{kw}", f"“{recipe['keyword']}”")
+    pillar_rule = "" if pillar == "linkedin" else (
+        "- Este pilar NÃO é sobre LinkedIn: o post fala do tema profissional em geral. Cite o LinkedIn só na ponte, "
+        "de forma natural e curta (no máximo em um slide) ou não cite. A missão do funil vale, aplicada a este tema.\n"
+        + ("- NÃO use a palavra LinkedIn na capa.\n" if pl["capa_sem_linkedin"] else ""))
     prompt = (
         f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
         f"Missão do post: {MISSIONS[funnel]}\nOferta (só use em post de FUNDO): {OFFER}\n\n"
-        f"RECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
+        f"PILAR DO DIA: {pl['nome']}. {pl['descricao']}\n"
+        f"- Ângulos possíveis (escolha UM que ainda não foi usado): {'; '.join(pl['angulos'])}\n"
+        f"- Ponte com a marca: {pl['ponte']}\n"
+        f"{pillar_rule}"
+        f"\nRECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
         f"- Estilo do gancho da capa: {recipe['hook']}\n- CTA do último slide: {cta}\n\n"
         f"RECEITA DO STORY (exatamente 1 story de 8 segundos):\n"
         f"- Tipo: {sf['nome']} (kind \"{story_rc['format']}\"). {sf['instrucao']}\n"
@@ -250,11 +278,12 @@ def generate_post(funnel, extra_instruction=""):
     for attempt in range(3):  # se a validação falhar, pede de novo
         post = call_gemini(prompt)
         try:
-            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"])  # na última tentativa aceita, para não ficar sem post
+            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=pillar)  # na última tentativa aceita, para não ficar sem post
             post["funnel"] = funnel
             last = post["slides"][-1]
             last["show_link"] = funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower()
             post["recipe"] = recipe
+            post["pillar"] = pillar
             post["story_recipe"] = {**story_rc, "format": post["stories"][0]["kind"]}  # reflete o fallback, se houve
             post["cover"] = post["slides"][0]["title"]
             post["opener"] = post["caption"].strip().split("\n")[0][:120]
