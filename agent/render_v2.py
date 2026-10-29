@@ -135,6 +135,7 @@ h1{{font-weight:700;letter-spacing:-1.5px;line-height:1.08}}
 .vs h1{{font-size:72px}}
 .vcard{{position:absolute;left:96px;right:96px;height:330px;border-radius:36px;background:var(--card);padding:36px 44px 36px 160px}}
 .vc1{{top:520px;border:3px solid rgba(127,147,184,.45)}} .vc2{{top:890px;border:4px solid var(--accent)}}
+.vcard.ni{{padding-left:52px}}
 .vlab{{font-size:26px;font-weight:700;letter-spacing:2px;color:var(--muted)}} .vc2 .vlab{{color:var(--hl)}}
 .vt{{font-size:42px;line-height:1.3;margin-top:10px;font-weight:500}}
 .vi{{position:absolute;left:50px;top:50px;width:78px;height:78px}}
@@ -195,9 +196,9 @@ def trail():
             f"<path d='M270 40 L236 58 M270 40 L274 78' stroke='{AMBER}' stroke-width='6' stroke-linecap='round'/></svg>")
 
 
-def feed_page(s, i, n, theme, variant=0):
+def feed_page(s, i, n, theme, variant=0, brand_logo=True):
     t = THEMES[theme]
-    logo = f"<img class='logo' src='file://{ASSETS}/{t['logo']}'>"
+    logo = f"<img class='logo' src='file://{ASSETS}/{t['logo']}'>" if brand_logo else ""
     if variant == 1:
         foot = f"<div class='foot'><span></span><span>{i}/{n}</span></div>"
     elif variant == 2:
@@ -222,9 +223,13 @@ def feed_page(s, i, n, theme, variant=0):
         return (f"{d}<div class='quote'><div class='mark'>“</div><div class='q'>{esc(s['title'])}</div>"
                 f"<div class='qsub'>{body_html(s)}</div>{foot}</div>")
     if k == "versus":
+        custom = bool(s.get("left_label") or s.get("right_label"))   # contraste que não é erro x acerto: sem ícones de certo/errado
+        l1 = esc((s.get("left_label") or "EM VEZ DE").upper())
+        l2 = esc((s.get("right_label") or "FAÇA ASSIM").upper())
+        i1, i2 = ("", "") if custom else (ICON_X, ICON_OK)
         return (f"{d}<div class='vs'><div class='bar'></div><h1>{esc(s['title'])}</h1><div class='sep'></div>"
-                f"<div class='vcard vc1'>{ICON_X}<div class='vlab'>EM VEZ DE</div><div class='vt v1'>{esc(s.get('left'))}</div></div>"
-                f"<div class='vcard vc2'>{ICON_OK}<div class='vlab'>FAÇA ASSIM</div><div class='vt v2'>{esc(s.get('right'))}</div></div>{foot}</div>")
+                f"<div class='vcard vc1{' ni' if custom else ''}'>{i1}<div class='vlab'>{l1}</div><div class='vt v1'>{esc(s.get('left'))}</div></div>"
+                f"<div class='vcard vc2{' ni' if custom else ''}'>{i2}<div class='vlab'>{l2}</div><div class='vt v2'>{esc(s.get('right'))}</div></div>{foot}</div>")
     if k == "list":
         items = "".join(f"<li><div class='n'>{j}</div><div class='lt'>{esc(x)}</div></li>"
                         for j, x in enumerate(s.get("items", [])[:5], 1))
@@ -323,7 +328,8 @@ def story_chat(s, T):
     rows, prev = [], None
     for m in msgs:
         me = m["quem"] == "voce"
-        who = "" if prev == m["quem"] else f"<div class='who'>{'Você' if me else 'Recrutador(a)'}</div>"
+        other = html.escape(clean(s.get("outro_label")) or "Recrutador(a)")
+        who = "" if prev == m["quem"] else f"<div class='who'>{'Você' if me else other}</div>"
         rows.append(f"<div class='row m h {'me' if me else 'ot'}'>{who}<div class='b' data-fit>{html.escape(clean(m['texto']))}</div></div>")
         prev = m["quem"]
     inner = (f"<div class='hdr' data-fit>{html.escape(clean(s['title']))}<small>conversa fictícia, só um exemplo</small></div>"
@@ -474,7 +480,7 @@ def _shoot(pg, items, outdir, prefix, build, fit, viewport, variant=0):
     return paths
 
 
-def render_all(slides, stories, outdir: Path, theme: str, variant: int = 0):
+def render_all(slides, stories, outdir: Path, theme: str, variant: int = 0, brand_logo: bool = True):
     """Retorna (caminhos dos slides, clipes dos stories). Cada clipe: {'png': ..., 'frames': [(arquivo, segundos)]}."""
     outdir.mkdir(parents=True, exist_ok=True)
     n = len(slides)
@@ -482,7 +488,7 @@ def render_all(slides, stories, outdir: Path, theme: str, variant: int = 0):
         browser = p.chromium.launch(args=["--allow-file-access-from-files"])
         pg = browser.new_page()
         feed = _shoot(pg, [(i, theme, s) for i, s in enumerate(slides, 1)], outdir, "slide",
-                      lambda s, i: feed_page(s, i, n, theme, variant), FEED_FIT, {"width": 1080, "height": 1350}, variant)
+                      lambda s, i: feed_page(s, i, n, theme, variant, brand_logo), FEED_FIT, {"width": 1080, "height": 1350}, variant)
         clips = [shoot_story(pg, s, theme, outdir, i) for i, s in enumerate(stories or [], 1)]
         browser.close()
     return feed, clips
