@@ -347,5 +347,21 @@
     "story_mode": "acompanha",
     "story_title": "Fechar todas as janelas do computador no fim da semana é puro alívio mental",
     "pillar": "leve_rotina"
+  },
+  {
+    "topic": "Mitos engraçados sobre ter a vida profissional sob controle",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 1,
+    "format": "mitos_trabalho",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "cta": "convidar a marcar ou mandar para um colega que se identifica",
+    "keyword": "PERFIL",
+    "cover": "A ilusão de que todo mundo adulto sabe o que está fazendo",
+    "opener": "Às vezes dá a impressão de que todo mundo ao redor recebeu um manual secreto da vida adulta e esqueceu de nos passar uma",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Pensamento para o fim de semana",
+    "pillar": "leve_carreira"
   }
 ]
