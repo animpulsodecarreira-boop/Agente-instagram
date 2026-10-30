@@ -9,6 +9,7 @@ import json
 import os
 import shutil
 import sys
+import time
 import traceback
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -20,6 +21,12 @@ from .render_v2 import render_all
 from .video import make_story_video
 
 TZ = ZoneInfo("America/Sao_Paulo")
+T0 = time.monotonic()
+
+
+def _log(msg):
+    """Marca a etapa com o tempo decorrido (flush: aparece no log do GitHub mesmo se o passo for derrubado)."""
+    print(f"[{time.monotonic() - T0:4.0f}s] {msg}", flush=True)
 
 MOCK = {
     "topic": "Teste de layout", "funnel": "topo",
@@ -96,12 +103,16 @@ def cmd_generate(args):
     post_id = now.strftime("%Y%m%d-%H%M")
     try:
         prune()
+        _log(f"gerando o texto com o Gemini (etapa {funnel})")
         post = generate_post(funnel)
+        _log("texto pronto; renderizando slides e stories")
         theme, variant = pick_theme(funnel), pick_variant(funnel)
         out = QUEUE / post_id
         # no modo leve a logo grande some do feed (a marca fica só no rodapé e no story)
         paths, clips = render_all(post["slides"], post["stories"], out, theme, variant, brand_logo=funnel != "leve")
+        _log("imagens prontas; montando os vídeos dos stories")
         videos = [make_story_video(c, out / f"story{i}.mp4", f"{post_id}-{i}") for i, c in enumerate(clips, 1)]
+        _log("vídeos prontos; enviando ao Telegram")
         shutil.rmtree(out / "_frames", ignore_errors=True)  # quadros intermediários não vão para o repositório
         cap = full_caption(post)
         src = post["story_recipe"]
@@ -117,6 +128,7 @@ def cmd_generate(args):
             "pillar": post["pillar"], "angle": post["angle"]})
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.send_for_approval(post_id, paths, cap, f"{funnel} · {PILLARS[post['pillar']]['nome']}", theme, videos)
+        _log("enviado ao Telegram")
         record_theme(post["pillar"], post["angle"], post["topic"])  # só conta depois que o post chegou ao Telegram
         print(f"Post {post_id} gerado ({funnel}, pilar {post['pillar']}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
               f"story {src['format']}/{src['mode']}): {post['topic']}")
