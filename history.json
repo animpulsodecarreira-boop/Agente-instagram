@@ -462,5 +462,22 @@
     "story_title": "Mudar de carreira é como desmontar uma casa antiga para construir outra no mesmo",
     "pillar": "transicao",
     "angle": "reposicionar a experiência anterior"
+  },
+  {
+    "topic": "Como as palavras-chave no LinkedIn ajudam recrutadores a encontrarem seu perfil e a importância do diagnóstico gratuito",
+    "funnel": "fundo",
+    "theme": "claro",
+    "variant": 0,
+    "format": "oferta",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "TITULO",
+    "cover": "Por que o seu perfil não aparece nas buscas de quem contrata?",
+    "opener": "Muitas pessoas capricham na trajetória, mas esquecem que as palavras certas são a ponte para serem encontradas no Linked",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "Dúvida no trabalho",
+    "pillar": "linkedin",
+    "angle": "palavras-chave"
   }
 ]
