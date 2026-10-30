@@ -411,5 +411,22 @@
     "story_mode": "paralela",
     "story_title": "Frase no e-mail de trabalho",
     "pillar": "entrevista"
+  },
+  {
+    "topic": "Como transformar a descrição de experiências no LinkedIn para gerar clareza e atrair oportunidades",
+    "funnel": "meio",
+    "theme": "azul",
+    "variant": 0,
+    "format": "antes_depois",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a comentar a dúvida para virar tema de um próximo post",
+    "keyword": "AJUDA",
+    "cover": "Antes de escrever outra linha sobre sua carreira",
+    "opener": "Traduzir anos de dedicação profissional em poucas linhas na internet costuma exigir mais esforço do que parece. No dia a",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Como contar sua experiência sem parecer genérico",
+    "pillar": "linkedin",
+    "angle": "experiências e conquistas"
   }
 ]
