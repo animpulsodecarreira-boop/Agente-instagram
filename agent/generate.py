@@ -3,6 +3,8 @@ import json
 import os
 import random
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -295,6 +297,60 @@ def validate(post, strict=True, story_kind=None, pillar=None, funnel=None):
     return post
 
 
+# ---------- Banco de temas: quantas vezes cada ângulo de cada pilar já saiu ----------
+THEMES_FILE = HISTORY_FILE.parent / "temas.json"   # dados (o robô lê e grava)
+THEMES_REPORT = HISTORY_FILE.parent / "temas.md"   # versão para você ler no GitHub
+_TZ = ZoneInfo("America/Sao_Paulo")
+
+
+def load_themes():
+    try:
+        if THEMES_FILE.exists():
+            return json.loads(THEMES_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"[temas] não consegui ler o temas.json: {e}")
+    return {}
+
+
+def pick_angle(pillar, rng=random):
+    """Escolhe o ângulo MENOS usado do pilar. Empate: o que ficou mais tempo sem sair (nunca usados vêm primeiro)."""
+    bank = load_themes().get(pillar, {})
+
+    def key(a):
+        e = bank.get(a, {})
+        return (e.get("vezes", 0), e.get("ultima", ""), rng.random())
+    angle = min(PILLARS[pillar]["angulos"], key=key)
+    e = bank.get(angle, {})
+    return {"angulo": angle, "vezes": e.get("vezes", 0), "topicos": e.get("topicos", [])[-6:]}
+
+
+def _write_theme_report(bank):
+    lines = ["# Banco de temas", "",
+             "Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o menos usado de cada pilar.", ""]
+    for pk, pl in PILLARS.items():
+        used = bank.get(pk, {})
+        lines += [f"## {pl['nome']}", "", "| Ângulo | Vezes | Última vez |", "|---|---|---|"]
+        for a in sorted(pl["angulos"], key=lambda a: (-used.get(a, {}).get("vezes", 0), a)):
+            e = used.get(a, {})
+            lines.append(f"| {a.replace('|', '/')} | {e.get('vezes', 0)} | {e.get('ultima') or '-'} |")
+        lines.append("")
+    THEMES_REPORT.write_text("\n".join(lines), encoding="utf-8")
+
+
+def record_theme(pillar, angle, topic):
+    """Soma 1 ao ângulo usado e guarda o tópico. Chamado depois que o post chegou ao Telegram."""
+    try:
+        bank = load_themes()
+        e = bank.setdefault(pillar, {}).setdefault(angle, {"vezes": 0, "ultima": "", "topicos": []})
+        e["vezes"] += 1
+        e["ultima"] = datetime.now(_TZ).strftime("%Y-%m-%d")
+        e["topicos"] = (e.get("topicos", []) + [topic])[-10:]
+        THEMES_FILE.write_text(json.dumps(bank, ensure_ascii=False, indent=2), encoding="utf-8")
+        _write_theme_report(bank)
+    except OSError as ex:
+        print(f"[temas] não consegui gravar o banco de temas: {ex}")
+
+
 def generate_post(funnel, extra_instruction=""):
     hist_all = load_history()
     used = [h["topic"] for h in hist_all[-40:]]
@@ -304,6 +360,7 @@ def generate_post(funnel, extra_instruction=""):
     recent_stories = [h.get("story_title") for h in hist[-14:] if h.get("story_title")]
     pillar = pick_pillar(funnel, hist)
     pl = PILLARS[pillar]
+    ang = pick_angle(pillar)
     recipe = pick_recipe(funnel, pillar, hist)
     story_rc = pick_story_recipe(funnel, recipe["format"], hist)
     sf = STORY_FORMATS[story_rc["format"]]
@@ -316,11 +373,14 @@ def generate_post(funnel, extra_instruction=""):
         "- Este pilar NÃO é sobre LinkedIn: o post fala do tema profissional em geral. Cite o LinkedIn só na ponte, "
         "de forma natural e curta (no máximo em um slide) ou não cite. A missão do funil vale, aplicada a este tema.\n"
         + ("- NÃO use a palavra LinkedIn na capa.\n" if pl["capa_sem_linkedin"] else ""))
+    angle_hist = (f"- Posts anteriores sobre este ângulo (faça um recorte DIFERENTE, sem repetir): "
+                  f"{json.dumps(ang['topicos'], ensure_ascii=False)}\n" if ang["topicos"] else "")
     prompt = (
         f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
         f"Missão do post: {MISSIONS[funnel]}\n{offer_line}"
         f"PILAR DO DIA: {pl['nome']}. {pl['descricao']}\n"
-        f"- Ângulos possíveis (escolha UM que ainda não foi usado): {'; '.join(pl['angulos'])}\n"
+        f"- ÂNGULO DO DIA (obrigatório; é o menos usado até agora, já saiu {ang['vezes']}x): {ang['angulo']}\n"
+        f"{angle_hist}"
         f"- Ponte com a marca: {pl['ponte']}\n"
         f"{pillar_rule}"
         f"\nRECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
@@ -345,6 +405,7 @@ def generate_post(funnel, extra_instruction=""):
             last["show_link"] = funnel != "leve" and (funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower())
             post["recipe"] = recipe
             post["pillar"] = pillar
+            post["angle"] = ang["angulo"]
             post["story_recipe"] = {**story_rc, "format": post["stories"][0]["kind"]}  # reflete o fallback, se houve
             post["cover"] = post["slides"][0]["title"]
             post["opener"] = post["caption"].strip().split("\n")[0][:120]
