@@ -39,12 +39,12 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| reposicionar a experiência anterior | 1 | 2026-10-30 |
 | como contar a história da transição | 0 | - |
 | habilidades transferíveis | 0 | - |
 | lidar com a ansiedade da busca | 0 | - |
 | o que fazer nas primeiras semanas | 0 | - |
 | reorganizar a rotina de busca | 0 | - |
-| reposicionar a experiência anterior | 0 | - |
 
 ## Rotina, produtividade e foco
 

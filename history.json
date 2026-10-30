@@ -445,5 +445,22 @@
     "story_title": "A única pessoa que não consegue ler suas próprias entrelinhas é você mesmo",
     "pillar": "linkedin",
     "angle": null
+  },
+  {
+    "topic": "Transição e recolocação de carreira com reposicionamento da experiência anterior",
+    "funnel": "fundo",
+    "theme": "escuro",
+    "variant": 2,
+    "format": "caso_hipotetico",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "PERFIL",
+    "cover": "Mudar de carreira é como desmontar uma casa antiga para construir outra no mesmo terreno",
+    "opener": "Mudar de rumo profissional costuma trazer aquela sensação incômoda de estar começando do zero, como se todo o tempo inve",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Mudar de carreira é como desmontar uma casa antiga para construir outra no mesmo",
+    "pillar": "transicao",
+    "angle": "reposicionar a experiência anterior"
   }
 ]
