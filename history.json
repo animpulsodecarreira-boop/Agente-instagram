@@ -395,5 +395,21 @@
     "story_mode": "acompanha",
     "story_title": "Se você pudesse destravar apenas uma parte do seu perfil agora, qual seria?",
     "pillar": "linkedin"
+  },
+  {
+    "topic": "3 respostas que travam sua entrevista e como destravar",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 2,
+    "format": "erro_correcao",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a salvar para consultar na hora de aplicar a dica",
+    "keyword": "CHECK",
+    "cover": "3 respostas na entrevista que você pode ajustar hoje",
+    "opener": "A sensação de sair de uma entrevista pensando que poderia ter explicado melhor a própria trajetória acontece com frequên",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Frase no e-mail de trabalho",
+    "pillar": "entrevista"
   }
 ]
