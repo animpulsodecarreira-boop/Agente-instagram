@@ -408,6 +408,8 @@ def generate_post(funnel, extra_instruction="", tema=None):
         angle_block = (
             f"- TEMA SUGERIDO PELA DONA DA MARCA (obrigatório): “{tema}”\n"
             "- O assunto do post é este tema. Use o pilar só como moldura e para a ponte com a marca; ignore os ângulos do pilar.\n"
+            f"- Mesmo com tema sugerido, entregue o carrossel COMPLETO: de {MIN_SLIDES} a {MAX_SLIDES} slides (cover primeiro, cta por último), "
+            "seguindo o plano de slides do formato do dia. Conecte o tema à missão do funil de hoje de forma natural, sem forçar.\n"
             "- Se o tema envolver leis, direitos, prazos, valores, saúde ou dinheiro: use só afirmações gerais e seguras, SEM números, "
             "prazos, valores nem citação de artigos ou leis; convide a pessoa a confirmar em fonte oficial e nunca dê aconselhamento jurídico.\n")
     else:
@@ -454,5 +456,10 @@ def generate_post(funnel, extra_instruction="", tema=None):
         except (AssertionError, KeyError) as e:
             last_err = e
             print(f"[validação] tentativa {attempt + 1}/3 reprovada: {e}", flush=True)
-            prompt += f"\nA tentativa anterior falhou na validação ({e}). Corrija."
+            try:
+                print(f"[validação] slides recebidos: {[x.get('kind') for x in post.get('slides', [])]}", flush=True)
+            except Exception:
+                pass
+            prompt += (f"\nA tentativa anterior falhou na validação ({e}). Corrija: entregue de {MIN_SLIDES} a {MAX_SLIDES} slides, "
+                       "com o cover primeiro e o cta por último, e preencha todos os campos de cada tipo de slide.")
     raise RuntimeError(f"Conteúdo inválido após 3 tentativas: {last_err}")
