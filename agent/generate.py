@@ -258,6 +258,36 @@ def fallback_story(post):
     return {"kind": "teaser", "title": post["slides"][0]["title"][:80], "body": "Veja o novo post no feed agora."}
 
 
+def _fix_versus(x):
+    """Aproveita um slide 'versus' em que o Gemini deixou left/right vazios (usando items, body ou highlight).
+    Se não houver como montar o contraste, o slide vira um slide de conteúdo. Só devolve False se não veio texto nenhum."""
+    left, right = (x.get("left") or "").strip(), (x.get("right") or "").strip()
+    if left and right:
+        return True
+    body, hl, note = (x.get("body") or "").strip(), (x.get("highlight") or "").strip(), (x.get("note") or "").strip()
+    other = body or hl or note
+    if left and other:
+        x["right"] = other
+        return True
+    if right and other:
+        x["left"] = other
+        return True
+    items = [str(i).strip() for i in (x.get("items") or []) if str(i).strip()]
+    if len(items) >= 2:
+        x["left"], x["right"] = items[0], items[1]
+        return True
+    for sep in ("\n", " → ", " -> ", " ➜ ", " | ", " vs ", " x "):
+        parts = [p.strip(" -•\t") for p in body.split(sep) if p.strip(" -•\t")]
+        if len(parts) == 2:
+            x["left"], x["right"] = parts
+            return True
+    text = " ".join(t for t in (left, right, body, *items, hl, note) if t)
+    if text:
+        x["kind"], x["body"] = "content", text[:230]
+        return True
+    return False
+
+
 def validate(post, strict=True, story_kind=None, pillar=None, funnel=None):
     s = post["slides"]
     assert MIN_SLIDES <= len(s) <= MAX_SLIDES, f"{len(s)} slides"
@@ -266,7 +296,7 @@ def validate(post, strict=True, story_kind=None, pillar=None, funnel=None):
         assert len(x["title"]) <= 110, "título longo demais"
         assert len(x.get("body", "")) <= 400, "corpo longo demais"
         if x["kind"] == "versus":
-            assert x.get("left") and x.get("right"), "versus precisa de left e right"
+            assert _fix_versus(x), "versus precisa dos campos left e right preenchidos (não use body nem items para o contraste)"
             for lab in ("left_label", "right_label"):
                 if len(x.get(lab, "")) > 20:
                     x[lab] = ""  # rótulo longo demais: volta ao padrão
@@ -351,7 +381,8 @@ def record_theme(pillar, angle, topic):
         print(f"[temas] não consegui gravar o banco de temas: {ex}")
 
 
-def generate_post(funnel, extra_instruction=""):
+def generate_post(funnel, extra_instruction="", tema=None):
+    tema = " ".join(str(tema).split())[:200] if tema else None  # tema sugerido pela dona da marca (opcional)
     hist_all = load_history()
     used = [h["topic"] for h in hist_all[-40:]]
     hist = hist_for(funnel, hist_all)  # semana e fim de semana giram separados
@@ -360,7 +391,7 @@ def generate_post(funnel, extra_instruction=""):
     recent_stories = [h.get("story_title") for h in hist[-14:] if h.get("story_title")]
     pillar = pick_pillar(funnel, hist)
     pl = PILLARS[pillar]
-    ang = pick_angle(pillar)
+    ang = None if tema else pick_angle(pillar)  # com tema sugerido, não mexe na contagem de ângulos
     recipe = pick_recipe(funnel, pillar, hist)
     story_rc = pick_story_recipe(funnel, recipe["format"], hist)
     sf = STORY_FORMATS[story_rc["format"]]
@@ -373,14 +404,22 @@ def generate_post(funnel, extra_instruction=""):
         "- Este pilar NÃO é sobre LinkedIn: o post fala do tema profissional em geral. Cite o LinkedIn só na ponte, "
         "de forma natural e curta (no máximo em um slide) ou não cite. A missão do funil vale, aplicada a este tema.\n"
         + ("- NÃO use a palavra LinkedIn na capa.\n" if pl["capa_sem_linkedin"] else ""))
-    angle_hist = (f"- Posts anteriores sobre este ângulo (faça um recorte DIFERENTE, sem repetir): "
-                  f"{json.dumps(ang['topicos'], ensure_ascii=False)}\n" if ang["topicos"] else "")
+    if tema:
+        angle_block = (
+            f"- TEMA SUGERIDO PELA DONA DA MARCA (obrigatório): “{tema}”\n"
+            "- O assunto do post é este tema. Use o pilar só como moldura e para a ponte com a marca; ignore os ângulos do pilar.\n"
+            "- Se o tema envolver leis, direitos, prazos, valores, saúde ou dinheiro: use só afirmações gerais e seguras, SEM números, "
+            "prazos, valores nem citação de artigos ou leis; convide a pessoa a confirmar em fonte oficial e nunca dê aconselhamento jurídico.\n")
+    else:
+        angle_block = f"- ÂNGULO DO DIA (obrigatório; é o menos usado até agora, já saiu {ang['vezes']}x): {ang['angulo']}\n"
+        if ang["topicos"]:
+            angle_block += (f"- Posts anteriores sobre este ângulo (faça um recorte DIFERENTE, sem repetir): "
+                            f"{json.dumps(ang['topicos'], ensure_ascii=False)}\n")
     prompt = (
         f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
         f"Missão do post: {MISSIONS[funnel]}\n{offer_line}"
         f"PILAR DO DIA: {pl['nome']}. {pl['descricao']}\n"
-        f"- ÂNGULO DO DIA (obrigatório; é o menos usado até agora, já saiu {ang['vezes']}x): {ang['angulo']}\n"
-        f"{angle_hist}"
+        f"{angle_block}"
         f"- Ponte com a marca: {pl['ponte']}\n"
         f"{pillar_rule}"
         f"\nRECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
@@ -397,20 +436,23 @@ def generate_post(funnel, extra_instruction=""):
     )
     last_err = None
     for attempt in range(3):  # se a validação falhar, pede de novo
+        t_call = time.time()
         post = call_gemini(prompt)
+        print(f"[gemini] resposta recebida em {time.time() - t_call:.0f}s (tentativa {attempt + 1}/3)", flush=True)
         try:
-            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=pillar, funnel=funnel)  # na última tentativa aceita, para não ficar sem post
+            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=None if tema else pillar, funnel=funnel)  # na última tentativa aceita, para não ficar sem post
             post["funnel"] = funnel
             last = post["slides"][-1]
             last["show_link"] = funnel != "leve" and (funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower())
             post["recipe"] = recipe
             post["pillar"] = pillar
-            post["angle"] = ang["angulo"]
+            post["angle"] = ang["angulo"] if ang else None
             post["story_recipe"] = {**story_rc, "format": post["stories"][0]["kind"]}  # reflete o fallback, se houve
             post["cover"] = post["slides"][0]["title"]
             post["opener"] = post["caption"].strip().split("\n")[0][:120]
             return post
         except (AssertionError, KeyError) as e:
             last_err = e
+            print(f"[validação] tentativa {attempt + 1}/3 reprovada: {e}", flush=True)
             prompt += f"\nA tentativa anterior falhou na validação ({e}). Corrija."
     raise RuntimeError(f"Conteúdo inválido após 3 tentativas: {last_err}")
