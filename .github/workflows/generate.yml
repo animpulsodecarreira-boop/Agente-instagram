@@ -13,6 +13,14 @@ on:
         required: false
         type: choice
         options: ["", "topo", "meio", "fundo", "leve"]
+      tema:
+        description: "Assunto sugerido (opcional), ex.: Direitos de estágio"
+        required: false
+        type: string
+      outro:
+        description: "Uso do botão Gerar outro: número do post a substituir (deixe vazio)"
+        required: false
+        type: string
 permissions:
   contents: write
 concurrency:
@@ -51,12 +59,15 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FUNNEL: ${{ steps.f.outputs.funnel }}
+          TEMA: ${{ inputs.tema }}
+          OUTRO: ${{ inputs.outro }}
         run: |
-          if [ -n "${{ steps.f.outputs.funnel }}" ]; then
-            python -m agent.main generate --funnel "${{ steps.f.outputs.funnel }}"
-          else
-            python -m agent.main generate
-          fi
+          args=()
+          if [ -n "$FUNNEL" ]; then args+=(--funnel "$FUNNEL"); fi
+          if [ -n "$TEMA" ]; then args+=(--tema "$TEMA"); fi
+          if [ -n "$OUTRO" ]; then args+=(--outro "$OUTRO"); fi
+          python -m agent.main generate "${args[@]}"
       - name: Salvar imagens e vídeos no repositório (o Instagram busca pelas URLs)
         if: always()
         run: |
