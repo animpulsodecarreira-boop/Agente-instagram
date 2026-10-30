@@ -1,4 +1,4 @@
-"""Aprovação via Telegram (grátis): o bot envia as imagens + legenda com botões Aprovar/Rejeitar."""
+"""Aprovação via Telegram (grátis): o bot envia as imagens + legenda com botões Aprovar/Rejeitar/Gerar outro."""
 import json
 import os
 import re
@@ -88,6 +88,7 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
         [{"text": "✅ Aprovar post + story", "callback_data": f"ap:{post_id}"}],
         [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
          {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"}],
+        [{"text": "🔄 Gerar outro", "callback_data": f"gn:{post_id}"}],
     ]}
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
     if repo:  # plano B que não depende do Telegram: abre o fluxo "Aprovar post" no GitHub
