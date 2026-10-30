@@ -1,6 +1,6 @@
 {
   "id": "20261030-0832",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "claro",
   "variant": 2,
@@ -10,5 +10,7 @@
   "stories": 1,
   "story_format": "riscar",
   "story_mode": "paralela",
-  "pillar": "entrevista"
+  "pillar": "entrevista",
+  "media_id": "18062901017796642",
+  "stories_published": 1
 }
