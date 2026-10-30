@@ -1,6 +1,6 @@
 {
   "id": "20261030-1638",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "azul",
   "variant": 0,
@@ -11,5 +11,7 @@
   "story_format": "teaser",
   "story_mode": "acompanha",
   "pillar": "linkedin",
-  "angle": "experiências e conquistas"
+  "angle": "experiências e conquistas",
+  "media_id": "17980452090136654",
+  "stories_published": 1
 }
