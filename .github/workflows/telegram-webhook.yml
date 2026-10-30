@@ -35,7 +35,7 @@ jobs:
               curl -s --max-time 20 "$API/setWebhook" \
                 --data-urlencode "url=${URL}" \
                 --data-urlencode "secret_token=${S}" \
-                --data-urlencode 'allowed_updates=["callback_query"]'
+                --data-urlencode 'allowed_updates=["callback_query","message"]'
               echo ;;
             desativar)
               curl -s --max-time 20 "$API/deleteWebhook"
