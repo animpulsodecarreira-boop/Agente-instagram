@@ -1,6 +1,6 @@
 {
   "id": "20261030-1705",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "geometrico",
   "variant": 1,
@@ -11,5 +11,7 @@
   "story_format": "digitar",
   "story_mode": "paralela",
   "pillar": "linkedin",
-  "angle": null
+  "angle": null,
+  "media_id": "17952300204055343",
+  "stories_published": 1
 }
