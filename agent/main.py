@@ -1,5 +1,5 @@
 """Uso:
-  python -m agent.main generate [--funnel topo|meio|fundo|leve]   # gera post + story, renderiza e manda pro Telegram
+  python -m agent.main generate [--funnel topo|meio|fundo|leve] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj]   # aprova/reprocessa um post pelo GitHub
   python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
@@ -7,6 +7,7 @@
 import argparse
 import json
 import os
+import re
 import shutil
 import sys
 import time
@@ -99,12 +100,20 @@ def prune(days=10):
 
 def cmd_generate(args):
     now = datetime.now(TZ)
-    funnel = args.funnel or funnel_by_hour(now.hour, now.weekday())
+    # "Gerar outro": --outro traz o número do post a substituir. A etapa vem dele, e ele só é rejeitado depois que o novo chega.
+    outro = (args.outro or "").strip()
+    prev_file, prev = None, None
+    if re.fullmatch(r"\d{8}-\d{4}", outro):
+        prev_file = QUEUE / outro / "post.json"
+        if prev_file.exists():
+            prev = json.loads(prev_file.read_text(encoding="utf-8"))
+    funnel = args.funnel or (prev or {}).get("funnel") or funnel_by_hour(now.hour, now.weekday())
+    tema = " ".join((args.tema or "").split())[:200] or None  # assunto sugerido pela dona da marca
     post_id = now.strftime("%Y%m%d-%H%M")
     try:
         prune()
-        _log(f"gerando o texto com o Gemini (etapa {funnel})")
-        post = generate_post(funnel)
+        _log(f"gerando o texto com o Gemini (etapa {funnel}" + (f", tema sugerido: {tema}" if tema else "") + ")")
+        post = generate_post(funnel, tema=tema)
         _log("texto pronto; renderizando slides e stories")
         theme, variant = pick_theme(funnel), pick_variant(funnel)
         out = QUEUE / post_id
@@ -118,18 +127,24 @@ def cmd_generate(args):
         src = post["story_recipe"]
         meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "variant": variant, "topic": post["topic"],
                 "caption": cap, "slides": len(paths), "stories": len(videos),
-                "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"], "angle": post["angle"]}
+                "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"], "angle": post.get("angle")}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         rc = post["recipe"]
         save_history(post["topic"], funnel, theme, {
             "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
             "cover": post["cover"], "opener": post["opener"],
             "story_format": src["format"], "story_mode": src["mode"], "story_title": post["stories"][0]["title"][:90],
-            "pillar": post["pillar"], "angle": post["angle"]})
+            "pillar": post["pillar"], "angle": post.get("angle")})
+        label = f"{funnel} · {PILLARS[post['pillar']]['nome']}" + (" · 💡 tema sugerido" if tema else "")
         if os.getenv("SKIP_TELEGRAM") != "1":
-            tg.send_for_approval(post_id, paths, cap, f"{funnel} · {PILLARS[post['pillar']]['nome']}", theme, videos)
+            tg.send_for_approval(post_id, paths, cap, label, theme, videos)
         _log("enviado ao Telegram")
-        record_theme(post["pillar"], post["angle"], post["topic"])  # só conta depois que o post chegou ao Telegram
+        if post.get("angle"):  # tema sugerido não entra na contagem de ângulos
+            record_theme(post["pillar"], post["angle"], post["topic"])  # só conta depois que o post chegou ao Telegram
+        if prev is not None and prev.get("status") == "pending":  # "Gerar outro": o post anterior sai da fila
+            prev["status"] = "rejected"
+            prev_file.write_text(json.dumps(prev, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(f"[outro] post {outro} marcado como rejeitado (substituído por {post_id})", flush=True)
         print(f"Post {post_id} gerado ({funnel}, pilar {post['pillar']}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
               f"story {src['format']}/{src['mode']}): {post['topic']}")
     except Exception:
@@ -273,7 +288,7 @@ def cmd_preview(args):
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
-    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"])
+    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--tema"); g.add_argument("--outro")
     sub.add_parser("poll")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj"], default="ap")
     p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
