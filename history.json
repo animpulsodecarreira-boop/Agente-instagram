@@ -530,5 +530,22 @@
     "story_title": "Nota mental de folga prolongada",
     "pillar": "leve_rotina",
     "angle": null
+  },
+  {
+    "topic": "Sábado de tarde e a arte de descansar sem pressa",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 2,
+    "format": "recomendacao",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "cta": "convidar a contar nos comentários a situação mais engraçada que já viveu no trabalho (sem citar empresas ou pessoas)",
+    "keyword": "QUERO",
+    "cover": "Time soneca no sofá ou time passeio na rua?",
+    "opener": "Chega essa hora do sábado e parece que o tempo finalmente resolve andar no ritmo certo.",
+    "story_format": "pergunta",
+    "story_mode": "paralela",
+    "story_title": "Qual café ou lanche salva o seu humor numa tarde qualquer?",
+    "pillar": "leve_fora",
+    "angle": null
   }
 ]
