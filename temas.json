@@ -41,5 +41,14 @@
         "Domingo à noite vs. segunda cedo"
       ]
     }
+  },
+  "leve_mundo": {
+    "o grupo do trabalho": {
+      "vezes": 1,
+      "ultima": "2026-10-31",
+      "topicos": [
+        "Tradutor sincero das mensagens no grupo do trabalho"
+      ]
+    }
   }
 }

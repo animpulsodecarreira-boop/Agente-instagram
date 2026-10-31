@@ -116,9 +116,9 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| o grupo do trabalho | 1 | 2026-10-31 |
 | a primeira semana em um trabalho novo | 0 | - |
 | frases de corporativês | 0 | - |
-| o grupo do trabalho | 0 | - |
 | o silêncio na chamada de vídeo | 0 | - |
 | reunião que podia ser mensagem | 0 | - |
 | segunda-feira | 0 | - |

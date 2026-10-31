@@ -547,5 +547,22 @@
     "story_title": "Qual café ou lanche salva o seu humor numa tarde qualquer?",
     "pillar": "leve_fora",
     "angle": null
+  },
+  {
+    "topic": "Tradutor sincero das mensagens no grupo do trabalho",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 0,
+    "format": "tradutor_corporativo",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "cta": "pedir para comentar qual opção ou time a pessoa é",
+    "keyword": "PERFIL",
+    "cover": "Você também precisa de um tradutor para o grupo da firma?",
+    "opener": "Quem nunca parou olhando para uma notificação no chat da equipe tentando decifrar o subtexto por trás de um simples ok?",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Existe um dicionário não oficial para as mensagens da firma",
+    "pillar": "leve_mundo",
+    "angle": "o grupo do trabalho"
   }
 ]
