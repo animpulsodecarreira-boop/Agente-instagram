@@ -513,5 +513,22 @@
     "story_title": "Pequenas vitórias do fim de expediente",
     "pillar": "leve_descanso",
     "angle": "domingo sem a ansiedade de segunda"
+  },
+  {
+    "topic": "Feriado com fim de semana e a arte de desligar de verdade",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 1,
+    "format": "descanso",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "cta": "pedir uma palavra que resuma a semana da pessoa",
+    "keyword": "AJUDA",
+    "cover": "Ninguém fala, mas feriado colado no fim de semana dá até uma ponta de culpa",
+    "opener": "Parece ironia: a gente espera semanas por um feriado colado no sábado e domingo, mas quando ele finalmente chega, o cére",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Nota mental de folga prolongada",
+    "pillar": "leve_rotina",
+    "angle": null
   }
 ]
