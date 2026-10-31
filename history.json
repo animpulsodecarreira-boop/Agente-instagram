@@ -496,5 +496,22 @@
     "story_title": "Plano para o sabado",
     "pillar": "leve_fora",
     "angle": "uma música para o fim de semana"
+  },
+  {
+    "topic": "Domingo à noite vs. segunda cedo",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 0,
+    "format": "domingo_segunda",
+    "hook": "comparação inesperada entre duas situações",
+    "cta": "convidar a salvar para ler na segunda-feira",
+    "keyword": "CHECK",
+    "cover": "A mente no domingo à noite parece um filme de suspense",
+    "opener": "Se a gente acreditasse em tudo o que a mente inventa no domingo depois das seis da tarde, ninguém nem levantava da cama.",
+    "story_format": "checklist",
+    "story_mode": "paralela",
+    "story_title": "Pequenas vitórias do fim de expediente",
+    "pillar": "leve_descanso",
+    "angle": "domingo sem a ansiedade de segunda"
   }
 ]

@@ -32,5 +32,14 @@
         "Uma música para o fim de semana e desligar da rotina"
       ]
     }
+  },
+  "leve_descanso": {
+    "domingo sem a ansiedade de segunda": {
+      "vezes": 1,
+      "ultima": "2026-10-31",
+      "topicos": [
+        "Domingo à noite vs. segunda cedo"
+      ]
+    }
   }
 }
