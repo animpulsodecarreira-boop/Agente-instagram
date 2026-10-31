@@ -479,5 +479,22 @@
     "story_title": "Dúvida no trabalho",
     "pillar": "linkedin",
     "angle": "palavras-chave"
+  },
+  {
+    "topic": "Uma música para o fim de semana e desligar da rotina",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 2,
+    "format": "primeira_semana",
+    "hook": "exagero de brincadeira (deixe claro que é brincadeira)",
+    "cta": "perguntar o que a pessoa vai fazer no fim de semana",
+    "keyword": "TITULO",
+    "cover": "Aviso oficial: proibido pensar em trabalho nos proximos dois dias",
+    "opener": "A unica playlist valida para este momento e aquela que faz a gente esquecer qualquer boleto ou pendencia. O fim de seman",
+    "story_format": "chat",
+    "story_mode": "acompanha",
+    "story_title": "Plano para o sabado",
+    "pillar": "leve_fora",
+    "angle": "uma música para o fim de semana"
   }
 ]
