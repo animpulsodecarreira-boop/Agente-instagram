@@ -1,6 +1,6 @@
 {
   "id": "20261031-1105",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "claro",
   "variant": 1,
@@ -11,5 +11,7 @@
   "story_format": "nota",
   "story_mode": "acompanha",
   "pillar": "leve_rotina",
-  "angle": null
+  "angle": null,
+  "media_id": "17905177527604512",
+  "stories_published": 1
 }
