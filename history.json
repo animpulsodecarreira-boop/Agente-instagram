@@ -564,5 +564,22 @@
     "story_title": "Existe um dicionário não oficial para as mensagens da firma",
     "pillar": "leve_mundo",
     "angle": "o grupo do trabalho"
+  },
+  {
+    "topic": "Dia das bruxas e o descanso no fim de semana",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 1,
+    "format": "pergunta_leve",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "cta": "convidar a marcar ou mandar para um colega que se identifica",
+    "keyword": "TITULO",
+    "cover": "Qual monstro assombra o seu fim de semana?",
+    "opener": "A verdade é que descansar de verdade deveria contar como habilidade essencial no currículo da vida. Quem foi que invento",
+    "story_format": "digitar",
+    "story_mode": "paralela",
+    "story_title": "A unica bruxaria que a gente queria dominar agora era a arte de sumir com os boletos",
+    "pillar": "leve_descanso",
+    "angle": null
   }
 ]
