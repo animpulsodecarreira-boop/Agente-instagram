@@ -1,6 +1,6 @@
 {
   "id": "20261101-1413",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "azul",
   "variant": 0,
@@ -11,5 +11,7 @@
   "story_format": "riscar",
   "story_mode": "paralela",
   "pillar": "leve_fora",
-  "angle": "pequenas coisas pelas quais agradecer"
+  "angle": "pequenas coisas pelas quais agradecer",
+  "media_id": "18076736597480078",
+  "stories_published": 1
 }
