@@ -581,5 +581,22 @@
     "story_title": "A unica bruxaria que a gente queria dominar agora era a arte de sumir com os boletos",
     "pillar": "leve_descanso",
     "angle": null
+  },
+  {
+    "topic": "leve: rituais e manias engraçadas do expediente",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 2,
+    "format": "time_quiz",
+    "hook": "exagero de brincadeira (deixe claro que é brincadeira)",
+    "cta": "perguntar o que a pessoa vai fazer no fim de semana",
+    "keyword": "CHECK",
+    "cover": "Você é do time que tem 84 abas abertas por pura sobrevivência?",
+    "opener": "Entre canecas esquecidas no micro-ondas e dezenas de abas que ninguém nunca vai ler, todo mundo desenvolve seus próprios",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Você é do time que tem 84 abas abertas por pura sobrevivência?",
+    "pillar": "leve_rotina",
+    "angle": null
   }
 ]
