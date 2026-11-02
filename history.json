@@ -632,5 +632,22 @@
     "story_title": "Como foi o seu dia hoje?",
     "pillar": "produtividade",
     "angle": "fechar o dia com clareza"
+  },
+  {
+    "topic": "Coisas que ninguém avisa sobre a semana com 4 dias úteis",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 1,
+    "format": "primeira_semana",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "cta": "pedir uma palavra que resuma a semana da pessoa",
+    "keyword": "QUERO",
+    "cover": "Ninguém fala, mas a semana com 4 dias úteis tem seus mistérios",
+    "opener": "Ninguém avisa que encolher a semana útil em quatro dias parece uma ótima ideia até o relógio começar a correr o dobro do",
+    "story_format": "chat",
+    "story_mode": "acompanha",
+    "story_title": "Feriado e confusão mental",
+    "pillar": "leve_carreira",
+    "angle": null
   }
 ]
