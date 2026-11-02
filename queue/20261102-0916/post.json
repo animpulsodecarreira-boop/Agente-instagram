@@ -1,6 +1,6 @@
 {
   "id": "20261102-0916",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "claro",
   "variant": 1,
@@ -11,5 +11,7 @@
   "story_format": "chat",
   "story_mode": "acompanha",
   "pillar": "leve_carreira",
-  "angle": null
+  "angle": null,
+  "media_id": "18047081120826899",
+  "stories_published": 1
 }
