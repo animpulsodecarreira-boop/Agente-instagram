@@ -1,6 +1,6 @@
 {
   "id": "20261102-1327",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "geometrico",
   "variant": 2,
@@ -11,5 +11,7 @@
   "story_format": "nota",
   "story_mode": "paralela",
   "pillar": "transicao",
-  "angle": "reorganizar a rotina de busca"
+  "angle": "reorganizar a rotina de busca",
+  "media_id": "18118783288803583",
+  "stories_published": 1
 }
