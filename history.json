@@ -649,5 +649,22 @@
     "story_title": "Feriado e confusão mental",
     "pillar": "leve_carreira",
     "angle": null
+  },
+  {
+    "topic": "Reorganizar a rotina de busca na transição e recolocação de carreira usando método de consultoria",
+    "funnel": "meio",
+    "theme": "geometrico",
+    "variant": 2,
+    "format": "mini_aula",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a mandar uma DM com a palavra {kw}",
+    "keyword": "AJUDA",
+    "cover": "Passar o dia inteiro buscando emprego não acelera sua recolocação",
+    "opener": "Achar que passar dez horas por dia enviando currículos é a única forma de mostrar compromisso com a recolocação é um eng",
+    "story_format": "nota",
+    "story_mode": "paralela",
+    "story_title": "Reflexão do dia",
+    "pillar": "transicao",
+    "angle": "reorganizar a rotina de busca"
   }
 ]
