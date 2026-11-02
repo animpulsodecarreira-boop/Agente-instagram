@@ -57,5 +57,14 @@
         "Tradutor sincero das mensagens no grupo do trabalho"
       ]
     }
+  },
+  "produtividade": {
+    "fechar o dia com clareza": {
+      "vezes": 1,
+      "ultima": "2026-11-02",
+      "topicos": [
+        "Sinais de que o seu dia terminou sem clareza sobre o que você realmente fez"
+      ]
+    }
   }
 }

@@ -50,8 +50,8 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| fechar o dia com clareza | 1 | 2026-11-02 |
 | como lidar com distrações | 0 | - |
-| fechar o dia com clareza | 0 | - |
 | metas pequenas | 0 | - |
 | pausas e energia | 0 | - |
 | prioridades da semana | 0 | - |

@@ -615,5 +615,22 @@
     "story_title": "Desculpa sincera no chat",
     "pillar": "leve_fora",
     "angle": "pequenas coisas pelas quais agradecer"
+  },
+  {
+    "topic": "Sinais de que o seu dia terminou sem clareza sobre o que você realmente fez",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 1,
+    "format": "tres_sinais",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é a sua maior dúvida sobre o tema?)",
+    "keyword": "CHECK",
+    "cover": "Você fecha o computador sentindo que o dia passou correndo, mas sem saber o que avançou?",
+    "opener": "Fechar o expediente com a nítida sensação de que o dia escorreu pelos dedos sem que você consiga lembrar exatamente o qu",
+    "story_format": "checklist",
+    "story_mode": "acompanha",
+    "story_title": "Como foi o seu dia hoje?",
+    "pillar": "produtividade",
+    "angle": "fechar o dia com clareza"
   }
 ]
