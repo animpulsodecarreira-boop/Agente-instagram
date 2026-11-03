@@ -73,5 +73,14 @@
         "Sinais de que o seu dia terminou sem clareza sobre o que você realmente fez"
       ]
     }
+  },
+  "curriculo": {
+    "conquistas sem inventar números": {
+      "vezes": 1,
+      "ultima": "2026-11-03",
+      "topicos": [
+        "Como montar e adaptar o currículo e se candidatar com mais clareza focando em conquistas reais sem inventar números"
+      ]
+    }
   }
 }

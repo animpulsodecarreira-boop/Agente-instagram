@@ -17,9 +17,9 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| conquistas sem inventar números | 1 | 2026-11-03 |
 | adaptar o currículo a cada vaga | 0 | - |
 | carta ou mensagem de apresentação | 0 | - |
-| conquistas sem inventar números | 0 | - |
 | lacunas no histórico | 0 | - |
 | resumo profissional | 0 | - |
 | tamanho e formato | 0 | - |

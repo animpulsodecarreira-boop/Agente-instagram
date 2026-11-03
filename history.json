@@ -666,5 +666,22 @@
     "story_title": "Reflexão do dia",
     "pillar": "transicao",
     "angle": "reorganizar a rotina de busca"
+  },
+  {
+    "topic": "Como montar e adaptar o currículo e se candidatar com mais clareza focando em conquistas reais sem inventar números",
+    "funnel": "meio",
+    "theme": "escuro",
+    "variant": 0,
+    "format": "passo_a_passo",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a responder o story do dia",
+    "keyword": "QUERO",
+    "cover": "3 passos para montar um currículo claro sem inventar números",
+    "opener": "Escrever sobre o próprio trabalho sem recorrer a números grandiosos ou fórmulas prontas costuma ser um dos maiores desaf",
+    "story_format": "pergunta",
+    "story_mode": "acompanha",
+    "story_title": "Qual é a sua maior dificuldade na hora de resumir suas conquistas no currículo?",
+    "pillar": "curriculo",
+    "angle": "conquistas sem inventar números"
   }
 ]
