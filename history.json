@@ -683,5 +683,22 @@
     "story_title": "Qual é a sua maior dificuldade na hora de resumir suas conquistas no currículo?",
     "pillar": "curriculo",
     "angle": "conquistas sem inventar números"
+  },
+  {
+    "topic": "Como funciona o método de bastidores da consultoria de LinkedIn focado em mensagens a recrutadores",
+    "funnel": "meio",
+    "theme": "claro",
+    "variant": 1,
+    "format": "bastidor",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a comentar a dúvida para virar tema de um próximo post",
+    "keyword": "PERFIL",
+    "cover": "Pare de enviar mensagens para recrutadores sem antes ajustar esta base",
+    "opener": "Abordar quem decide contratar sem uma estratégia clara de posicionamento costuma gerar apenas vácuo nas respostas. No di",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Mensagem para recrutador",
+    "pillar": "linkedin",
+    "angle": "mensagens a recrutadores"
   }
 ]
