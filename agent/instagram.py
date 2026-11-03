@@ -1,4 +1,4 @@
-"""Publica carrosséis na conta profissional do Instagram via Graph API (Instagram Login, sem Página).
+"""Publica carrosséis, stories e Reels na conta profissional do Instagram via Graph API (Instagram Login, sem Página).
 
 Fluxo oficial: 1 container por imagem (is_carousel_item) -> 1 container CAROUSEL -> media_publish.
 As imagens precisam estar em URLs públicas (aqui: raw.githubusercontent.com de um repositório público).
@@ -88,4 +88,18 @@ def publish_story(video_url=None, image_url=None):
     else:
         container = _post(f"{ig}/media", media_type="STORIES", image_url=image_url)["id"]
     _wait_ready(container, tries=45)
+    return _post(f"{ig}/media_publish", creation_id=container)["id"]
+
+
+def publish_reel(video_url, caption, share_to_feed=True):
+    """Publica um Reel (vídeo 9:16 em URL pública). Retorna o id da mídia.
+
+    Limites da Meta: MP4/MOV com moov no início, H.264, AAC até 48 kHz, 23-60 fps, 3 s a 15 min, até 300 MB.
+    O processamento do vídeo pode demorar; a Meta recomenda consultar o estado por até 5 minutos.
+    """
+    check_token()
+    ig = os.environ.get("IG_USER_ID", "").strip() or "me"
+    container = _post(f"{ig}/media", media_type="REELS", video_url=video_url, caption=caption,
+                      share_to_feed="true" if share_to_feed else "false")["id"]
+    _wait_ready(container, tries=70)
     return _post(f"{ig}/media_publish", creation_id=container)["id"]
