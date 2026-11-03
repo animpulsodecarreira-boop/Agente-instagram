@@ -1,6 +1,6 @@
 {
   "id": "20261103-1321",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "claro",
   "variant": 1,
@@ -11,5 +11,7 @@
   "story_format": "riscar",
   "story_mode": "paralela",
   "pillar": "linkedin",
-  "angle": "mensagens a recrutadores"
+  "angle": "mensagens a recrutadores",
+  "media_id": "18179853790452079",
+  "stories_published": 1
 }
