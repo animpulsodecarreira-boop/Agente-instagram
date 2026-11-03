@@ -88,7 +88,8 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
         [{"text": "✅ Aprovar post + story", "callback_data": f"ap:{post_id}"}],
         [{"text": "📷 Só o post", "callback_data": f"po:{post_id}"},
          {"text": "❌ Rejeitar", "callback_data": f"rj:{post_id}"}],
-        [{"text": "🔄 Gerar outro", "callback_data": f"gn:{post_id}"}],
+        [{"text": "🔄 Gerar outro", "callback_data": f"gn:{post_id}"},
+         {"text": "🎞 Criar Reel", "callback_data": f"gr:{post_id}"}],
     ]}
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
     if repo:  # plano B que não depende do Telegram: abre o fluxo "Aprovar post" no GitHub
@@ -96,6 +97,22 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
                                        "url": f"https://github.com/{repo}/actions/workflows/aprovar.yml"}])
         text += f"\n\nSe o botão não funcionar: abra o plano B e informe o número {post_id}."
     return _call("sendMessage", json={"chat_id": chat_id(), "text": text, "reply_markup": kb})
+
+
+def send_reel_for_approval(post_id, video_path, caption_full):
+    """Manda o Reel pronto (vídeo + legenda) com os botões Publicar / Descartar."""
+    note = _album("video", [video_path])
+    kb = {"inline_keyboard": [[{"text": "🎞 Publicar Reel", "callback_data": f"re:{post_id}"},
+                               {"text": "🗑 Descartar", "callback_data": f"rr:{post_id}"}]]}
+    text = f"🎞 Reel do post {post_id} (vídeo acima)\n\n{caption_full}"
+    if note:
+        text += f"\n\n{note}"
+    repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if repo:
+        kb["inline_keyboard"].append([{"text": "🛠 Plano B: publicar pelo GitHub",
+                                       "url": f"https://github.com/{repo}/actions/workflows/aprovar.yml"}])
+        text += f"\n\nSe o botão não funcionar: abra o plano B, informe o número {post_id} e escolha a ação re."
+    return _call("sendMessage", json={"chat_id": chat_id(), "text": redact(text)[:4000], "reply_markup": kb})
 
 
 def notify(text):
