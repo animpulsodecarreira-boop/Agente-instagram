@@ -700,5 +700,22 @@
     "story_title": "Mensagem para recrutador",
     "pillar": "linkedin",
     "angle": "mensagens a recrutadores"
+  },
+  {
+    "topic": "Épocas para procurar emprego",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 2,
+    "format": "pergunta",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "cta": "convidar a mandar o post para alguém que está buscando recolocação",
+    "keyword": "TITULO",
+    "cover": "Será que existe mesmo o momento certo do ano para buscar emprego?",
+    "opener": "Ficar esperando o mês ideal no calendário para começar a olhar para o mercado costuma gerar uma pausa que não ajuda em n",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "Esperar a época perfeita do ano para buscar emprego é só mais um jeito de adiar o recomeço",
+    "pillar": "aprendizado",
+    "angle": null
   }
 ]
