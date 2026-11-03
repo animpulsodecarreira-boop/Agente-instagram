@@ -1,7 +1,8 @@
 """Uso:
   python -m agent.main generate [--funnel topo|meio|fundo|leve] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
-  python -m agent.main approve --post-id ID [--action ap|po|rj]   # aprova/reprocessa um post pelo GitHub
+  python -m agent.main approve --post-id ID [--action ap|po|rj|re|rr]   # aprova/reprocessa um post (ou o Reel dele) pelo GitHub
+  python -m agent.main reel --post-id ID [--enviar]   # monta o Reel do post a partir dos slides (--enviar: só manda ao Telegram)
   python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
 """
 import argparse
@@ -19,7 +20,7 @@ from . import telegram_io as tg
 from .config import PILLARS, QUEUE, STATE_FILE, STORY_FORMATS, THEMES
 from .generate import generate_post, pick_theme, pick_variant, record_theme, save_history
 from .render_v2 import render_all
-from .video import make_story_video
+from .video import make_reel_video, make_story_video
 
 TZ = ZoneInfo("America/Sao_Paulo")
 T0 = time.monotonic()
@@ -66,6 +67,15 @@ STORY_SAMPLES = {
 
 def full_caption(post):
     return post["caption"].strip() + "\n\n" + " ".join(post["hashtags"])
+
+
+def reel_caption(meta):
+    """Legenda do Reel = legenda do post, trocando 'desliza' (que só faz sentido no carrossel)."""
+    cap = meta["caption"]
+    for pat, rep in ((r"\bDesliza\b", "Assiste"), (r"\bdesliza\b", "assiste"), (r"\bDeslize\b", "Assista"),
+                     (r"\bdeslize\b", "assista"), (r"\bdeslizar\b", "assistir")):
+        cap = re.sub(pat, rep, cap)
+    return cap
 
 
 def raw_url(post_id, filename):
@@ -143,6 +153,8 @@ def cmd_generate(args):
             record_theme(post["pillar"], post["angle"], post["topic"])  # só conta depois que o post chegou ao Telegram
         if prev is not None and prev.get("status") == "pending":  # "Gerar outro": o post anterior sai da fila
             prev["status"] = "rejected"
+            if prev.get("reel_status") == "pending":
+                prev["reel_status"] = "rejected"
             prev_file.write_text(json.dumps(prev, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"[outro] post {outro} marcado como rejeitado (substituído por {post_id})", flush=True)
         print(f"Post {post_id} gerado ({funnel}, pilar {post['pillar']}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
@@ -189,8 +201,81 @@ def _report(chat, msg, text):
     tg.notify(text)
 
 
+def cmd_reel(args):
+    """Monta o Reel a partir dos slides do post. Com --enviar, só manda o Reel pronto ao Telegram."""
+    post_id = args.post_id.strip()
+    out = QUEUE / post_id
+    meta_file = out / "post.json"
+    try:
+        if not re.fullmatch(r"\d{8}-\d{4}", post_id) or not meta_file.exists():
+            raise RuntimeError(f"Não encontrei o post {post_id} no repositório.")
+        meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        if args.enviar:
+            _log("enviando o Reel ao Telegram")
+            tg.send_reel_for_approval(post_id, out / "reel.mp4", reel_caption(meta))
+            return
+        if meta.get("status") == "rejected":
+            raise RuntimeError(f"O post {post_id} foi rejeitado; não criei o Reel.")
+        if meta.get("reel_status") == "published":
+            raise RuntimeError(f"O Reel do post {post_id} já foi publicado.")
+        slides = sorted(out.glob("slide*.png"), key=lambda p: int(re.sub(r"\D", "", p.stem) or 0))
+        _log(f"montando o Reel do post {post_id} com {len(slides)} slides")
+        make_reel_video(slides, out / "reel.mp4", post_id)
+        meta["reel_status"] = "pending"
+        meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        _log("Reel pronto")
+    except Exception:
+        err = tg.redact(traceback.format_exc())
+        print(err, file=sys.stderr)
+        if os.getenv("SKIP_TELEGRAM") != "1":
+            tg.notify(f"⚠️ Não consegui criar o Reel do post {post_id}:\n{err[-600:]}")
+        sys.exit(1)
+
+
+def process_reel(action, post_id, chat=None, msg=None, cb_id=None):
+    """Publica (re) ou descarta (rr) o Reel de um post. O estado do Reel é separado do estado do post."""
+    from .instagram import permalink, publish_reel
+    meta_file = QUEUE / post_id / "post.json"
+    if not meta_file.exists():
+        print(f"[reel] post {post_id} NÃO existe em queue/")
+        if cb_id:
+            tg.answer(cb_id, "Post não encontrado.")
+        _report(chat, msg, f"⚠️ Não encontrei o post {post_id} no repositório.")
+        return
+    meta = json.loads(meta_file.read_text(encoding="utf-8"))
+    state = meta.get("reel_status")
+    if state not in ("pending", "failed"):
+        print(f"[reel] Reel do post {post_id} está '{state}', nada a fazer")
+        if cb_id:
+            tg.answer(cb_id, f"Reel já processado ({state}).")
+        _report(chat, msg, f"ℹ️ O Reel do post {post_id} está '{state or 'não criado'}'. Nada foi feito.")
+        return
+    if action == "rr":
+        meta["reel_status"] = "rejected"
+        if cb_id:
+            tg.answer(cb_id, "Reel descartado.")
+        _report(chat, msg, f"🗑 Reel do post {post_id} descartado. Nada foi publicado.")
+    else:
+        if cb_id:
+            tg.answer(cb_id, "Publicando o Reel...")
+        try:
+            if not (QUEUE / post_id / "reel.mp4").exists():
+                raise RuntimeError("o arquivo reel.mp4 não está no repositório (espere um instante e tente de novo)")
+            media_id = publish_reel(raw_url(post_id, "reel.mp4"), reel_caption(meta))
+            meta["reel_status"], meta["reel_media_id"] = "published", media_id
+            _report(chat, msg, f"✅ Reel do post {post_id} publicado!\n{permalink(media_id)}")
+        except Exception as e:
+            meta["reel_status"] = "failed"
+            print(f"[reel] FALHA ao publicar: {e}")
+            _report(chat, msg, f"⚠️ Falha ao publicar o Reel de {post_id}:\n{str(e)[:700]}\n\n"
+                               f"Para tentar de novo: Actions → Aprovar post → informe {post_id} e a ação re.")
+    meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def process_action(action, post_id, chat=None, msg=None, retry=False, cb_id=None):
     """Aplica aprovar/só post/rejeitar a um post. retry=True permite reprocessar um post que falhou."""
+    if action in ("re", "rr"):
+        return process_reel(action, post_id, chat, msg, cb_id)
     from .instagram import permalink, publish_carousel
     meta_file = QUEUE / post_id / "post.json"
     if not meta_file.exists():
@@ -290,10 +375,11 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--tema"); g.add_argument("--outro")
     sub.add_parser("poll")
-    ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj"], default="ap")
+    ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj", "re", "rr"], default="ap")
+    r_ = sub.add_parser("reel"); r_.add_argument("--post-id", required=True); r_.add_argument("--enviar", action="store_true")
     p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
-    {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview}[args.cmd](args)
+    {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview, "reel": cmd_reel}[args.cmd](args)
 
 
 if __name__ == "__main__":
