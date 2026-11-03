@@ -1,6 +1,6 @@
 {
   "id": "20261103-1038",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "escuro",
   "variant": 0,
@@ -11,5 +11,7 @@
   "story_format": "pergunta",
   "story_mode": "acompanha",
   "pillar": "curriculo",
-  "angle": "conquistas sem inventar números"
+  "angle": "conquistas sem inventar números",
+  "media_id": "17954776629297608",
+  "stories_published": 1
 }
