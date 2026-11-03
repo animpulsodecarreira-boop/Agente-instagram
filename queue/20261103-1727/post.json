@@ -11,5 +11,6 @@
   "story_format": "digitar",
   "story_mode": "acompanha",
   "pillar": "aprendizado",
-  "angle": null
+  "angle": null,
+  "reel_status": "pending"
 }
