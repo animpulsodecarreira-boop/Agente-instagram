@@ -99,12 +99,14 @@ def send_for_approval(post_id, paths, caption_full, funnel, theme="", story_vide
     return _call("sendMessage", json={"chat_id": chat_id(), "text": text, "reply_markup": kb})
 
 
-def send_reel_for_approval(post_id, video_path, caption_full):
+def send_reel_for_approval(post_id, video_path, caption_full, nota=""):
     """Manda o Reel pronto (vídeo + legenda) com os botões Publicar / Descartar."""
     note = _album("video", [video_path])
     kb = {"inline_keyboard": [[{"text": "🎞 Publicar Reel", "callback_data": f"re:{post_id}"},
                                {"text": "🗑 Descartar", "callback_data": f"rr:{post_id}"}]]}
     text = f"🎞 Reel do post {post_id} (vídeo acima)\n\n{caption_full}"
+    if nota:
+        text += f"\n\n{nota}"
     if note:
         text += f"\n\n{note}"
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
