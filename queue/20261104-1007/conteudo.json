@@ -1,0 +1,49 @@
+{
+  "topic": "Como lidar com nervosismo na hora da entrevista",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Time domingo à noite ou time segunda cedo?",
+      "body": "Escolha um lado e veja se você também sente essa montanha-russa de sentimentos."
+    },
+    {
+      "kind": "versus",
+      "title": "A preparação mental para a semana",
+      "left": "O cérebro criando teorias da conspiração sobre todas as reuniões dos próximos dias",
+      "left_label": "DOMINGO À NOITE",
+      "right": "O despertador tocando e a sensação de que o fim de semana durou apenas 15 minutos",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "versus",
+      "title": "O estado de espírito oficial",
+      "left": "Aquele silêncio na sala enquanto você lembra de todas as conversas pendentes",
+      "left_label": "DOMINGO À NOITE",
+      "right": "Tentando lembrar qual era a senha do e-mail que funcionava perfeitamente na sexta-feira",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "versus",
+      "title": "A relação com o descanso",
+      "left": "Prometendo para si mesmo que vai dormir cedo para acordar descansado",
+      "left_label": "DOMINGO À NOITE",
+      "right": "A primeira xícara de café tentando negociar um acordo de paz com a realidade",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "content",
+      "title": "Respire fundo por um instante",
+      "body": "Seja qual for o lado da balança em que você esteja agora, lembre-se: respira fundo. Ninguém tem a vida 100% sob controle o tempo todo e está tudo bem não estar com o ritmo perfeito logo cedo.",
+      "highlight": "O café resolve boa parte das coisas."
+    },
+    {
+      "kind": "cta",
+      "title": "Vamos rir um pouco para descontrair?",
+      "body": "Conta aqui nos comentários qual foi a situação mais engraçada ou inusitada que você já viveu no trabalho. Sem citar nomes ou empresas, queremos só dar boas risadas juntos.",
+      "show_link": false
+    }
+  ]
+}

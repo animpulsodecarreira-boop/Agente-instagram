@@ -734,5 +734,22 @@
     "story_title": "Escrever um e-mail de trabalho é como tentar explicar uma piada longa por mensag",
     "pillar": "comunicacao",
     "angle": "mensagens objetivas"
+  },
+  {
+    "topic": "Como lidar com nervosismo na hora da entrevista",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 2,
+    "format": "domingo_segunda",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "cta": "convidar a contar nos comentários a situação mais engraçada que já viveu no trabalho (sem citar empresas ou pessoas)",
+    "keyword": "PERFIL",
+    "cover": "Time domingo à noite ou time segunda cedo?",
+    "opener": "Quem inventou que a semana precisa começar logo depois de um domingo tão curto deveria receber uma multa moral. Parece q",
+    "story_format": "checklist",
+    "story_mode": "paralela",
+    "story_title": "Checklist mental para este domingo:",
+    "pillar": "leve_mundo",
+    "angle": null
   }
 ]
