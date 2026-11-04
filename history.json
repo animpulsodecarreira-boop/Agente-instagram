@@ -717,5 +717,22 @@
     "story_title": "Esperar a época perfeita do ano para buscar emprego é só mais um jeito de adiar o recomeço",
     "pillar": "aprendizado",
     "angle": null
+  },
+  {
+    "topic": "Mensagens objetivas no trabalho",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 0,
+    "format": "checklist",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a seguir o perfil para a próxima dica",
+    "keyword": "CHECK",
+    "cover": "Escrever um e-mail de trabalho é como tentar explicar uma piada longa por mensagem de texto",
+    "opener": "Escrever um texto direto no trabalho sem parecer seco exige um equilíbrio que a gente aprende errando o tom algumas veze",
+    "story_format": "teaser",
+    "story_mode": "paralela",
+    "story_title": "Escrever um e-mail de trabalho é como tentar explicar uma piada longa por mensag",
+    "pillar": "comunicacao",
+    "angle": "mensagens objetivas"
   }
 ]
