@@ -751,5 +751,22 @@
     "story_title": "Checklist mental para este domingo:",
     "pillar": "leve_mundo",
     "angle": null
+  },
+  {
+    "topic": "Como transformamos uma mensagem enviada a uma rede de contatos para gerar conversas reais no LinkedIn",
+    "funnel": "meio",
+    "theme": "escuro",
+    "variant": 1,
+    "format": "antes_depois",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "convidar a mandar uma DM com a palavra {kw}",
+    "keyword": "AJUDA",
+    "cover": "Por que algumas abordagens no LinkedIn viram silêncio absoluto?",
+    "opener": "Abordar conexões pedindo ajuda direta na primeira linha costuma gerar aquela resposta padrão ou, pior, o silêncio total.",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Bastidores",
+    "pillar": "linkedin",
+    "angle": "rede de contatos"
   }
 ]

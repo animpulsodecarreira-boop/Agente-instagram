@@ -1,0 +1,42 @@
+{
+  "topic": "Como transformamos uma mensagem enviada a uma rede de contatos para gerar conversas reais no LinkedIn",
+  "funnel": "meio",
+  "theme": "escuro",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Por que algumas abordagens no LinkedIn viram silêncio absoluto?",
+      "body": "Veja o antes e o depois de um pedido de conexão e o que muda na prática."
+    },
+    {
+      "kind": "versus",
+      "title": "A diferença entre pedir favor e iniciar um diálogo",
+      "left": "Oi, tudo bem? Sou profissional da área X e estou aberto a novas oportunidades no mercado. Se souber de algo, me avisa?",
+      "left_label": "ANTES",
+      "right": "Olá! Vi seu artigo sobre os rumos da área X. Também acompanho esse movimento e lidei com algo parecido no meu último projeto.",
+      "right_label": "DEPOIS"
+    },
+    {
+      "kind": "content",
+      "title": "Fale do assunto antes de falar de você",
+      "body": "Quem está do outro lado da tela recebe dezenas de pedidos parecidos todos os dias. Mostrar sintonia com o tema que a pessoa já discute cria uma ponte imediata."
+    },
+    {
+      "kind": "content",
+      "title": "Tire o peso do pedido de emprego",
+      "body": "Abordar alguém focando na troca de experiências e em bastidores da profissão gera curiosidade e vontade genuína de responder, sem pressão."
+    },
+    {
+      "kind": "content",
+      "title": "Bastidores de como trabalhamos isso",
+      "body": "Na nossa consultoria, revisamos cada linha do seu histórico e das suas mensagens para que sua rede de contatos passe a ver valor na sua comunicação desde o primeiro segundo."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer destravar sua rede de contatos?",
+      "body": "Envie agora mesmo a palavra AJUDA na nossa DM e vamos conversar sobre o seu posicionamento profissional.",
+      "show_link": false
+    }
+  ]
+}
