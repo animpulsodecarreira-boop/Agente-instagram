@@ -132,3 +132,47 @@ def make_reel_video(slides, out: Path, seed: str):
             "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True)
     return out
+
+
+def make_reel_from_frames(frames, out: Path, seed: str):
+    """Junta os quadros do Reel de texto [(arquivo, segundos)] em vídeo 1080x1920 (H.264 + AAC) com a trilha.
+
+    Se o Reel for mais longo que a faixa, a trilha se repete (lo-fi emenda bem).
+    """
+    out = Path(out)
+    frames = [(Path(p), float(d)) for p, d in frames]
+    if not frames:
+        raise ValueError("Sem quadros para o Reel")
+    total = sum(d for _, d in frames)
+    lst = out.with_suffix(".txt")
+    lines = ["ffconcat version 1.0"]
+    for p, d in frames:
+        lines += [f"file '{p.resolve()}'", f"duration {d:.3f}"]
+    lines.append(f"file '{frames[-1][0].resolve()}'")  # o concat exige repetir o último quadro
+    lst.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    ts = tracks()
+    h = int(hashlib.sha1(seed.encode()).hexdigest(), 16)
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(lst)]
+    if ts:
+        track = ts[h % len(ts)]
+        dur = _duration(track)
+        if dur > total + 1:
+            start = h // 7 % max(1, int(dur - total))
+            cmd += ["-ss", str(start), "-t", f"{total:.3f}", "-i", str(track)]
+        else:
+            cmd += ["-stream_loop", "-1", "-t", f"{total:.3f}", "-i", str(track)]
+    else:
+        cmd += ["-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=r=44100:cl=stereo"]
+    cmd += ["-map", "0:v", "-map", "1:a",
+            # 24 fps (a Meta aceita de 23 a 60) e ajustes para imagem quase parada: montagem bem mais rápida
+            "-vf", f"fps=24,scale={REEL_W}:{REEL_H},format=yuv420p,fade=t=in:st=0:d=0.3",
+            "-af", f"afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5",
+            "-c:v", "libx264", "-preset", "ultrafast", "-tune", "stillimage", "-crf", "21", "-profile:v", "high", "-r", "24",
+            "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-t", f"{total:.3f}", "-shortest",
+            "-movflags", "+faststart", str(out)]
+    try:
+        subprocess.run(cmd, check=True)
+    finally:
+        lst.unlink(missing_ok=True)
+    return out
