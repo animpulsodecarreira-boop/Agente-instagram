@@ -2,7 +2,7 @@
   python -m agent.main generate [--funnel topo|meio|fundo|leve] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj|re|rr]   # aprova/reprocessa um post (ou o Reel dele) pelo GitHub
-  python -m agent.main reel --post-id ID [--enviar]   # monta o Reel do post a partir dos slides (--enviar: só manda ao Telegram)
+  python -m agent.main reel --post-id ID [--modo texto|slides] [--enviar]   # monta o Reel do post (--enviar: só manda ao Telegram)
   python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
 """
 import argparse
@@ -20,7 +20,7 @@ from . import telegram_io as tg
 from .config import PILLARS, QUEUE, STATE_FILE, STORY_FORMATS, THEMES
 from .generate import generate_post, pick_theme, pick_variant, record_theme, save_history
 from .render_v2 import render_all
-from .video import make_reel_video, make_story_video
+from .video import make_reel_from_frames, make_reel_video, make_story_video
 
 TZ = ZoneInfo("America/Sao_Paulo")
 T0 = time.monotonic()
@@ -140,6 +140,10 @@ def cmd_generate(args):
                 "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"], "angle": post.get("angle")}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         rc = post["recipe"]
+        # o conteúdo dos slides fica guardado: o Reel de texto reaproveita o roteiro, o tema e as palavras-chave do post
+        (out / "conteudo.json").write_text(json.dumps({"topic": post["topic"], "funnel": funnel, "theme": theme,
+                                                       "keyword": rc.get("keyword"), "slides": post["slides"]},
+                                                      ensure_ascii=False, indent=2), encoding="utf-8")
         save_history(post["topic"], funnel, theme, {
             "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
             "cover": post["cover"], "opener": post["opener"],
@@ -201,6 +205,27 @@ def _report(chat, msg, text):
     tg.notify(text)
 
 
+def _reel_texto(out, meta, post_id):
+    """Reel de texto animado (cenas no estilo dos stories). Devolve 'texto' se deu certo, ou None para usar o plano B."""
+    frames_dir = out / "_reel_frames"
+    try:
+        from .reel_texto import render_reel_text, slides_from_caption
+        cont_file = out / "conteudo.json"
+        conteudo = json.loads(cont_file.read_text(encoding="utf-8")) if cont_file.exists() else {}
+        slides = conteudo.get("slides") or slides_from_caption(meta.get("caption", ""), meta.get("topic", ""))
+        _log("montando o Reel de texto a partir do " + ("conteúdo do post" if conteudo.get("slides") else "texto da legenda (post antigo)"))
+        frames = render_reel_text(slides, meta.get("theme", "escuro"), frames_dir)
+        _log(f"{len(frames)} quadros prontos; montando o vídeo")
+        make_reel_from_frames(frames, out / "reel.mp4", post_id)
+        return "texto"
+    except Exception:
+        print(tg.redact(traceback.format_exc()), file=sys.stderr)
+        _log("o Reel de texto falhou; usando o carrossel em vídeo")
+        return None
+    finally:
+        shutil.rmtree(frames_dir, ignore_errors=True)
+
+
 def cmd_reel(args):
     """Monta o Reel a partir dos slides do post. Com --enviar, só manda o Reel pronto ao Telegram."""
     post_id = args.post_id.strip()
@@ -212,16 +237,20 @@ def cmd_reel(args):
         meta = json.loads(meta_file.read_text(encoding="utf-8"))
         if args.enviar:
             _log("enviando o Reel ao Telegram")
-            tg.send_reel_for_approval(post_id, out / "reel.mp4", reel_caption(meta))
+            nota = "ℹ️ Não consegui montar a versão em texto animado; este é o carrossel em vídeo." if meta.get("reel_modo") == "slides" else ""
+            tg.send_reel_for_approval(post_id, out / "reel.mp4", reel_caption(meta), nota)
             return
         if meta.get("status") == "rejected":
             raise RuntimeError(f"O post {post_id} foi rejeitado; não criei o Reel.")
         if meta.get("reel_status") == "published":
             raise RuntimeError(f"O Reel do post {post_id} já foi publicado.")
-        slides = sorted(out.glob("slide*.png"), key=lambda p: int(re.sub(r"\D", "", p.stem) or 0))
-        _log(f"montando o Reel do post {post_id} com {len(slides)} slides")
-        make_reel_video(slides, out / "reel.mp4", post_id)
-        meta["reel_status"] = "pending"
+        usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
+        if usado is None:
+            slides = sorted(out.glob("slide*.png"), key=lambda p: int(re.sub(r"\D", "", p.stem) or 0))
+            _log(f"montando o Reel do post {post_id} com {len(slides)} slides (carrossel em vídeo)")
+            make_reel_video(slides, out / "reel.mp4", post_id)
+            usado = "slides"
+        meta["reel_status"], meta["reel_modo"] = "pending", usado
         meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         _log("Reel pronto")
     except Exception:
@@ -376,7 +405,7 @@ def main():
     g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--tema"); g.add_argument("--outro")
     sub.add_parser("poll")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj", "re", "rr"], default="ap")
-    r_ = sub.add_parser("reel"); r_.add_argument("--post-id", required=True); r_.add_argument("--enviar", action="store_true")
+    r_ = sub.add_parser("reel"); r_.add_argument("--post-id", required=True); r_.add_argument("--enviar", action="store_true"); r_.add_argument("--modo", choices=["texto", "slides"], default="texto")
     p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
     {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview, "reel": cmd_reel}[args.cmd](args)
