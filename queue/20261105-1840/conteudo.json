@@ -1,0 +1,41 @@
+{
+  "topic": "Como o título e o resumo do LinkedIn mudam a clareza do seu perfil para recrutadores",
+  "funnel": "fundo",
+  "theme": "claro",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Seu título do LinkedIn diz quem você é ou apenas repete seu cargo antigo?",
+      "body": "Veja como duas pessoas diferentes usam o topo do perfil."
+    },
+    {
+      "kind": "versus",
+      "title": "O título que confunde versus o título que orienta",
+      "left": "Analista de Sistemas Pleno na Empresa X",
+      "left_label": "JEITO 1",
+      "right": "Especialista em Suporte Técnico e Infraestrutura de TI",
+      "right_label": "JEITO 2"
+    },
+    {
+      "kind": "versus",
+      "title": "O resumo vazio versus o resumo com direção",
+      "left": "Profissional dedicado em busca de novos desafios no mercado corporativo atual.",
+      "left_label": "JEITO 1",
+      "right": "Ajudo operações logísticas a reduzirem gargalos e atrasos com foco em processos ágeis.",
+      "right_label": "JEITO 2"
+    },
+    {
+      "kind": "content",
+      "title": "O topo do seu perfil precisa contar uma história rápida",
+      "body": "Quem chega na sua página precisa entender em poucos segundos qual problema você resolve, sem precisar adivinhar pelos nomes das empresas onde trabalhou.",
+      "highlight": "Clareza atrai quem decide."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer saber como o seu perfil está sendo lido hoje?",
+      "body": "Nós podemos te ajudar com isso. Acesse o link na sua bio e aproveite o nosso diagnóstico gratuito do LinkedIn para ajustar sua apresentação.",
+      "show_link": true
+    }
+  ]
+}

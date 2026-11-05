@@ -768,5 +768,22 @@
     "story_title": "Bastidores",
     "pillar": "linkedin",
     "angle": "rede de contatos"
+  },
+  {
+    "topic": "Como o título e o resumo do LinkedIn mudam a clareza do seu perfil para recrutadores",
+    "funnel": "fundo",
+    "theme": "claro",
+    "variant": 2,
+    "format": "comparativo",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "apontar o link na bio para o diagnóstico",
+    "keyword": "QUERO",
+    "cover": "Seu título do LinkedIn diz quem você é ou apenas repete seu cargo antigo?",
+    "opener": "Traduzir anos de experiência em poucas palavras no topo do perfil costuma gerar aquela dúvida sobre o que colocar primei",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "E-mail de última hora",
+    "pillar": "linkedin",
+    "angle": "título e Sobre"
   }
 ]
