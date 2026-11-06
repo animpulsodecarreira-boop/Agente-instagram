@@ -11,5 +11,7 @@
   "story_format": "nota",
   "story_mode": "acompanha",
   "pillar": "leve_fora",
-  "angle": null
+  "angle": null,
+  "reel_status": "pending",
+  "reel_modo": "texto"
 }
