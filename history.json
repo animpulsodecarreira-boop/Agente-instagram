@@ -819,5 +819,22 @@
     "story_title": "Quantas páginas tem o seu currículo hoje em dia?",
     "pillar": "curriculo",
     "angle": "tamanho e formato"
+  },
+  {
+    "topic": "Foto, banner e primeira impressão no LinkedIn e oferta do diagnóstico gratuito",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 1,
+    "format": "oferta",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "TITULO",
+    "cover": "3 elementos visuais que decidem a primeira impressão no seu LinkedIn",
+    "opener": "Colocar a carreira no papel ou na tela do computador exige coragem para decidir o que entra e o que fica de fora. Muitas",
+    "story_format": "digitar",
+    "story_mode": "paralela",
+    "story_title": "A foto de perfil antiga parece sempre um retrato falado de outra fase da vida.",
+    "pillar": "linkedin",
+    "angle": "foto, banner e primeira impressão"
   }
 ]

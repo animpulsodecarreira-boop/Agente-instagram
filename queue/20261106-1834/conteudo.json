@@ -1,0 +1,39 @@
+{
+  "topic": "Foto, banner e primeira impressão no LinkedIn e oferta do diagnóstico gratuito",
+  "funnel": "fundo",
+  "theme": "geometrico",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "3 elementos visuais que decidem a primeira impressão no seu LinkedIn",
+      "body": "Como sua foto, seu banner e o topo do perfil conversam com quem chega pela primeira vez."
+    },
+    {
+      "kind": "content",
+      "title": "Para quem é o nosso olhar especializado",
+      "body": "Para profissionais em transição ou recolocação que sentem que a trajetória é rica, mas a vitrine digital não transmite esse valor com clareza."
+    },
+    {
+      "kind": "list",
+      "title": "O que você recebe no diagnóstico gratuito",
+      "items": [
+        "Análise detalhada do seu título e resumo atual",
+        "Avaliação da primeira impressão visual do perfil",
+        "Sugestões diretas de clareza para atrair conexões certas",
+        "Orientações práticas aplicadas ao seu momento profissional"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "Como funciona o processo na prática",
+      "body": "Você solicita o acesso, nossa equipe avalia os pontos cegos do seu perfil e entrega um panorama objetivo para você destravar seu posicionamento."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver seu perfil com novos olhos?",
+      "body": "Comente a palavra TITULO aqui embaixo que eu te envio o link do diagnóstico gratuito diretamente no seu direct.",
+      "show_link": true
+    }
+  ]
+}
