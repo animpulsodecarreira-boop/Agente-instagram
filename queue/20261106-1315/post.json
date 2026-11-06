@@ -1,6 +1,6 @@
 {
   "id": "20261106-1315",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "azul",
   "variant": 0,
@@ -11,5 +11,7 @@
   "story_format": "pergunta",
   "story_mode": "acompanha",
   "pillar": "curriculo",
-  "angle": "tamanho e formato"
+  "angle": "tamanho e formato",
+  "media_id": "18015766355969317",
+  "stories_published": 1
 }
