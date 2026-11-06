@@ -1,0 +1,39 @@
+{
+  "topic": "Como tamanho e formato do currículo ajudam na clareza da candidatura",
+  "funnel": "meio",
+  "theme": "azul",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Mais páginas nunca significaram mais clareza para quem lê",
+      "body": "Veja como ajustamos o tamanho e a estrutura de um currículo na consultoria."
+    },
+    {
+      "kind": "content",
+      "title": "Imagine a história de Carla",
+      "body": "Carla tinha quinze anos de experiência em operações e acumulava quatro páginas de currículo. Parecia um livro detalhado, mas na prática gerava dúvida."
+    },
+    {
+      "kind": "content",
+      "title": "O excesso de detalhes escondia o essencial",
+      "body": "Em vez de mostrar relevância, o documento longo diluía as principais entregas dela. Quem batia o olho não sabia qual era o foco principal da carreira."
+    },
+    {
+      "kind": "content",
+      "title": "O ajuste de formato e foco",
+      "body": "No nosso método, filtramos o que realmente importava para a fase atual dela, reduzindo o conteúdo para o espaço ideal sem perder a substância."
+    },
+    {
+      "kind": "quote",
+      "title": "O currículo precisa guiar o olhar de quem contrata direto para o que você faz de melhor",
+      "body": "Quando a estrutura respira, a trajetória faz sentido logo na primeira leitura."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver como fazemos isso na prática?",
+      "body": "Responda ao story de hoje e venha conversar com a gente na DM para entender os bastidores da nossa consultoria.",
+      "show_link": false
+    }
+  ]
+}

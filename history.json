@@ -802,5 +802,22 @@
     "story_title": "Modo Sexta",
     "pillar": "leve_fora",
     "angle": null
+  },
+  {
+    "topic": "Como tamanho e formato do currículo ajudam na clareza da candidatura",
+    "funnel": "meio",
+    "theme": "azul",
+    "variant": 0,
+    "format": "caso_hipotetico",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a responder o story do dia",
+    "keyword": "PERFIL",
+    "cover": "Mais páginas nunca significaram mais clareza para quem lê",
+    "opener": "Resumir uma trajetória inteira em poucas páginas costuma gerar aquela dúvida sobre o que deixar de fora. No dia a dia da",
+    "story_format": "pergunta",
+    "story_mode": "acompanha",
+    "story_title": "Quantas páginas tem o seu currículo hoje em dia?",
+    "pillar": "curriculo",
+    "angle": "tamanho e formato"
   }
 ]
