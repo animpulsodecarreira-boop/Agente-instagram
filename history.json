@@ -785,5 +785,22 @@
     "story_title": "E-mail de última hora",
     "pillar": "linkedin",
     "angle": "título e Sobre"
+  },
+  {
+    "topic": "Sexta feira",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 0,
+    "format": "descanso",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "cta": "pedir para comentar qual opção ou time a pessoa é",
+    "keyword": "TITULO",
+    "cover": "Afinal, o que acontece com o cérebro assim que a sexta-feira chega?",
+    "opener": "A sensação de fechar a aba de trabalho na sexta-feira deveria vir com direito a fogos de artifício. De repente, os probl",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Modo Sexta",
+    "pillar": "leve_fora",
+    "angle": null
   }
 ]

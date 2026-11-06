@@ -1,0 +1,41 @@
+{
+  "topic": "Sexta feira",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Afinal, o que acontece com o cérebro assim que a sexta-feira chega?",
+      "body": "Parece mágica, mas a energia muda antes mesmo do expediente acabar."
+    },
+    {
+      "kind": "list",
+      "title": "Hábitos simples para recarregar as energias",
+      "items": [
+        "Desconectar as notificações do celular",
+        "Comer algo só pelo puro prazer",
+        "Deixar o alarme de acordar desligado",
+        "Olhar para o teto sem culpa nenhuma"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "Silenciar o celular muda tudo",
+      "body": "Não precisa ser para sempre. Apenas algumas horas sem ver a tela vibrar já fazem a mente respirar aliviada.",
+      "highlight": "O cérebro agradece cada minuto de silêncio."
+    },
+    {
+      "kind": "content",
+      "title": "Fazer absolutamente nada",
+      "body": "Existe uma culpa invisível que nos faz achar que precisamos estar sempre produzindo até no descanso. Que tal ignorar essa voz?",
+      "highlight": "Descansar não é perda de tempo."
+    },
+    {
+      "kind": "cta",
+      "title": "De qual time você é?",
+      "body": "Comente aqui embaixo se você é do tipo que dorme o dia todo ou do tipo que inventa mil passeios na sexta.",
+      "show_link": false
+    }
+  ]
+}
