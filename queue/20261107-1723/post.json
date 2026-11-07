@@ -1,6 +1,6 @@
 {
   "id": "20261107-1723",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "azul",
   "variant": 1,
@@ -11,5 +11,7 @@
   "story_format": "pergunta",
   "story_mode": "paralela",
   "pillar": "leve_descanso",
-  "angle": "dormir sem alarme"
+  "angle": "dormir sem alarme",
+  "media_id": "18149561797585990",
+  "stories_published": 1
 }
