@@ -1,0 +1,39 @@
+{
+  "topic": "Descanso, recarga de energia no fim de semana e o hábito de dormir sem alarme",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "A única tecnologia de ponta que a gente quer ver no sábado de manhã é o botão de soneca",
+      "body": "Ou melhor: a ausência completa de qualquer alarme tocando"
+    },
+    {
+      "kind": "content",
+      "title": "Acordar sem o relógio apitando",
+      "body": "Existe um pequeno luxo silencioso em abrir os olhos e descobrir que o tempo pertence apenas a você, sem nenhuma pressa programada."
+    },
+    {
+      "kind": "content",
+      "title": "O corpo avisa quando pede pausa",
+      "body": "A semana inteira a gente corre para dar conta de prazos, reuniões e mensagens. O fim de semana é o momento legítimo de apertar o pause."
+    },
+    {
+      "kind": "content",
+      "title": "Descansar não é tempo perdido",
+      "body": "Até as engrenagens mais potentes precisam desligar um pouco para continuar funcionando bem depois. Cuidar de si é parte da rotina."
+    },
+    {
+      "kind": "quote",
+      "title": "Dormir até acordar naturalmente deveria ser patrimônio cultural dos dias de folga.",
+      "body": "Sem culpa e sem pressa para começar o dia."
+    },
+    {
+      "kind": "cta",
+      "title": "Quem merece desligar o despertador amanhã?",
+      "body": "Manda este post ou marca aquela pessoa que vai entender exatamente o valor de uma manhã sem alarme.",
+      "show_link": false
+    }
+  ]
+}

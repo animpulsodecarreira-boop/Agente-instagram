@@ -836,5 +836,22 @@
     "story_title": "A foto de perfil antiga parece sempre um retrato falado de outra fase da vida.",
     "pillar": "linkedin",
     "angle": "foto, banner e primeira impressão"
+  },
+  {
+    "topic": "Descanso, recarga de energia no fim de semana e o hábito de dormir sem alarme",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 1,
+    "format": "recomendacao",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "cta": "convidar a marcar ou mandar para um colega que se identifica",
+    "keyword": "CHECK",
+    "cover": "A única tecnologia de ponta que a gente quer ver no sábado de manhã é o botão de soneca",
+    "opener": "Parece exagero, mas a sensação de programar o alarme para tocar apenas no dia seguinte é uma das pequenas alegrias da vi",
+    "story_format": "pergunta",
+    "story_mode": "paralela",
+    "story_title": "Qual foi a última vez que você acordou sem alarme e sem nenhuma pressa?",
+    "pillar": "leve_descanso",
+    "angle": "dormir sem alarme"
   }
 ]

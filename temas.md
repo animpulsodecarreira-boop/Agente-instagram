@@ -106,8 +106,8 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 | Ângulo | Vezes | Última vez |
 |---|---|---|
 | domingo sem a ansiedade de segunda | 1 | 2026-10-31 |
+| dormir sem alarme | 1 | 2026-11-07 |
 | desligar de verdade | 0 | - |
-| dormir sem alarme | 0 | - |
 | hobby que não precisa dar resultado | 0 | - |
 | pausa sem culpa | 0 | - |
 | um passeio sem objetivo | 0 | - |
