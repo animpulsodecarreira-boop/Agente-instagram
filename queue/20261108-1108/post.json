@@ -1,6 +1,6 @@
 {
   "id": "20261108-1108",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "claro",
   "variant": 2,
@@ -11,5 +11,7 @@
   "story_format": "digitar",
   "story_mode": "acompanha",
   "pillar": "leve_rotina",
-  "angle": "o que a mesa diz sobre a pessoa"
+  "angle": "o que a mesa diz sobre a pessoa",
+  "media_id": "17966382402234453",
+  "stories_published": 1
 }
