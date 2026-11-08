@@ -1,0 +1,37 @@
+{
+  "topic": "A tentação de começar um hobby novo no fim de semana",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Adotar um hobby novo ou só acumular itens no carrinho?",
+      "body": "A linha tênue entre descobrir uma grande vocação secreta e comprar um kit completo que vai morar esquecido no fundo do armário."
+    },
+    {
+      "kind": "content",
+      "title": "Opção 1: O guardião das plantas",
+      "body": "Você compra vaso, terra adubada, regador charmoso e dá nome para a planta. Na terça-feira você já não lembra se ela queria sol ou meia-sombra e entra em pânico.",
+      "highlight": "Vontade genuína, execução no improviso."
+    },
+    {
+      "kind": "content",
+      "title": "Opção 2: O artesão de 48 horas",
+      "body": "Basta um vídeo rápido na tela para você decidir que cerâmica ou aquarela é o seu destino. Gasta um valor considerável em materiais para produzir meia xícara torta.",
+      "highlight": "O importante é que a mente descansou."
+    },
+    {
+      "kind": "content",
+      "title": "Opção 3: O atleta de sofá",
+      "body": "Vestir a roupa esportiva comprada na promoção traz uma sensação imediata de bem-estar. O tênis fica intacto perto da porta enquanto você aproveita o café com bolo.",
+      "highlight": "Valeu pelo entusiasmo inicial."
+    },
+    {
+      "kind": "cta",
+      "title": "Guarde para ler na segunda-feira",
+      "body": "Salve este post para abrir no início da semana e lembrar que a vida fica mais leve quando rimos de nós mesmos. Qual hobby você quase começou hoje?",
+      "show_link": false
+    }
+  ]
+}

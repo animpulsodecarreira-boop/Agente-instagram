@@ -870,5 +870,22 @@
     "story_title": "A melhor decoração para qualquer mesa de trabalho é um fim de semana inteiro pela frente",
     "pillar": "leve_rotina",
     "angle": "o que a mesa diz sobre a pessoa"
+  },
+  {
+    "topic": "A tentação de começar um hobby novo no fim de semana",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 0,
+    "format": "pergunta_leve",
+    "hook": "comparação inesperada entre duas situações",
+    "cta": "convidar a salvar para ler na segunda-feira",
+    "keyword": "QUERO",
+    "cover": "Adotar um hobby novo ou só acumular itens no carrinho?",
+    "opener": "Basta uma tarde livre no sábado para o cérebro inventar que agora somos padeiros artesanais, pintores de aquarela ou mar",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Resposta de sexta à tarde",
+    "pillar": "leve_fora",
+    "angle": "um hobby novo"
   }
 ]
