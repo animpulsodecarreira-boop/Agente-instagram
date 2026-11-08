@@ -1,0 +1,43 @@
+{
+  "topic": "Tradutor sincero do que a mesa de trabalho diz sobre você",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Cientistas afirmam: sua mesa de trabalho revela todos os seus segredos",
+      "body": "Brincadeira, claro. Mas o estado do seu espaço de trabalho costuma falar bem mais alto do que parece."
+    },
+    {
+      "kind": "versus",
+      "title": "O museu da cafeína",
+      "left": "Gosto de colecionar xícaras bonitas ao longo do dia.",
+      "left_label": "ELE DISSE",
+      "right": "Se eu levantar para levar essas 4 canecas até a pia, perco o resto de foco que ainda me sobra.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "versus",
+      "title": "A muralha de papéis amarelos",
+      "left": "Meu método visual de organização garante alta produtividade.",
+      "left_label": "ELE DISSE",
+      "right": "Metade desses lembretes é de 2023, mas agora eles fazem parte da estrutura da mesa.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "versus",
+      "title": "O minimalismo suspeito",
+      "left": "Prefiro manter apenas o essencial para ter clareza mental.",
+      "left_label": "ELE DISSE",
+      "right": "Empurrei toda a bagunça para a primeira gaveta dois minutos antes da reunião por vídeo.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "cta",
+      "title": "Agora é hora de abandonar a mesa",
+      "body": "Deixe as canecas e papéis para a próxima semana. O que você vai fazer de bom para relaxar neste fim de semana?",
+      "show_link": false
+    }
+  ]
+}

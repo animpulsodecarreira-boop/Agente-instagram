@@ -853,5 +853,22 @@
     "story_title": "Qual foi a última vez que você acordou sem alarme e sem nenhuma pressa?",
     "pillar": "leve_descanso",
     "angle": "dormir sem alarme"
+  },
+  {
+    "topic": "Tradutor sincero do que a mesa de trabalho diz sobre você",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 2,
+    "format": "tradutor_corporativo",
+    "hook": "exagero de brincadeira (deixe claro que é brincadeira)",
+    "cta": "perguntar o que a pessoa vai fazer no fim de semana",
+    "keyword": "AJUDA",
+    "cover": "Cientistas afirmam: sua mesa de trabalho revela todos os seus segredos",
+    "opener": "Dizem que o ambiente de trabalho reflete a mente, mas às vezes ele reflete apenas a quantidade de café necessária para c",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "A melhor decoração para qualquer mesa de trabalho é um fim de semana inteiro pela frente",
+    "pillar": "leve_rotina",
+    "angle": "o que a mesa diz sobre a pessoa"
   }
 ]

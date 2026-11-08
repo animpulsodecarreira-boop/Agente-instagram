@@ -133,5 +133,14 @@
         "Mensagens objetivas no trabalho"
       ]
     }
+  },
+  "leve_rotina": {
+    "o que a mesa diz sobre a pessoa": {
+      "vezes": 1,
+      "ultima": "2026-11-08",
+      "topicos": [
+        "Tradutor sincero do que a mesa de trabalho diz sobre você"
+      ]
+    }
   }
 }

@@ -94,12 +94,12 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| o que a mesa diz sobre a pessoa | 1 | 2026-11-08 |
 | a lista de tarefas que nunca zera | 0 | - |
 | abas abertas | 0 | - |
 | mensagem que poderia ser um e-mail | 0 | - |
 | o 'só mais um minutinho' | 0 | - |
 | o café que esfria | 0 | - |
-| o que a mesa diz sobre a pessoa | 0 | - |
 
 ## Descanso e recarga
 
