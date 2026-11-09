@@ -1,6 +1,6 @@
 {
   "id": "20261109-1329",
-  "status": "pending",
+  "status": "published",
   "funnel": "meio",
   "theme": "claro",
   "variant": 0,
@@ -11,5 +11,7 @@
   "story_format": "checklist",
   "story_mode": "paralela",
   "pillar": "transicao",
-  "angle": "habilidades transferíveis"
+  "angle": "habilidades transferíveis",
+  "media_id": "17913599778603389",
+  "stories_published": 1
 }
