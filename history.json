@@ -938,5 +938,22 @@
     "story_title": "Coisas que levamos de um emprego para o outro",
     "pillar": "transicao",
     "angle": "habilidades transferíveis"
+  },
+  {
+    "topic": "Mitos engraçados sobre a segunda-feira",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 2,
+    "format": "mitos_trabalho",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "cta": "convidar a contar nos comentários a situação mais engraçada que já viveu no trabalho (sem citar empresas ou pessoas)",
+    "keyword": "TITULO",
+    "cover": "Time segunda-feira é o pior dia ou time tanto faz?",
+    "opener": "Quem foi que espalhou a fofoca de que a segunda-feira dura uma eternidade inteira enquanto o fim de semana passa num pis",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "Bate-papo de domingo à noite",
+    "pillar": "leve_descanso",
+    "angle": null
   }
 ]

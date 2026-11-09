@@ -1,0 +1,48 @@
+{
+  "topic": "Mitos engraçados sobre a segunda-feira",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Time segunda-feira é o pior dia ou time tanto faz?",
+      "body": "Vamos desvendar o que é mito e o que é pura ficção na nossa relação com o início da semana."
+    },
+    {
+      "kind": "versus",
+      "title": "O grande drama do início da semana",
+      "left": "A segunda-feira tem vinte e quatro horas a mais que qualquer outro dia do calendário.",
+      "left_label": "O MITO",
+      "right": "O relógio corre exatamente no mesmo ritmo, mas a nossa vontade de dormir é que dobra.",
+      "right_label": "A REALIDADE"
+    },
+    {
+      "kind": "versus",
+      "title": "A famosa preparação de domingo",
+      "left": "Dormir cedo no domingo resolve magicamente qualquer cansaço acumulado da semana.",
+      "left_label": "O MITO",
+      "right": "Você deita cedo, mas passa duas horas pensando em boletos e na lista de tarefas.",
+      "right_label": "A REALIDADE"
+    },
+    {
+      "kind": "versus",
+      "title": "O café matinal milagroso",
+      "left": "A primeira xícara de café na segunda-feira tem o poder de restaurar a paz universal.",
+      "left_label": "O MITO",
+      "right": "Ela só te deixa um pouco mais desperto para perceber que ainda faltam quatro dias.",
+      "right_label": "A REALIDADE"
+    },
+    {
+      "kind": "quote",
+      "title": "No fim das contas, a rotina é só uma fase que recomeça toda semana.",
+      "body": "Com um sorriso leve e um bom café, a gente sobrevive a qualquer início de ciclo."
+    },
+    {
+      "kind": "cta",
+      "title": "Qual foi a situação mais engraçada que você já viveu no trabalho?",
+      "body": "Conta aqui nos comentários para a gente dar boas risadas juntos hoje.",
+      "show_link": false
+    }
+  ]
+}
