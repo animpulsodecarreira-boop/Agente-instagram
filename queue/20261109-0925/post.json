@@ -11,5 +11,7 @@
   "story_format": "teaser",
   "story_mode": "acompanha",
   "pillar": "leve_mundo",
-  "angle": null
+  "angle": null,
+  "reel_status": "pending",
+  "reel_modo": "texto"
 }
