@@ -1,6 +1,6 @@
 {
   "id": "20261109-1822",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "azul",
   "variant": 2,
@@ -11,5 +11,7 @@
   "story_format": "chat",
   "story_mode": "paralela",
   "pillar": "leve_descanso",
-  "angle": null
+  "angle": null,
+  "media_id": "18116036264172048",
+  "stories_published": 1
 }
