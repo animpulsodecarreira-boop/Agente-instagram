@@ -955,5 +955,22 @@
     "story_title": "Bate-papo de domingo à noite",
     "pillar": "leve_descanso",
     "angle": null
+  },
+  {
+    "topic": "Como transformar o histórico de experiências em conquistas reais no LinkedIn",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 1,
+    "format": "comparativo",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "QUERO",
+    "cover": "Contar o seu trabalho é como tentar explicar um filme inteiro listando só os créditos finais",
+    "opener": "Escrever sobre o próprio histórico profissional sem parecer apenas uma lista de tarefas antigas exige mudar o foco para ",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Sua experiência resumida a uma lista de tarefas ou a conquistas reais?",
+    "pillar": "linkedin",
+    "angle": "experiências e conquistas"
   }
 ]

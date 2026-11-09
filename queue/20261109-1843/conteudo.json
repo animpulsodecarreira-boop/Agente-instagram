@@ -1,0 +1,41 @@
+{
+  "topic": "Como transformar o histórico de experiências em conquistas reais no LinkedIn",
+  "funnel": "fundo",
+  "theme": "azul",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Contar o seu trabalho é como tentar explicar um filme inteiro listando só os créditos finais",
+      "body": "Veja como mudar o seu histórico no LinkedIn."
+    },
+    {
+      "kind": "versus",
+      "title": "O que você fez vs. o que você gerou",
+      "left": "Lista apenas tarefas e obrigações diárias",
+      "left_label": "JEITO COMUM",
+      "right": "Mostra o problema resolvido e o impacto gerado",
+      "right_label": "JEITO AN"
+    },
+    {
+      "kind": "versus",
+      "title": "O peso do cargo vs. o valor da entrega",
+      "left": "Deixa o recrutador adivinhar o tamanho da sua responsabilidade",
+      "left_label": "JEITO COMUM",
+      "right": "Resume com clareza o escopo e as conquistas reais",
+      "right_label": "JEITO AN"
+    },
+    {
+      "kind": "content",
+      "title": "Quem lê precisa entender seu valor em segundos",
+      "body": "Quando você traduz tarefas em histórico de valor, o recrutador enxerga sua capacidade de resolver problemas logo na primeira passada de olho no perfil.",
+      "highlight": "Clareza atrai a atenção certa."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver como transformar o seu perfil?",
+      "body": "Mande a palavra QUERO aqui nos comentários ou no direct para receber nosso diagnóstico gratuito do LinkedIn e dar o próximo passo na sua recolocação.",
+      "show_link": true
+    }
+  ]
+}
