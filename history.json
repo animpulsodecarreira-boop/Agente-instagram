@@ -887,5 +887,22 @@
     "story_title": "Resposta de sexta à tarde",
     "pillar": "leve_fora",
     "angle": "um hobby novo"
+  },
+  {
+    "topic": "Negociação e limites: como avaliar uma proposta de trabalho com segurança",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 2,
+    "format": "mito_verdade",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a comentar a palavra-chave {kw}",
+    "keyword": "CHECK",
+    "cover": "Cuidado ao responder uma proposta de trabalho no impulso",
+    "opener": "A vontade de encerrar logo uma etapa de processos seletivos faz muita gente dizer sim antes da hora.",
+    "story_format": "riscar",
+    "story_mode": "acompanha",
+    "story_title": "Pedir prazo para avaliar proposta",
+    "pillar": "negociacao",
+    "angle": "avaliar uma proposta"
   }
 ]

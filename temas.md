@@ -72,8 +72,8 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| avaliar uma proposta | 1 | 2026-11-09 |
 | alinhar expectativas | 0 | - |
-| avaliar uma proposta | 0 | - |
 | benefícios além do salário | 0 | - |
 | dizer não com educação | 0 | - |
 | pedir tempo para decidir | 0 | - |

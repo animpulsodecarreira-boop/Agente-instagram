@@ -1,0 +1,48 @@
+{
+  "topic": "Negociação e limites: como avaliar uma proposta de trabalho com segurança",
+  "funnel": "topo",
+  "theme": "escuro",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Cuidado ao responder uma proposta de trabalho no impulso",
+      "body": "Receber um sim dá alívio, mas aceitar sem analisar os detalhes pode custar caro para a sua rotina logo ali na frente."
+    },
+    {
+      "kind": "versus",
+      "title": "Mito 1: O valor no contrato é tudo o que importa",
+      "left": "Olhar apenas para o salário bruto e ignorar custos fixos e benefícios",
+      "left_label": "ILUSÃO",
+      "right": "Calcular o pacote total, modelo de trabalho e impacto na sua rotina",
+      "right_label": "VERDADE"
+    },
+    {
+      "kind": "versus",
+      "title": "Mito 2: Pedir tempo para pensar pega mal",
+      "left": "Responder correndo com medo de parecer desinteressado na vaga",
+      "left_label": "PRESSA",
+      "right": "Agradecer e pedir de dois a três dias úteis para analisar com calma",
+      "right_label": "POSTURA"
+    },
+    {
+      "kind": "versus",
+      "title": "Mito 3: Fazer perguntas parece ingratidão",
+      "left": "Supor que os detalhes que faltam vão se resolver sozinhos depois",
+      "left_label": "SILÊNCIO",
+      "right": "Tirar dúvidas sobre metas, autonomia e expectativas antes do início",
+      "right_label": "CLAREZA"
+    },
+    {
+      "kind": "quote",
+      "title": "Uma proposta profissional boa precisa funcionar no seu dia a dia real, não apenas parecer bonita no papel.",
+      "body": "Quem se posiciona com clareza desde o começo entra na nova etapa com muito mais segurança."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer um guia rápido para analisar sua próxima proposta?",
+      "body": "Comente CHECK aqui nos comentários para receber um checklist com os pontos que você não pode deixar passar.",
+      "show_link": false
+    }
+  ]
+}
