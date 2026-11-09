@@ -904,5 +904,22 @@
     "story_title": "Pedir prazo para avaliar proposta",
     "pillar": "negociacao",
     "angle": "avaliar uma proposta"
+  },
+  {
+    "topic": "segunda-feira de manhã e os estilos de sobrevivência",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 1,
+    "format": "time_quiz",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "cta": "pedir uma palavra que resuma a semana da pessoa",
+    "keyword": "PERFIL",
+    "cover": "Ninguém fala, mas...",
+    "opener": "Acordar cedo no começo da semana exige um esforço diplomático entre a vontade de continuar deitado e a realidade dos bol",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Qual é a sua estratégia secreta para encarar a segunda-feira?",
+    "pillar": "leve_mundo",
+    "angle": null
   }
 ]

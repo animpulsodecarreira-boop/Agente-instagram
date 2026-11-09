@@ -1,0 +1,34 @@
+{
+  "topic": "segunda-feira de manhã e os estilos de sobrevivência",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Ninguém fala, mas...",
+      "body": "Todo mundo adopta uma estratégia secreta para sobreviver à segunda-feira de manhã."
+    },
+    {
+      "kind": "content",
+      "title": "Time do Café Mágico",
+      "body": "Acredita piamente que o primeiro gole de café tem propriedades mágicas capazes de devolver a alma ao corpo."
+    },
+    {
+      "kind": "content",
+      "title": "Time do Silêncio Mortal",
+      "body": "Chega com a fisionomia fechada, fones de ouvido no volume máximo e responde a qualquer bom dia apenas com piscadas."
+    },
+    {
+      "kind": "content",
+      "title": "Time do Planejamento Extremo",
+      "body": "Abre o bloco de notas com listas coloridas de tarefas impossíveis de cumprir antes do almoço."
+    },
+    {
+      "kind": "cta",
+      "title": "De qual time você é?",
+      "body": "Conta aqui nos comentários qual palavra resume a sua semana até agora.",
+      "show_link": false
+    }
+  ]
+}
