@@ -921,5 +921,22 @@
     "story_title": "Qual é a sua estratégia secreta para encarar a segunda-feira?",
     "pillar": "leve_mundo",
     "angle": null
+  },
+  {
+    "topic": "Habilidades transferíveis na transição de carreira e reposicionamento profissional",
+    "funnel": "meio",
+    "theme": "claro",
+    "variant": 0,
+    "format": "mini_aula",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "cta": "convidar a comentar a dúvida para virar tema de um próximo post",
+    "keyword": "AJUDA",
+    "cover": "A sensação de estar recomeçando do zero na carreira",
+    "opener": "Sentir que a experiência anterior perde o valor ao buscar uma nova direção costuma travar o recomeço. A verdade é que os",
+    "story_format": "checklist",
+    "story_mode": "paralela",
+    "story_title": "Coisas que levamos de um emprego para o outro",
+    "pillar": "transicao",
+    "angle": "habilidades transferíveis"
   }
 ]

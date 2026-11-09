@@ -1,0 +1,49 @@
+{
+  "topic": "Habilidades transferíveis na transição de carreira e reposicionamento profissional",
+  "funnel": "meio",
+  "theme": "claro",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "A sensação de estar recomeçando do zero na carreira",
+      "body": "Mudar de área ou voltar ao mercado faz a gente achar que perdeu o que aprendeu."
+    },
+    {
+      "kind": "quote",
+      "title": "Sua bagagem não desaparece quando você muda de caminho",
+      "body": "O que você aprendeu em um lugar continua valendo no próximo."
+    },
+    {
+      "kind": "content",
+      "title": "Imagine mudar de profissão como trocar de instrumento",
+      "body": "Quem toca violão não esquece a noção de ritmo ao pegar uma guitarra pela primeira vez."
+    },
+    {
+      "kind": "content",
+      "title": "A base técnica muda, mas a essência do trabalho fica",
+      "body": "Saber negociar prazos, resolver conflitos e organizar projetos são ferramentas que vão com você para qualquer lugar."
+    },
+    {
+      "kind": "content",
+      "title": "O desafio é traduzir o que você já sabe para a nova linguagem",
+      "body": "Na nossa consultoria, ajudamos a olhar para a sua trajetória com clareza para mostrar esse valor ao mercado, inclusive no seu perfil profissional."
+    },
+    {
+      "kind": "list",
+      "title": "Como resgatar o que você já sabe fazer bem",
+      "items": [
+        "Liste suas atividades nas últimas experiências",
+        "Separe o que era ferramenta do que era habilidade humana",
+        "Traduza termos antigos para a nova área",
+        "Conecte sua história com o que o mercado busca hoje"
+      ]
+    },
+    {
+      "kind": "cta",
+      "title": "Qual foi a maior dificuldade ao mudar de área?",
+      "body": "Comente sua dúvida aqui embaixo para virar tema do nosso próximo post.",
+      "show_link": false
+    }
+  ]
+}
