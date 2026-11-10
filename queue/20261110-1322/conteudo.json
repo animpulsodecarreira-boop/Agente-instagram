@@ -1,0 +1,39 @@
+{
+  "topic": "Coisas que ninguém avisa na primeira semana de um trabalho novo",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Quem foi que inventou que a primeira semana de trabalho é só sorrisos?",
+      "body": "Ninguém te avisa dos pequenos detalhes do começo de tudo."
+    },
+    {
+      "kind": "content",
+      "title": "Descobrir onde fica o banheiro só na quinta-feira",
+      "body": "Nos primeiros dias, caminhar pelos corredores parece uma expedição sem mapa em terra desconhecida."
+    },
+    {
+      "kind": "content",
+      "title": "A missão secreta de decorar nomes",
+      "body": "Você sorri, acena, finge que lembra de todo mundo e reza para não ter que chamar ninguém pelo nome errado."
+    },
+    {
+      "kind": "content",
+      "title": "O enigma da senha do wi-fi e dos sistemas",
+      "body": "Parece simples até você tentar logar com cinco senhas diferentes enquanto três pessoas olham para a sua tela."
+    },
+    {
+      "kind": "content",
+      "title": "A dúvida eterna sobre a hora do almoço",
+      "body": "Será que todo mundo come junto? Será que levam marmita? Quem será que toma café na sua mesa?"
+    },
+    {
+      "kind": "cta",
+      "title": "Você é do time que anota tudo num bloquinho ou confia na memória?",
+      "body": "Conta aqui nos comentários como foi a sua adaptação no primeiro emprego ou projeto novo.",
+      "show_link": false
+    }
+  ]
+}

@@ -989,5 +989,22 @@
     "story_title": "Papo reto",
     "pillar": "linkedin",
     "angle": "palavras-chave"
+  },
+  {
+    "topic": "Coisas que ninguém avisa na primeira semana de um trabalho novo",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 0,
+    "format": "primeira_semana",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "cta": "pedir para comentar qual opção ou time a pessoa é",
+    "keyword": "CHECK",
+    "cover": "Quem foi que inventou que a primeira semana de trabalho é só sorrisos?",
+    "opener": "A sensação de estrear em um lugar novo sempre mistura aquela curiosidade boa com o frio na barriga de não saber nem onde",
+    "story_format": "checklist",
+    "story_mode": "acompanha",
+    "story_title": "Sobrevivendo aos primeiros dias",
+    "pillar": "leve_carreira",
+    "angle": null
   }
 ]
