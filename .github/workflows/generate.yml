@@ -62,6 +62,10 @@ jobs:
           FUNNEL: ${{ steps.f.outputs.funnel }}
           TEMA: ${{ inputs.tema }}
           OUTRO: ${{ inputs.outro }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          MIDIA_PUBLIC_URL: ${{ secrets.MIDIA_PUBLIC_URL }}
         run: |
           args=()
           if [ -n "$FUNNEL" ]; then args+=(--funnel "$FUNNEL"); fi
