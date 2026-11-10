@@ -1,6 +1,6 @@
 {
   "id": "20261110-1322",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "claro",
   "variant": 0,
@@ -15,5 +15,7 @@
   "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261110-1322",
   "reel_status": "pending",
   "reel_modo": "texto",
-  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261110-1322/reel.mp4"
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261110-1322/reel.mp4",
+  "media_id": "18116496245329005",
+  "stories_published": 1
 }
