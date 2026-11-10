@@ -37,6 +37,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           POST_ID: ${{ inputs.post_id }}
           MODO: ${{ inputs.modo }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          MIDIA_PUBLIC_URL: ${{ secrets.MIDIA_PUBLIC_URL }}
         run: python -m agent.main reel --post-id "$POST_ID" --modo "${MODO:-texto}"
       - name: Salvar o Reel no repositório (o Instagram busca pela URL)
         run: |
