@@ -6,7 +6,7 @@ import re
 import requests
 
 BASE = "https://api.telegram.org/bot{token}/{method}"
-SECRET_ENVS = ("TELEGRAM_BOT_TOKEN", "GEMINI_API_KEY", "IG_ACCESS_TOKEN")
+SECRET_ENVS = ("TELEGRAM_BOT_TOKEN", "GEMINI_API_KEY", "IG_ACCESS_TOKEN", "CF_API_TOKEN")
 
 
 def redact(text):
