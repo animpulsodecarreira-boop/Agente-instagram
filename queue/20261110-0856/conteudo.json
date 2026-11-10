@@ -1,0 +1,53 @@
+{
+  "topic": "Como usar palavras-chave estratégicas no LinkedIn para ser encontrado por quem contrata",
+  "funnel": "topo",
+  "theme": "geometrico",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Por que seu perfil no LinkedIn fica invisível para quem busca profissionais?",
+      "body": "O erro que faz ótimos profissionais passarem despercebidos nas buscas."
+    },
+    {
+      "kind": "versus",
+      "title": "O que você escreve vs. o que buscam",
+      "left": "Colocar apenas o nome técnico interno da sua função antiga",
+      "left_label": "ERRO COMUM",
+      "right": "Usar termos que o mercado de fato digita na barra de pesquisa",
+      "right_label": "JEITO CERTO"
+    },
+    {
+      "kind": "versus",
+      "title": "A forma de preencher o título",
+      "left": "Apenas o cargo atual seguido de em busca de recolocação",
+      "left_label": "ERRO COMUM",
+      "right": "Misturar o cargo com suas principais especialidades do dia a dia",
+      "right_label": "JEITO CERTO"
+    },
+    {
+      "kind": "versus",
+      "title": "Como falar das suas ferramentas",
+      "left": "Espalhar siglas e termos soltos sem contexto nas experiências",
+      "left_label": "ERRO COMUM",
+      "right": "Conectar as palavras-chave às entregas reais que você realizava",
+      "right_label": "JEITO CERTO"
+    },
+    {
+      "kind": "list",
+      "title": "Resumo para ajustar agora",
+      "items": [
+        "Descubra quais termos definem sua área no mercado",
+        "Distribua esses termos pelo título e resumo",
+        "Evite jargões internos que ninguém fora da empresa conhece",
+        "Teste buscar por eles para ver se seu perfil aparece"
+      ]
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver como seu perfil está sendo lido?",
+      "body": "Comente QUERO abaixo para garantir o seu diagnóstico gratuito do LinkedIn via link na bio e ajustar seu posicionamento.",
+      "show_link": true
+    }
+  ]
+}
