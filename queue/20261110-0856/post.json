@@ -1,6 +1,6 @@
 {
   "id": "20261110-0856",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "geometrico",
   "variant": 2,
@@ -11,5 +11,7 @@
   "story_format": "nota",
   "story_mode": "paralela",
   "pillar": "linkedin",
-  "angle": "palavras-chave"
+  "angle": "palavras-chave",
+  "media_id": "17878294653582626",
+  "stories_published": 1
 }
