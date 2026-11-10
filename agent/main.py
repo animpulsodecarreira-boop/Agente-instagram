@@ -2,6 +2,7 @@
   python -m agent.main generate [--funnel topo|meio|fundo|leve] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj|re|rr]   # aprova/reprocessa um post (ou o Reel dele) pelo GitHub
+  python -m agent.main storage-test   # confere o armazenamento externo (KV)
   python -m agent.main reel --post-id ID [--modo texto|slides] [--enviar]   # monta o Reel do post (--enviar: só manda ao Telegram)
   python -m agent.main preview [--mock] [--theme escuro] [--variant 0|1|2] [--story digitar|riscar|chat|checklist|nota|pergunta|teaser|all]   # teste local
 """
@@ -16,6 +17,7 @@ import traceback
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from . import storage
 from . import telegram_io as tg
 from .config import PILLARS, QUEUE, STATE_FILE, STORY_FORMATS, THEMES
 from .generate import generate_post, pick_theme, pick_variant, record_theme, save_history
@@ -79,6 +81,13 @@ def reel_caption(meta):
 
 
 def raw_url(post_id, filename):
+    """URL pública do arquivo do post: no armazenamento externo (KV) se o post foi para lá; senão, no GitHub."""
+    try:
+        base = json.loads((QUEUE / post_id / "post.json").read_text(encoding="utf-8")).get("media_base")
+    except Exception:
+        base = None
+    if base:
+        return f"{base}/{filename}"
     repo = os.environ["GITHUB_REPOSITORY"]
     branch = os.getenv("REPO_BRANCH", "main")
     return f"https://raw.githubusercontent.com/{repo}/{branch}/queue/{post_id}/{filename}"
@@ -104,7 +113,13 @@ def prune(days=10):
             when = datetime.strptime(d.name[:13], "%Y%m%d-%H%M").replace(tzinfo=TZ)
         except ValueError:
             continue
-        if when < limit and json.loads(meta.read_text(encoding="utf-8")).get("status") != "pending":
+        info = json.loads(meta.read_text(encoding="utf-8"))
+        if when < limit and info.get("status") != "pending":
+            if (info.get("media_base") or info.get("reel_url")) and storage.enabled():
+                try:
+                    storage.delete_post(d.name)  # as mídias saem também do armazenamento externo
+                except Exception as e:
+                    print(f"[armazenamento] não consegui apagar {d.name}: {e}", flush=True)
             shutil.rmtree(d, ignore_errors=True)
 
 
@@ -133,11 +148,13 @@ def cmd_generate(args):
         videos = [make_story_video(c, out / f"story{i}.mp4", f"{post_id}-{i}") for i, c in enumerate(clips, 1)]
         _log("vídeos prontos; enviando ao Telegram")
         shutil.rmtree(out / "_frames", ignore_errors=True)  # quadros intermediários não vão para o repositório
+        media_base = _subir_midia(post_id, out)  # PNGs e vídeos vão para o KV (se configurado); senão ficam no GitHub
         cap = full_caption(post)
         src = post["story_recipe"]
         meta = {"id": post_id, "status": "pending", "funnel": funnel, "theme": theme, "variant": variant, "topic": post["topic"],
                 "caption": cap, "slides": len(paths), "stories": len(videos),
-                "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"], "angle": post.get("angle")}
+                "story_format": src["format"], "story_mode": src["mode"], "pillar": post["pillar"], "angle": post.get("angle"),
+                **({"media_base": media_base} if media_base else {})}
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         rc = post["recipe"]
         # o conteúdo dos slides fica guardado: o Reel de texto reaproveita o roteiro, o tema e as palavras-chave do post
@@ -153,6 +170,8 @@ def cmd_generate(args):
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.send_for_approval(post_id, paths, cap, label, theme, videos)
         _log("enviado ao Telegram")
+        if media_base:
+            _limpar_midia_local(out)
         if post.get("angle"):  # tema sugerido não entra na contagem de ângulos
             record_theme(post["pillar"], post["angle"], post["topic"])  # só conta depois que o post chegou ao Telegram
         if prev is not None and prev.get("status") == "pending":  # "Gerar outro": o post anterior sai da fila
@@ -205,6 +224,61 @@ def _report(chat, msg, text):
     tg.notify(text)
 
 
+def _apagar_sobras(post_id):
+    """Se o envio não ficou utilizável, não deixa arquivos órfãos no armazenamento."""
+    try:
+        storage.delete_post(post_id)
+    except Exception:
+        pass
+
+
+def _subir_midia(post_id, folder):
+    """Sobe slides, stories e Reel para o armazenamento externo (KV). Devolve a URL-base pública, ou None:
+    nesse caso tudo continua no GitHub, como antes."""
+    if not storage.enabled():
+        return None
+    try:
+        nomes = storage.upload_post(post_id, folder)
+        ok, info = storage.verify_public(post_id, "slide1.png")
+        if not ok:
+            print(f"[armazenamento] {len(nomes)} arquivos subiram, mas a URL pública não serve direito ({info}); mantendo no GitHub", flush=True)
+            _apagar_sobras(post_id)
+            return None
+        _log(f"{len(nomes)} arquivos no armazenamento externo")
+        return storage.media_base(post_id)
+    except Exception:
+        print(tg.redact(traceback.format_exc()), file=sys.stderr)
+        print("[armazenamento] falhou; mantendo os arquivos no GitHub", flush=True)
+        _apagar_sobras(post_id)
+        return None
+
+
+def _limpar_midia_local(folder):
+    """Depois de subir para fora, apaga os PNGs e vídeos locais: o repositório fica só com os JSONs pequenos."""
+    for pat in storage.PADROES:
+        for p in folder.glob(pat):
+            p.unlink(missing_ok=True)
+
+
+def _subir_reel(post_id, out, meta):
+    """Sobe o reel.mp4 para o armazenamento externo e guarda a URL em meta['reel_url']; se falhar, ele fica no GitHub."""
+    meta.pop("reel_url", None)
+    if not storage.enabled():
+        return
+    try:
+        storage.upload_file(out / "reel.mp4", f"posts/{post_id}/reel.mp4")
+        ok, info = storage.verify_public(post_id, "reel.mp4")
+        if not ok:
+            print(f"[armazenamento] o Reel subiu, mas a URL pública não serve direito ({info}); mantendo no GitHub", flush=True)
+            return
+        meta["reel_url"] = f"{storage.media_base(post_id)}/reel.mp4"
+        (out / "reel.mp4").unlink(missing_ok=True)
+        _log("Reel no armazenamento externo")
+    except Exception:
+        print(tg.redact(traceback.format_exc()), file=sys.stderr)
+        print("[armazenamento] falhou; o Reel fica no GitHub", flush=True)
+
+
 def _reel_texto(out, meta, post_id):
     """Reel de texto animado (cenas no estilo dos stories). Devolve 'texto' se deu certo, ou None para usar o plano B."""
     frames_dir = out / "_reel_frames"
@@ -237,20 +311,37 @@ def cmd_reel(args):
         meta = json.loads(meta_file.read_text(encoding="utf-8"))
         if args.enviar:
             _log("enviando o Reel ao Telegram")
+            reel_local, baixou = out / "reel.mp4", False
+            if not reel_local.exists() and meta.get("reel_url"):
+                storage.download_url(meta["reel_url"], reel_local)  # o vídeo está no armazenamento externo
+                baixou = True
             nota = "ℹ️ Não consegui montar a versão em texto animado; este é o carrossel em vídeo." if meta.get("reel_modo") == "slides" else ""
-            tg.send_reel_for_approval(post_id, out / "reel.mp4", reel_caption(meta), nota)
+            try:
+                tg.send_reel_for_approval(post_id, reel_local, reel_caption(meta), nota)
+            finally:
+                if baixou:
+                    reel_local.unlink(missing_ok=True)
             return
         if meta.get("status") == "rejected":
             raise RuntimeError(f"O post {post_id} foi rejeitado; não criei o Reel.")
         if meta.get("reel_status") == "published":
             raise RuntimeError(f"O Reel do post {post_id} já foi publicado.")
-        usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
-        if usado is None:
-            slides = sorted(out.glob("slide*.png"), key=lambda p: int(re.sub(r"\D", "", p.stem) or 0))
-            _log(f"montando o Reel do post {post_id} com {len(slides)} slides (carrossel em vídeo)")
-            make_reel_video(slides, out / "reel.mp4", post_id)
-            usado = "slides"
+        baixados = []
+        try:
+            usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
+            if usado is None:
+                if not list(out.glob("slide*.png")) and meta.get("media_base"):  # os slides estão no armazenamento externo
+                    for i in range(1, int(meta.get("slides", 0)) + 1):
+                        baixados.append(storage.download_url(f"{meta['media_base']}/slide{i}.png", out / f"slide{i}.png"))
+                slides = sorted(out.glob("slide*.png"), key=lambda p: int(re.sub(r"\D", "", p.stem) or 0))
+                _log(f"montando o Reel do post {post_id} com {len(slides)} slides (carrossel em vídeo)")
+                make_reel_video(slides, out / "reel.mp4", post_id)
+                usado = "slides"
+        finally:
+            for p in baixados:  # os slides baixados não voltam para o repositório
+                p.unlink(missing_ok=True)
         meta["reel_status"], meta["reel_modo"] = "pending", usado
+        _subir_reel(post_id, out, meta)
         meta_file.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         _log("Reel pronto")
     except Exception:
@@ -258,6 +349,21 @@ def cmd_reel(args):
         print(err, file=sys.stderr)
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.notify(f"⚠️ Não consegui criar o Reel do post {post_id}:\n{err[-600:]}")
+        sys.exit(1)
+
+
+def cmd_storage_test(_args):
+    """Confere o armazenamento externo: sobe um arquivinho, confere a URL pública e apaga. O resultado vai para o Telegram."""
+    def say(ok, texto):
+        print(("OK: " if ok else "FALHA: ") + texto, flush=True)
+        if os.getenv("SKIP_TELEGRAM") != "1":
+            tg.notify(("✅ " if ok else "⚠️ ") + "Teste do armazenamento: " + texto)
+    if not storage.enabled():
+        say(False, "faltam estes segredos no GitHub: " + ", ".join(storage.faltando()))
+        sys.exit(1)
+    ok, info = storage.self_test(".")
+    say(ok, info)
+    if not ok:
         sys.exit(1)
 
 
@@ -288,9 +394,9 @@ def process_reel(action, post_id, chat=None, msg=None, cb_id=None):
         if cb_id:
             tg.answer(cb_id, "Publicando o Reel...")
         try:
-            if not (QUEUE / post_id / "reel.mp4").exists():
+            if not meta.get("reel_url") and not (QUEUE / post_id / "reel.mp4").exists():
                 raise RuntimeError("o arquivo reel.mp4 não está no repositório (espere um instante e tente de novo)")
-            media_id = publish_reel(raw_url(post_id, "reel.mp4"), reel_caption(meta))
+            media_id = publish_reel(meta.get("reel_url") or raw_url(post_id, "reel.mp4"), reel_caption(meta))
             meta["reel_status"], meta["reel_media_id"] = "published", media_id
             _report(chat, msg, f"✅ Reel do post {post_id} publicado!\n{permalink(media_id)}")
         except Exception as e:
@@ -404,11 +510,13 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--tema"); g.add_argument("--outro")
     sub.add_parser("poll")
+    sub.add_parser("storage-test")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj", "re", "rr"], default="ap")
     r_ = sub.add_parser("reel"); r_.add_argument("--post-id", required=True); r_.add_argument("--enviar", action="store_true"); r_.add_argument("--modo", choices=["texto", "slides"], default="texto")
     p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
-    {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview, "reel": cmd_reel}[args.cmd](args)
+    {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview, "reel": cmd_reel,
+     "storage-test": cmd_storage_test}[args.cmd](args)
 
 
 if __name__ == "__main__":
