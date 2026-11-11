@@ -1,0 +1,56 @@
+name: Insights e relatório
+on:
+  schedule:
+    - cron: "30 6 * * *"     # todo dia 03:30 Brasília: coleta as métricas
+    - cron: "0 0 * * 1"      # domingo 21:00 Brasília: coleta e manda o relatório semanal
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "coletar = só lê as métricas | relatorio = só manda o relatório | tudo = os dois"
+        required: true
+        default: "tudo"
+        type: choice
+        options: ["tudo", "coletar", "relatorio"]
+permissions:
+  contents: write
+concurrency:
+  group: agente
+  cancel-in-progress: false
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Definir a ação
+        id: a
+        run: |
+          A="${{ inputs.acao }}"
+          if [ -z "$A" ]; then
+            case "${{ github.event.schedule }}" in
+              "0 0 * * 1") A="tudo" ;;
+              *) A="coletar" ;;
+            esac
+          fi
+          echo "acao=$A" >> "$GITHUB_OUTPUT"
+      - name: Coletar métricas e/ou montar o relatório
+        timeout-minutes: 10
+        env:
+          PYTHONUNBUFFERED: "1"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python -m agent.insights "${{ steps.a.outputs.acao }}"
+      - name: Salvar o histórico de métricas
+        if: always()
+        run: |
+          git config user.name "agente-instagram"
+          git config user.email "agente@users.noreply.github.com"
+          git add metricas.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "métricas do Instagram" && git pull --rebase && git push)
+ 
