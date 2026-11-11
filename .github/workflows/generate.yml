@@ -39,10 +39,17 @@ jobs:
         timeout-minutes: 8
         run: |
           if ! command -v ffmpeg >/dev/null; then
-            for i in 1 2 3 4; do
-              sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && break
-              echo "tentativa $i falhou; aguardando"; sleep $((i*20))
+            # cada chamada do apt tem tempo máximo; a rede do GitHub às vezes trava na resolução de nomes
+            for i in 1 2; do
+              sudo timeout 100 apt-get -o Acquire::Retries=0 -o Acquire::http::Timeout=15 -o Acquire::ForceIPv4=true update -qq || true
+              sudo timeout 150 apt-get install -y -qq ffmpeg && break
+              echo "apt falhou (tentativa $i)"; sleep 15
             done
+          fi
+          if ! command -v ffmpeg >/dev/null; then
+            echo "Usando o ffmpeg empacotado no pip (plano B)"
+            pip install imageio-ffmpeg
+            sudo ln -sf "$(python -c 'import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg
           fi
           ffmpeg -version | head -1
       - name: Instalar dependências e o Chromium (com repetição)
@@ -50,7 +57,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           for i in 1 2 3; do
-            playwright install --with-deps chromium && break
+            timeout 240 playwright install --with-deps chromium && break
             echo "tentativa $i falhou; aguardando"; sleep $((i*20))
           done
       - name: Definir a etapa do funil
