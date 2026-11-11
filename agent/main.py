@@ -263,9 +263,22 @@ def _limpar_midia_local(folder):
 def _subir_reel(post_id, out, meta):
     """Sobe o reel.mp4 para o armazenamento externo e guarda a URL em meta['reel_url']; se falhar, ele fica no GitHub."""
     meta.pop("reel_url", None)
+    meta.pop("reel_capa_url", None)
     if not storage.enabled():
         return
     try:
+        capa = out / "reel_capa.png"
+        if capa.exists():   # a capa é um extra: se falhar, o Reel sai sem ela
+            try:
+                storage.upload_file(capa, f"posts/{post_id}/reel_capa.png")
+                ok_c, info_c = storage.verify_public(post_id, "reel_capa.png")
+                if ok_c:
+                    meta["reel_capa_url"] = f"{storage.media_base(post_id)}/reel_capa.png"
+                    capa.unlink(missing_ok=True)
+                else:
+                    print(f"[armazenamento] a capa subiu, mas a URL pública não serve direito ({info_c}); capa fica no GitHub", flush=True)
+            except Exception as e:
+                print(f"[armazenamento] não consegui subir a capa do Reel ({str(e)[:200]}); capa fica no GitHub", flush=True)
         storage.upload_file(out / "reel.mp4", f"posts/{post_id}/reel.mp4")
         ok, info = storage.verify_public(post_id, "reel.mp4")
         if not ok:
@@ -288,7 +301,7 @@ def _reel_texto(out, meta, post_id):
         conteudo = json.loads(cont_file.read_text(encoding="utf-8")) if cont_file.exists() else {}
         slides = conteudo.get("slides") or slides_from_caption(meta.get("caption", ""), meta.get("topic", ""))
         _log("montando o Reel de texto a partir do " + ("conteúdo do post" if conteudo.get("slides") else "texto da legenda (post antigo)"))
-        frames = render_reel_text(slides, meta.get("theme", "escuro"), frames_dir)
+        frames = render_reel_text(slides, meta.get("theme", "escuro"), frames_dir, capa=out / "reel_capa.png")
         _log(f"{len(frames)} quadros prontos; montando o vídeo")
         make_reel_from_frames(frames, out / "reel.mp4", post_id)
         return "texto"
@@ -327,6 +340,7 @@ def cmd_reel(args):
         if meta.get("reel_status") == "published":
             raise RuntimeError(f"O Reel do post {post_id} já foi publicado.")
         baixados = []
+        (out / "reel_capa.png").unlink(missing_ok=True)   # nada de capa velha de um Reel anterior
         try:
             usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
             if usado is None:
@@ -396,7 +410,8 @@ def process_reel(action, post_id, chat=None, msg=None, cb_id=None):
         try:
             if not meta.get("reel_url") and not (QUEUE / post_id / "reel.mp4").exists():
                 raise RuntimeError("o arquivo reel.mp4 não está no repositório (espere um instante e tente de novo)")
-            media_id = publish_reel(meta.get("reel_url") or raw_url(post_id, "reel.mp4"), reel_caption(meta))
+            capa = meta.get("reel_capa_url") or (f"https://raw.githubusercontent.com/{os.environ['GITHUB_REPOSITORY']}/{os.getenv('REPO_BRANCH', 'main')}/queue/{post_id}/reel_capa.png" if (QUEUE / post_id / "reel_capa.png").exists() else None)
+            media_id = publish_reel(meta.get("reel_url") or raw_url(post_id, "reel.mp4"), reel_caption(meta), cover_url=capa)
             meta["reel_status"], meta["reel_media_id"] = "published", media_id
             _report(chat, msg, f"✅ Reel do post {post_id} publicado!\n{permalink(media_id)}")
         except Exception as e:
