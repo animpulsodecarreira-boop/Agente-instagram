@@ -12,5 +12,9 @@
   "story_mode": "paralela",
   "pillar": "leve_mundo",
   "angle": null,
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1654"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1654",
+  "reel_status": "pending",
+  "reel_modo": "texto",
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1654/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1654/reel.mp4"
 }
