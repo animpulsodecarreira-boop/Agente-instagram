@@ -161,7 +161,16 @@ def pick_story_recipe(funnel, post_format, hist=None):
 # saída), os seguintes pedem menos pensamento. Modelos novos usam thinkingLevel; os 2.5 usam thinkingBudget.
 THINKING_PROFILES = [None, {"thinkingLevel": "low"}, {"thinkingBudget": 512}]
 MAX_OUTPUT_TOKENS = 16384
-GEMINI_DEADLINE = 360  # segundos no total, para o passo do GitHub nunca estourar o limite
+GEMINI_DEADLINE = 480  # segundos no total (o passo do GitHub tem 15 minutos; o restante fica para renderizar)
+GEMINI_RODADAS = 3     # quantas voltas completas pelos modelos antes de desistir
+SOBRECARGA = (429, 500, 502, 503, 504)  # falhas do lado do Google: trocar de modelo, não de "perfil de pensamento"
+
+
+def _glog(msg):
+    print(f"      [gemini {time.time() - _T0:4.0f}s] {msg}", flush=True)
+
+
+_T0 = time.time()
 
 
 def _extract(data):
@@ -186,42 +195,71 @@ def _extract(data):
 
 
 def call_gemini(prompt):
+    """Chama o Gemini com paciência: sobrecarga (503/429) e lentidão passam para o PRÓXIMO MODELO (mudar o perfil de
+    pensamento não adianta nada nesse caso); resposta vazia/cortada ou erro 400 passam para o próximo perfil.
+    Se todos falharem, espera um pouco e dá outra volta, até o tempo total esgotar."""
+    global _T0
     key = os.environ["GEMINI_API_KEY"]
-    start = time.time()
-    errors = []
-    for model in GEMINI_MODELS:
-        for pi, profile in enumerate(THINKING_PROFILES):
-            for attempt in range(2):  # falhas momentâneas (429/5xx/conexão) tentam de novo no mesmo perfil
-                if time.time() - start > GEMINI_DEADLINE:
-                    raise RuntimeError("Gemini falhou (tempo esgotado): " + " | ".join(errors[-4:])[-700:])
+    start = _T0 = time.time()
+    errors, so_google = [], True  # so_google: todas as falhas foram sobrecarga/lentidão do lado do Google
+
+    def sobra():
+        return GEMINI_DEADLINE - (time.time() - start)
+
+    def falhar(motivo):
+        resumo = " | ".join(errors[-6:])[-900:]
+        raise RuntimeError(f"Gemini falhou ({motivo}): {resumo}")
+
+    for rodada in range(GEMINI_RODADAS):
+        for model in GEMINI_MODELS:
+            pi, sobrecargas = 0, 0
+            while pi < len(THINKING_PROFILES):
+                if sobra() < 25:
+                    falhar("tempo esgotado" + (", instabilidade do Google" if so_google else ""))
+                profile = THINKING_PROFILES[pi]
                 gen = {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0.9,
                        "maxOutputTokens": MAX_OUTPUT_TOKENS}
                 if profile:
                     gen["thinkingConfig"] = profile
                 body = {"systemInstruction": {"parts": [{"text": SYSTEM}]},
                         "contents": [{"role": "user", "parts": [{"text": prompt}]}], "generationConfig": gen}
-                tag = f"{model}/perfil{pi}"
+                tag = f"{model}/perfil{pi}/volta{rodada + 1}"
                 try:
-                    r = requests.post(API.format(model=model), params={"key": key}, json=body, timeout=(15, 120))
+                    r = requests.post(API.format(model=model), params={"key": key}, json=body,
+                                      timeout=(15, max(20, min(120, sobra() - 5))))
                 except requests.exceptions.RequestException as e:  # timeout, conexão caiu etc.
                     errors.append(f"{tag}: {type(e).__name__}")
-                    time.sleep(2 ** attempt * 4)
-                    continue
+                    _glog(errors[-1] + " (sem resposta; passando para o próximo modelo)")
+                    break
                 if r.status_code == 200:
                     text, why = _extract(r.json())
                     if text:
                         try:
-                            return json.loads(text)
+                            post = json.loads(text)
+                            _glog(f"ok em {tag}")
+                            return post
                         except json.JSONDecodeError as e:
                             why = f"JSON inválido ({e})"
+                    so_google = False
                     errors.append(f"{tag}: {why}")
-                    break  # resposta vazia/cortada: o próximo perfil pede menos pensamento
-                errors.append(f"{tag}: HTTP {r.status_code} {r.text[:120]}")
-                if r.status_code in (429, 500, 503):
-                    time.sleep(2 ** attempt * 5)
+                    _glog(errors[-1])
+                    pi += 1  # resposta vazia/cortada: o próximo perfil pede menos pensamento
                     continue
-                break  # ex.: 400 (o modelo não aceita esse perfil de pensamento): tenta o próximo perfil
-    raise RuntimeError("Gemini falhou: " + " | ".join(errors[-4:])[-700:])
+                errors.append(f"{tag}: HTTP {r.status_code} {r.text[:120]}")
+                _glog(errors[-1])
+                if r.status_code in SOBRECARGA:
+                    sobrecargas += 1
+                    if sobrecargas < 2:
+                        time.sleep(6)  # picos de demanda às vezes passam em segundos: uma segunda chance no mesmo modelo
+                        continue
+                    break  # continua sobrecarregado: próximo modelo
+                so_google = False
+                pi += 1  # ex.: 400 (o modelo não aceita esse perfil de pensamento): tenta o próximo perfil
+        if rodada < GEMINI_RODADAS - 1 and sobra() > 90:
+            espera = 20 * (rodada + 1)
+            _glog(f"todos os modelos falharam na volta {rodada + 1}; esperando {espera}s")
+            time.sleep(espera)
+    falhar("todas as tentativas" + (", instabilidade do Google" if so_google else ""))
 
 
 def validate_story(st, kind):
