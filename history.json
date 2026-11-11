@@ -1023,5 +1023,22 @@
     "story_title": "Você sente que estuda muito, mas na hora de colocar em prática trava?",
     "pillar": "aprendizado",
     "angle": "aprender fazendo"
+  },
+  {
+    "topic": "Quarta feira, semana praticamente encerrada",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 1,
+    "format": "domingo_segunda",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "cta": "convidar a marcar ou mandar para um colega que se identifica",
+    "keyword": "AJUDA",
+    "cover": "A famosa quarta-feira com cheirinho de sexta",
+    "opener": "Existe um fenômeno inexplicável chamado quarta-feira que faz a gente jurar que a semana praticamente acabou, mesmo com u",
+    "story_format": "nota",
+    "story_mode": "paralela",
+    "story_title": "Sobre a quarta-feira",
+    "pillar": "leve_mundo",
+    "angle": null
   }
 ]

@@ -1,0 +1,49 @@
+{
+  "topic": "Quarta feira, semana praticamente encerrada",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "A famosa quarta-feira com cheirinho de sexta",
+      "body": "Aquela ilusão coletiva de que a semana já acabou."
+    },
+    {
+      "kind": "versus",
+      "title": "A ilusão versus a realidade da quarta",
+      "left": "Achar que quarta-feira já é quase o fim da semana.",
+      "left_label": "DOMINGO À NOITE",
+      "right": "Lembrar que ainda tem quinta, sexta e o acumulado de e-mails.",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "versus",
+      "title": "A energia do meio da semana",
+      "left": "Planejar mil coisas produtivas para os próximos dois dias.",
+      "left_label": "DOMINGO À NOITE",
+      "right": "Negociar com o próprio travesseiro por mais cinco minutos.",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "versus",
+      "title": "O ritmo das reuniões",
+      "left": "Acreditar que a agenda da tarde vai estar super tranquila.",
+      "left_label": "DOMINGO À NOITE",
+      "right": "Ver a caixa de entrada dobrar de tamanho antes do almoço.",
+      "right_label": "SEGUNDA CEDO"
+    },
+    {
+      "kind": "content",
+      "title": "Respire fundo e vá no seu ritmo",
+      "body": "No fim das contas, a semana sempre passa. Uns dias mais rápido, outros parecendo uma novela mexicana, mas passa.",
+      "highlight": "Tudo bem se o ritmo cair um pouco na quarta."
+    },
+    {
+      "kind": "cta",
+      "title": "Quem mais vive nessa montanha-russa?",
+      "body": "Manda este post para aquele colega que também acha que a quarta-feira tem superpoderes.",
+      "show_link": false
+    }
+  ]
+}
