@@ -1040,5 +1040,22 @@
     "story_title": "Sobre a quarta-feira",
     "pillar": "leve_mundo",
     "angle": null
+  },
+  {
+    "topic": "Abordagem a recrutadores e posicionamento no LinkedIn através de caso hipotético",
+    "funnel": "fundo",
+    "theme": "claro",
+    "variant": 1,
+    "format": "caso_hipotetico",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "apontar o link na bio para o diagnóstico",
+    "keyword": "CHECK",
+    "cover": "Enviar mensagens longas para recrutadores afasta mais do que aproxima",
+    "opener": "Achar que uma mensagem cheia de detalhes técnicos sobre a carreira vai prender a atenção de quem contrata logo na primei",
+    "story_format": "teaser",
+    "story_mode": "paralela",
+    "story_title": "Enviar mensagens longas para recrutadores afasta mais do que aproxima",
+    "pillar": "linkedin",
+    "angle": "mensagens a recrutadores"
   }
 ]

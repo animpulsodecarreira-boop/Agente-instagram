@@ -1,0 +1,39 @@
+{
+  "topic": "Abordagem a recrutadores e posicionamento no LinkedIn através de caso hipotético",
+  "funnel": "fundo",
+  "theme": "claro",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Enviar mensagens longas para recrutadores afasta mais do que aproxima",
+      "body": "Veja como um ajuste simples no texto mudou tudo em um caso real."
+    },
+    {
+      "kind": "content",
+      "title": "O caso de Mariana",
+      "body": "Imagine Mariana. Ela estava em transição de carreira e mandava textões explicando toda a sua trajetória sempre que tentava falar com quem contrata."
+    },
+    {
+      "kind": "content",
+      "title": "O silêncio do outro lado",
+      "body": "Ninguém respondia. As mensagens eram tão longas que pareciam uma carta de apresentação antiga perdida na caixa de entrada do LinkedIn."
+    },
+    {
+      "kind": "content",
+      "title": "A mudança de rota",
+      "body": "Paramos para organizar o perfil dela e encurtar a abordagem. Focamos em mostrar clareza sobre o valor que ela entregava, sem rodeios."
+    },
+    {
+      "kind": "quote",
+      "title": "Menos volume de texto, mais clareza de intenção.",
+      "body": "Quando o recrutador bate o olho e entende na hora o que você resolve, a conversa acontece."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer saber como seu perfil está sendo lido hoje?",
+      "body": "Faça o nosso Diagnóstico gratuito do LinkedIn. O link está na bio para você dar o primeiro passo.",
+      "show_link": true
+    }
+  ]
+}
