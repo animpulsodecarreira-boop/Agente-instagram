@@ -1,6 +1,6 @@
 {
   "id": "20261111-1903",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "claro",
   "variant": 1,
@@ -12,5 +12,7 @@
   "story_mode": "paralela",
   "pillar": "linkedin",
   "angle": "mensagens a recrutadores",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1903"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1903",
+  "media_id": "18382597378243424",
+  "stories_published": 1
 }
