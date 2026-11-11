@@ -42,6 +42,7 @@ IDADE_MAX_LEITURA = 9      # dias: depois disso o robô para de ler (menos chama
 IDADE_MAX_BACKFILL = 14    # post velho que o analista nunca leu: uma leitura única, se tiver até 14 dias
 IDADE_MIN_RELATORIO = 3    # o relatório só avalia posts com pelo menos 3 dias de vida
 AMOSTRA_MIN = 4            # grupos com menos posts que isso não geram recomendação
+ALCANCE_CONFIAVEL = 50     # mediana de contas alcançadas abaixo disso: a nota oscila demais (1 curtida muda tudo); rankeia por alcance
 TOTAL_MIN = 10             # com menos posts avaliados que isso, o relatório não recomenda nada
 
 DIMENSOES = {
@@ -270,10 +271,23 @@ def _curto(t, n=34):
     return t if len(t) <= n else t[:n - 1].rstrip() + "…"
 
 
+def _modo_alcance(itens):
+    """Com alcance muito baixo, a nota é ruído: ranqueia por alcance até a conta crescer."""
+    r = [x["m"].get("reach", 0) for x in itens]
+    return bool(r) and statistics.median(r) < ALCANCE_CONFIAVEL
+
+
 def bloco_tipo(tipo, semana, base):
     nome = "Carrosséis" if tipo == "carrossel" else "Reels"
     out = [f"— {nome} —"]
-    sm = sorted([x for x in semana if x["tipo"] == tipo], key=lambda x: -x["nota"])
+    todos = [x for x in base if x["tipo"] == tipo] + [x for x in semana if x["tipo"] == tipo]
+    por_alcance = _modo_alcance(todos)
+    chave = (lambda x: x["m"].get("reach", 0)) if por_alcance else (lambda x: x["nota"])
+    nome_chave = "alcance" if por_alcance else "nota"
+    if por_alcance:
+        out.append(f"⚠️ Alcance baixo (mediana de {int(statistics.median(x['m'].get('reach', 0) for x in todos))} contas): "
+                   "a nota oscila demais com tão poucas pessoas, então o ranking abaixo é por alcance.")
+    sm = sorted([x for x in semana if x["tipo"] == tipo], key=lambda x: -chave(x))
     if sm:
         out.append("Posts desta janela (de 3 a 10 dias atrás):")
         mostrar = sm if len(sm) <= 6 else sm[:3] + sm[-3:]
@@ -286,18 +300,22 @@ def bloco_tipo(tipo, semana, base):
         media = statistics.mean(x["nota"] for x in bt)
         out.append(f"Últimos 28 dias: {len(bt)} posts, nota média {_f1(media)}, alcance médio "
                    f"{int(statistics.mean(x['m'].get('reach', 0) for x in bt))}")
+        if por_alcance:
+            out.append("(médias por categoria abaixo em contas alcançadas)")
         for dim, nome_dim in DIMENSOES[tipo]:
             g = {k: v for k, v in _grupos(bt, dim).items() if len(v) >= 2}
             if not g:
                 continue
-            ordem = sorted(g.items(), key=lambda kv: -statistics.mean(x["nota"] for x in kv[1]))[:4]
+            ordem = sorted(g.items(), key=lambda kv: -statistics.mean(chave(x) for x in kv[1]))[:4]
             out.append(f"{nome_dim}: " + " · ".join(
-                f"{_curto(k)} {_f1(statistics.mean(x['nota'] for x in v))} (n={len(v)})" for k, v in ordem))
+                f"{_curto(k)} {_f1(statistics.mean(chave(x) for x in v))} (n={len(v)})" for k, v in ordem))
     return out, bt
 
 
 def sugestoes(tipo, bt):
     nome = "carrosséis" if tipo == "carrossel" else "Reels"
+    if bt and _modo_alcance(bt):
+        return [f"{nome}: o alcance ainda é baixo demais para recomendar categorias; o foco agora é ampliar quantas pessoas veem os posts."]
     if len(bt) < TOTAL_MIN:
         return [f"{nome}: só {len(bt)} post(s) avaliados (o relatório só recomenda a partir de {TOTAL_MIN}). Trate os números como pista, não como regra."]
     media = statistics.mean(x["nota"] for x in bt)
