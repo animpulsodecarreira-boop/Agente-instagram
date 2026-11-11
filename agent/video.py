@@ -1,5 +1,6 @@
 """Junta os quadros do story (e os slides do Reel) em vídeo MP4 com trilha de áudio (ffmpeg)."""
 import hashlib
+import re
 import subprocess
 from pathlib import Path
 
@@ -13,12 +14,16 @@ def tracks():
 
 
 def _duration(path):
-    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nk=1:nw=1", str(path)],
-                       capture_output=True, text=True)
+    """Duração da faixa em segundos. Usa o ffprobe; se ele não existir (ffmpeg do plano B), lê a duração pelo ffmpeg."""
     try:
+        r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nk=1:nw=1",
+                            str(path)], capture_output=True, text=True)
         return float(r.stdout.strip())
-    except ValueError:
-        return 0.0
+    except (FileNotFoundError, ValueError):
+        pass
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(path)], capture_output=True, text=True)
+    m = re.search(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)", r.stderr or "")
+    return int(m.group(1)) * 3600 + int(m.group(2)) * 60 + float(m.group(3)) if m else 0.0
 
 
 def make_story_video(clip, out: Path, seed: str, seconds: int = STORY_SECONDS):
