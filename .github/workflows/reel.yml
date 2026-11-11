@@ -26,9 +26,24 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Instalar ffmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-      - run: pip install requests playwright && playwright install --with-deps chromium
+      - name: Instalar ffmpeg, repetindo se a rede do GitHub falhar
+        timeout-minutes: 8
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            for i in 1 2 3 4; do
+              sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && break
+              echo "tentativa $i falhou; aguardando"; sleep $((i*20))
+            done
+          fi
+          ffmpeg -version | head -1
+      - name: Instalar dependências e o Chromium (com repetição)
+        timeout-minutes: 8
+        run: |
+          pip install requests playwright
+          for i in 1 2 3; do
+            playwright install --with-deps chromium && break
+            echo "tentativa $i falhou; aguardando"; sleep $((i*20))
+          done
       - name: Montar o Reel (texto animado, ou carrossel em vídeo se a animação falhar)
         timeout-minutes: 10
         env:
@@ -65,4 +80,5 @@ jobs:
           curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=⚠️ Alerta automático: o workflow 'Criar Reel' falhou ou travou. Detalhes: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
  
