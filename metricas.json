@@ -1,0 +1,483 @@
+{
+ "midias": {
+  "20261102-0916:carrossel": {
+   "atributos": {
+    "angle": null,
+    "format": "primeira_semana",
+    "funnel": "leve",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "pillar": "leve_carreira",
+    "theme": "claro",
+    "topic": "Coisas que ninguém avisa sobre a semana com 4 dias úteis",
+    "variant": 1
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 9.36,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 13,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 34
+     }
+    }
+   ],
+   "media_id": "18047081120826899",
+   "permalink": "https://www.instagram.com/p/DfPT7GAEf2e/",
+   "post_id": "20261102-0916",
+   "publicado_em": "2026-11-02T12:30:44+0000",
+   "tipo": "carrossel"
+  },
+  "20261102-1327:carrossel": {
+   "atributos": {
+    "angle": "reorganizar a rotina de busca",
+    "format": "mini_aula",
+    "funnel": "meio",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "pillar": "transicao",
+    "theme": "geometrico",
+    "topic": "Reorganizar a rotina de busca na transição e recolocação de carreira usando método de consultoria",
+    "variant": 2
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 9.17,
+     "metricas": {
+      "comments": 0,
+      "likes": 3,
+      "reach": 11,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 3,
+      "views": 27
+     }
+    }
+   ],
+   "media_id": "18118783288803583",
+   "permalink": "https://www.instagram.com/p/DfPy-EVkRYu/",
+   "post_id": "20261102-1327",
+   "publicado_em": "2026-11-02T17:01:58+0000",
+   "tipo": "carrossel"
+  },
+  "20261103-1038:carrossel": {
+   "atributos": {
+    "angle": "conquistas sem inventar números",
+    "format": "passo_a_passo",
+    "funnel": "meio",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "pillar": "curriculo",
+    "theme": "escuro",
+    "topic": "Como montar e adaptar o currículo e se candidatar com mais clareza focando em conquistas reais sem inventar números",
+    "variant": 0
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 8.31,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 24
+     }
+    }
+   ],
+   "media_id": "17954776629297608",
+   "permalink": "https://www.instagram.com/p/DfSBITqG573/",
+   "post_id": "20261103-1038",
+   "publicado_em": "2026-11-03T13:44:14+0000",
+   "tipo": "carrossel"
+  },
+  "20261103-1321:carrossel": {
+   "atributos": {
+    "angle": "mensagens a recrutadores",
+    "format": "bastidor",
+    "funnel": "meio",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "pillar": "linkedin",
+    "theme": "claro",
+    "topic": "Como funciona o método de bastidores da consultoria de LinkedIn focado em mensagens a recrutadores",
+    "variant": 1
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 8.19,
+     "metricas": {
+      "comments": 0,
+      "likes": 5,
+      "reach": 67,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 6,
+      "views": 108
+     }
+    }
+   ],
+   "media_id": "18179853790452079",
+   "permalink": "https://www.instagram.com/p/DfSUDCaiZYq/",
+   "post_id": "20261103-1321",
+   "publicado_em": "2026-11-03T16:29:32+0000",
+   "tipo": "carrossel"
+  },
+  "20261103-1727:carrossel": {
+   "atributos": {
+    "angle": null,
+    "format": "pergunta",
+    "funnel": "topo",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "pillar": "aprendizado",
+    "theme": "azul",
+    "topic": "Épocas para procurar emprego",
+    "variant": 2
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 8.02,
+     "metricas": {
+      "comments": 0,
+      "likes": 4,
+      "reach": 103,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 7,
+      "views": 201
+     }
+    }
+   ],
+   "media_id": "18086554346321803",
+   "permalink": "https://www.instagram.com/p/DfSw9XcgdA4/",
+   "post_id": "20261103-1727",
+   "publicado_em": "2026-11-03T20:42:11+0000",
+   "tipo": "carrossel"
+  },
+  "20261104-0846:carrossel": {
+   "atributos": {
+    "angle": "mensagens objetivas",
+    "format": "checklist",
+    "funnel": "topo",
+    "hook": "comparação inesperada entre duas coisas",
+    "pillar": "comunicacao",
+    "theme": "geometrico",
+    "topic": "Mensagens objetivas no trabalho",
+    "variant": 0
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 7.38,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 36
+     }
+    }
+   ],
+   "media_id": "18643751452012347",
+   "permalink": "https://www.instagram.com/p/DfUahkSGwCU/",
+   "post_id": "20261104-0846",
+   "publicado_em": "2026-11-04T12:04:37+0000",
+   "tipo": "carrossel"
+  },
+  "20261104-1319:reel": {
+   "atributos": {
+    "angle": "rede de contatos",
+    "format": "antes_depois",
+    "funnel": "meio",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "pillar": "linkedin",
+    "theme": "escuro",
+    "topic": "Como transformamos uma mensagem enviada a uma rede de contatos para gerar conversas reais no LinkedIn",
+    "variant": 1
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 7.16,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4337,
+      "likes": 2,
+      "reach": 61,
+      "reels_skip_rate": 82.1,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 3,
+      "views": 84
+     }
+    }
+   ],
+   "media_id": "18001937802037739",
+   "permalink": "https://www.instagram.com/reel/DfU9ybhjlj0/",
+   "post_id": "20261104-1319",
+   "publicado_em": "2026-11-04T17:13:03+0000",
+   "tipo": "reel"
+  },
+  "20261106-1315:carrossel": {
+   "atributos": {
+    "angle": "tamanho e formato",
+    "format": "caso_hipotetico",
+    "funnel": "meio",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "pillar": "curriculo",
+    "theme": "azul",
+    "topic": "Como tamanho e formato do currículo ajudam na clareza da candidatura",
+    "variant": 0
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 5.2,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 21
+     }
+    }
+   ],
+   "media_id": "18015766355969317",
+   "permalink": "https://www.instagram.com/p/DfaBJ2PkVGS/",
+   "post_id": "20261106-1315",
+   "publicado_em": "2026-11-06T16:18:23+0000",
+   "tipo": "carrossel"
+  },
+  "20261107-1723:carrossel": {
+   "atributos": {
+    "angle": "dormir sem alarme",
+    "format": "recomendacao",
+    "funnel": "leve",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "pillar": "leve_descanso",
+    "theme": "azul",
+    "topic": "Descanso, recarga de energia no fim de semana e o hábito de dormir sem alarme",
+    "variant": 1
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 4.03,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
+    }
+   ],
+   "media_id": "18149561797585990",
+   "permalink": "https://www.instagram.com/p/DfdCeoTgb0E/",
+   "post_id": "20261107-1723",
+   "publicado_em": "2026-11-07T20:27:40+0000",
+   "tipo": "carrossel"
+  },
+  "20261108-1108:carrossel": {
+   "atributos": {
+    "angle": "o que a mesa diz sobre a pessoa",
+    "format": "tradutor_corporativo",
+    "funnel": "leve",
+    "hook": "exagero de brincadeira (deixe claro que é brincadeira)",
+    "pillar": "leve_rotina",
+    "theme": "claro",
+    "topic": "Tradutor sincero do que a mesa de trabalho diz sobre você",
+    "variant": 2
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 3.29,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    }
+   ],
+   "media_id": "17966382402234453",
+   "permalink": "https://www.instagram.com/p/Dfe8sK1kW65/",
+   "post_id": "20261108-1108",
+   "publicado_em": "2026-11-08T14:15:34+0000",
+   "tipo": "carrossel"
+  },
+  "20261109-0925:reel": {
+   "atributos": {
+    "angle": null,
+    "format": "time_quiz",
+    "funnel": "leve",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "pillar": "leve_mundo",
+    "theme": "claro",
+    "topic": "segunda-feira de manhã e os estilos de sobrevivência",
+    "variant": 1
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 2.36,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
+    }
+   ],
+   "media_id": "18451859977192515",
+   "permalink": "https://www.instagram.com/reel/DfhV7BIkuRE/",
+   "post_id": "20261109-0925",
+   "publicado_em": "2026-11-09T12:34:50+0000",
+   "tipo": "reel"
+  },
+  "20261109-1329:carrossel": {
+   "atributos": {
+    "angle": "habilidades transferíveis",
+    "format": "mini_aula",
+    "funnel": "meio",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "pillar": "transicao",
+    "theme": "claro",
+    "topic": "Habilidades transferíveis na transição de carreira e reposicionamento profissional",
+    "variant": 0
+   },
+   "coletas": [
+    {
+     "em": "2026-11-11T21:10:06+0000",
+     "idade": 2.19,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 42,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 60
+     }
+    }
+   ],
+   "media_id": "17913599778603389",
+   "permalink": "https://www.instagram.com/p/DfhyPDjFCcY/",
+   "post_id": "20261109-1329",
+   "publicado_em": "2026-11-09T16:41:55+0000",
+   "tipo": "carrossel"
+  },
+  "20261109-1822:carrossel": {
+   "atributos": {
+    "angle": null,
+    "format": "mitos_trabalho",
+    "funnel": "leve",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "pillar": "leve_descanso",
+    "theme": "azul",
+    "topic": "Mitos engraçados sobre a segunda-feira",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "18116036264172048",
+   "permalink": "https://www.instagram.com/p/DfiW5X4EQeg/",
+   "post_id": "20261109-1822",
+   "publicado_em": "2026-11-09T22:02:17+0000",
+   "tipo": "carrossel"
+  },
+  "20261110-0856:carrossel": {
+   "atributos": {
+    "angle": "palavras-chave",
+    "format": "erro_correcao",
+    "funnel": "topo",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "pillar": "linkedin",
+    "theme": "geometrico",
+    "topic": "Como usar palavras-chave estratégicas no LinkedIn para ser encontrado por quem contrata",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "17878294653582626",
+   "permalink": "https://www.instagram.com/p/Dfj3b-uleEo/",
+   "post_id": "20261110-0856",
+   "publicado_em": "2026-11-10T12:05:53+0000",
+   "tipo": "carrossel"
+  },
+  "20261110-1322:carrossel": {
+   "atributos": {
+    "angle": null,
+    "format": "primeira_semana",
+    "funnel": "leve",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "pillar": "leve_carreira",
+    "theme": "claro",
+    "topic": "Coisas que ninguém avisa na primeira semana de um trabalho novo",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "18116496245329005",
+   "permalink": "https://www.instagram.com/p/DfkV5s0iSAo/",
+   "post_id": "20261110-1322",
+   "publicado_em": "2026-11-10T16:32:04+0000",
+   "tipo": "carrossel"
+  },
+  "20261111-1453:carrossel": {
+   "atributos": {
+    "angle": "aprender fazendo",
+    "format": "tres_sinais",
+    "funnel": "topo",
+    "hook": "pergunta direta que gera identificação",
+    "pillar": "aprendizado",
+    "theme": "escuro",
+    "topic": "Desenvolvimento e aprendizado contínuo através da prática",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "17998696853994176",
+   "permalink": "https://www.instagram.com/p/DfnE3YzlZlq/",
+   "post_id": "20261111-1453",
+   "publicado_em": "2026-11-11T18:00:56+0000",
+   "tipo": "carrossel"
+  },
+  "20261111-1654:reel": {
+   "atributos": {
+    "angle": null,
+    "format": "domingo_segunda",
+    "funnel": "leve",
+    "hook": "observação engraçada do dia a dia no trabalho",
+    "pillar": "leve_mundo",
+    "theme": "azul",
+    "topic": "Quarta feira, semana praticamente encerrada",
+    "variant": 1
+   },
+   "coletas": [],
+   "media_id": "17985574071105456",
+   "permalink": "https://www.instagram.com/reel/DfnTclWFHtx/",
+   "post_id": "20261111-1654",
+   "publicado_em": "2026-11-11T20:08:37+0000",
+   "tipo": "reel"
+  }
+ },
+ "versao": 1
+}
