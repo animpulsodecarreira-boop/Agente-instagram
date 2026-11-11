@@ -1,0 +1,79 @@
+name: Limpar mídias antigas
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Só listar, sem apagar (true) ou apagar de verdade (false)"
+        required: true
+        default: "true"
+      manter_ultimos:
+        description: "Quantos posts mais recentes manter intactos"
+        required: true
+        default: "5"
+ 
+permissions:
+  contents: write
+ 
+concurrency:
+  group: limpar-midias
+  cancel-in-progress: false
+ 
+jobs:
+  limpar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - name: Listar e (opcionalmente) apagar mídias
+        env:
+          SIMULAR: ${{ github.event.inputs.simular }}
+          MANTER: ${{ github.event.inputs.manter_ultimos }}
+        run: |
+          set -e
+          if ! [[ "$MANTER" =~ ^[0-9]+$ ]]; then
+            echo "manter_ultimos precisa ser um número"; exit 1
+          fi
+ 
+          # pastas de posts (ignora as que começam com _), da mais antiga à mais nova
+          mapfile -t PASTAS < <(ls -1 queue | grep -v '^_' | sort)
+          TOTAL=${#PASTAS[@]}
+          echo "Pastas em queue: $TOTAL | Mantendo as $MANTER mais recentes"
+ 
+          if [ "$TOTAL" -le "$MANTER" ]; then
+            echo "Nada a limpar."; exit 0
+          fi
+ 
+          LIMITE=$((TOTAL - MANTER))
+          : > /tmp/alvos.txt
+          for ((i=0; i<LIMITE; i++)); do
+            find "queue/${PASTAS[$i]}" -type f \
+              \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+                 -o -iname '*.mp4' -o -iname '*.mov' -o -iname '*.mp3' \) \
+              >> /tmp/alvos.txt
+          done
+ 
+          QTD=$(wc -l < /tmp/alvos.txt)
+          if [ "$QTD" -eq 0 ]; then
+            echo "Nenhuma mídia encontrada nas pastas antigas."; exit 0
+          fi
+ 
+          TAM=$(xargs -d '\n' du -ch < /tmp/alvos.txt | tail -1 | cut -f1)
+          echo "Arquivos de mídia nas pastas antigas: $QTD (cerca de $TAM)"
+          echo "--- Pastas afetadas ---"
+          for ((i=0; i<LIMITE; i++)); do echo "${PASTAS[$i]}"; done
+          echo "--- Pastas mantidas ---"
+          for ((i=LIMITE; i<TOTAL; i++)); do echo "${PASTAS[$i]}"; done
+ 
+          if [ "$SIMULAR" = "true" ]; then
+            echo "SIMULAÇÃO: nada foi apagado."; exit 0
+          fi
+ 
+          xargs -d '\n' git rm -q -- < /tmp/alvos.txt
+          git config user.name "agente-instagram"
+          git config user.email "agente-instagram@users.noreply.github.com"
+          git commit -m "limpar midias antigas ($QTD arquivos)"
+          git pull --rebase origin main
+          git push
+          echo "Pronto: $QTD arquivos removidos."
+ 
