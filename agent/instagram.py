@@ -91,15 +91,27 @@ def publish_story(video_url=None, image_url=None):
     return _post(f"{ig}/media_publish", creation_id=container)["id"]
 
 
-def publish_reel(video_url, caption, share_to_feed=True):
+def publish_reel(video_url, caption, share_to_feed=True, cover_url=None):
     """Publica um Reel (vídeo 9:16 em URL pública). Retorna o id da mídia.
 
+    cover_url (opcional): imagem pública usada como capa do Reel. Se a Meta recusar a capa, o Reel sai sem ela
+    (o Instagram escolhe um quadro do vídeo) em vez de deixar de ser publicado.
     Limites da Meta: MP4/MOV com moov no início, H.264, AAC até 48 kHz, 23-60 fps, 3 s a 15 min, até 300 MB.
     O processamento do vídeo pode demorar; a Meta recomenda consultar o estado por até 5 minutos.
     """
     check_token()
     ig = os.environ.get("IG_USER_ID", "").strip() or "me"
-    container = _post(f"{ig}/media", media_type="REELS", video_url=video_url, caption=caption,
-                      share_to_feed="true" if share_to_feed else "false")["id"]
-    _wait_ready(container, tries=70)
+    base = dict(media_type="REELS", video_url=video_url, caption=caption,
+                share_to_feed="true" if share_to_feed else "false")
+    container = None
+    if cover_url:
+        try:
+            container = _post(f"{ig}/media", cover_url=cover_url, **base)["id"]
+            _wait_ready(container, tries=70)
+        except RuntimeError as e:
+            print(f"[ig] a capa do Reel deu problema ({str(e)[:200]}); publicando sem capa", flush=True)
+            container = None
+    if container is None:
+        container = _post(f"{ig}/media", **base)["id"]
+        _wait_ready(container, tries=70)
     return _post(f"{ig}/media_publish", creation_id=container)["id"]
