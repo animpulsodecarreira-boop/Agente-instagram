@@ -1,6 +1,6 @@
 {
   "id": "20261111-1453",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "escuro",
   "variant": 0,
@@ -12,5 +12,7 @@
   "story_mode": "acompanha",
   "pillar": "aprendizado",
   "angle": "aprender fazendo",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1453"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261111-1453",
+  "media_id": "17998696853994176",
+  "stories_published": 1
 }
