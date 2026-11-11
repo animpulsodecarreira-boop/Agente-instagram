@@ -14,6 +14,8 @@ Como funciona
 - A "nota" de cada post = (4 x salvamentos + 5 x compartilhamentos + 3 x comentários + 1 x curtidas) por 100 contas
   alcançadas. Salvamentos e compartilhamentos pesam mais que curtidas. Os pesos estão em PESOS, logo abaixo.
 - Carrosséis e Reels são sempre comparados separadamente (têm públicos e ritmos diferentes).
+- O alcance da CONTA (seguidores x não seguidores, e por tipo de conteúdo) é lido todo dia e guardado em metricas.json.
+- Posts impulsionados (anúncio) devem entrar em ignorar_metricas.txt, para não misturar alcance pago com orgânico.
 """
 import json
 import os
@@ -32,6 +34,7 @@ from .instagram import GRAPH, _token, check_token
 
 TZ = ZoneInfo("America/Sao_Paulo")
 METRICAS_FILE = HISTORY_FILE.parent / "metricas.json"
+IGNORAR_FILE = HISTORY_FILE.parent / "ignorar_metricas.txt"   # um id por linha (ex.: 20261111-1654 ou 20261111-1654:reel)
 
 PESOS = {"saved": 4, "shares": 5, "comments": 3, "likes": 1}
 COMUNS = ["views", "reach", "saved", "shares", "likes", "comments", "total_interactions"]
@@ -138,6 +141,75 @@ def _parse(ts):
     return datetime.strptime(ts, "%Y-%m-%dT%H:%M:%S%z")
 
 
+# ---------------- alcance da conta (seguidores x não seguidores) ----------------
+SUPERFICIES = {"REEL": "Reels", "REELS": "Reels", "POST": "Posts", "FEED": "Posts", "STORY": "Stories",
+               "AD": "Anúncios", "CAROUSEL_CONTAINER": "Carrosséis", "CAROUSEL": "Carrosséis"}
+
+
+def _breakdown(metric, breakdown, since, until):
+    """Alcance da conta aberto por um critério. Devolve ({'total': n, 'partes': {...}}, None) ou (None, erro)."""
+    st, d = _get("me/insights", metric=metric, period="day", metric_type="total_value",
+                 breakdown=breakdown, since=since, until=until)
+    if st != 200:
+        return None, _msg(d)
+    try:
+        tv = d["data"][0]["total_value"]
+        partes = {}
+        for b in tv.get("breakdowns", []):
+            for r in b.get("results", []):
+                partes[str(r["dimension_values"][0])] = r.get("value", 0)
+        return {"total": tv.get("value"), "partes": partes}, None
+    except (KeyError, IndexError, TypeError):
+        return None, "resposta inesperada da Meta"
+
+
+def alcance_conta(agora):
+    """Contas únicas alcançadas nos últimos 7 e 28 dias, abertas por seguidor/não seguidor e por tipo de conteúdo."""
+    fim = int(agora.timestamp())
+    out, erros = {}, []
+    for dias in (7, 28):
+        item = {}
+        for chave, brk in (("follow_type", "follow_type"), ("superficie", "media_product_type")):
+            r, e = _breakdown("reach", brk, fim - dias * 86400, fim)
+            if r:
+                item[chave] = r
+            else:
+                erros.append(f"{dias} dias/{brk}: {e}")
+        if item:
+            out[str(dias)] = item
+    return out, erros
+
+
+def _linhas_conta(dados):
+    if not dados.get("conta"):
+        return []
+    dia = max(dados["conta"])
+    c = dados["conta"][dia]
+    linhas = ["🌐 Alcance da conta (contas únicas, lido em " + datetime.strptime(dia, "%Y-%m-%d").strftime("%d/%m") + ")"]
+    for dias in ("7", "28"):
+        it = c.get(dias) or {}
+        ft = it.get("follow_type")
+        if ft:
+            p = ft["partes"]
+            seg, nao, unk = p.get("FOLLOWER", 0), p.get("NON_FOLLOWER", 0), p.get("UNKNOWN", 0)
+            tot = seg + nao + unk
+            if tot:
+                linhas.append(f"{dias} dias: {tot} contas — seguidores {seg} ({_f1(seg / tot * 100)}%), "
+                              f"não seguidores {nao} ({_f1(nao / tot * 100)}%)" + (f", desconhecido {unk}" if unk else ""))
+        sf = it.get("superficie")
+        if sf and sf["partes"]:
+            ordem = sorted(sf["partes"].items(), key=lambda kv: -kv[1])
+            linhas.append("   por tipo: " + " · ".join(f"{SUPERFICIES.get(k, k.title())} {v}" for k, v in ordem if v))
+    return linhas if len(linhas) > 1 else []
+
+
+def _ignorados():
+    try:
+        return {l.split("#")[0].strip() for l in IGNORAR_FILE.read_text(encoding="utf-8").splitlines() if l.split("#")[0].strip()}
+    except OSError:
+        return set()
+
+
 # ---------------- coleta ----------------
 def coletar(agora=None):
     """Lê as métricas dos posts publicados. Devolve um resumo (dict)."""
@@ -193,6 +265,16 @@ def coletar(agora=None):
         reg["coletas"] = ja[-8:]
         res["lidos"] += 1
         time.sleep(0.3)
+    try:   # alcance da conta: um registro por dia, guardado para ver a tendência
+        conta, erros_conta = alcance_conta(agora)
+        if conta:
+            dados.setdefault("conta", {})[agora.astimezone(TZ).strftime("%Y-%m-%d")] = conta
+            for k in sorted(dados["conta"])[:-60]:
+                del dados["conta"][k]
+        for e in erros_conta[:4]:
+            res["erros"].append("conta: " + e)
+    except Exception as e:   # a conta é um extra: se falhar, a coleta dos posts continua valendo
+        res["erros"].append(f"conta: {str(e)[:150]}")
     _salvar(dados)
     print(f"[insights] {res['alvos']} mídias publicadas: {res['lidos']} lidas, {res['novos']} novas no histórico, "
           f"{res['ignorados']} sem leitura hoje, {len(res['erros'])} erro(s)", flush=True)
@@ -217,7 +299,10 @@ def _referencia(reg):
 
 def _avaliaveis(dados):
     out = []
-    for reg in dados["midias"].values():
+    ign = _ignorados()
+    for chave, reg in dados["midias"].items():
+        if reg.get("post_id") in ign or chave in ign:
+            continue
         ref = _referencia(reg)
         if not ref or not reg.get("publicado_em"):
             continue
@@ -242,7 +327,7 @@ def _rotulo(x):
 
 def _linha_post(i, x):
     m = x["m"]
-    s = f"{i}. {_rotulo(x)}\n   nota {_f1(x['nota'])} · alcance {m.get('reach', 0)} · 🔖{m.get('saved', 0)} ↗{m.get('shares', 0)} 💬{m.get('comments', 0)} ♥{m.get('likes', 0)}"
+    s = f"{i}. {_rotulo(x)}\n   id {x['reg']['post_id']}\n   nota {_f1(x['nota'])} · alcance {m.get('reach', 0)} · 🔖{m.get('saved', 0)} ↗{m.get('shares', 0)} 💬{m.get('comments', 0)} ♥{m.get('likes', 0)}"
     if x["tipo"] == "reel":
         extra = []
         t = m.get("ig_reels_avg_watch_time")
@@ -337,7 +422,8 @@ def sugestoes(tipo, bt):
 
 def montar_relatorio(agora=None):
     agora = agora or datetime.now(timezone.utc)
-    av = _avaliaveis(_carregar())
+    dados = _carregar()
+    av = _avaliaveis(dados)
     if not av:
         return "📊 Relatório semanal\nAinda não há posts com 3 dias de vida e métricas lidas. Rode a coleta e volte em alguns dias."
     ini, fim = agora - timedelta(days=10), agora - timedelta(days=3)
@@ -346,6 +432,12 @@ def montar_relatorio(agora=None):
     d = lambda t: t.astimezone(TZ).strftime("%d/%m")
     texto = [f"📊 Relatório semanal — posts de {d(ini)} a {d(fim)}",
              "Nota = (4×salvamentos + 5×compartilhamentos + 3×comentários + 1×curtidas) por 100 contas alcançadas."]
+    conta = _linhas_conta(dados)
+    if conta:
+        texto += [""] + conta
+    ign = _ignorados()
+    if ign:
+        texto.append(f"({len(ign)} post(s) na lista ignorar_metricas.txt ficaram fora das comparações, por exemplo os impulsionados.)")
     sug = []
     for tipo in ("carrossel", "reel"):
         linhas, bt = bloco_tipo(tipo, semana, base)
