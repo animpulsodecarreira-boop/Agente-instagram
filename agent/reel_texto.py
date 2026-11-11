@@ -13,7 +13,7 @@ from playwright.sync_api import sync_playwright
 from .config import ASSETS, LINK_LABEL
 from .render_v2 import STORY_FIT_JS, STORY_JS, THEMES, clean, css
 
-MAX_TOTAL = 58.0        # segundos: acima disso o robô acelera a leitura e corta frases
+MAX_TOTAL = 40.0        # segundos: acima disso o robô acelera a leitura, enxuga frases e tira cenas do miolo
 MIN_SCENE = 2.6
 LOGO_T = 1.2
 # (palavras por segundo, máximo de frases por cena): do ritmo confortável ao mais enxuto
@@ -226,8 +226,12 @@ def slides_from_caption(caption, topic=""):
     return slides
 
 
-def render_reel_text(slides, theme, workdir: Path):
-    """Renderiza as cenas e devolve a lista de quadros [(arquivo, segundos)] na ordem do vídeo."""
+def render_reel_text(slides, theme, workdir: Path, capa: Path = None):
+    """Renderiza as cenas e devolve a lista de quadros [(arquivo, segundos)] na ordem do vídeo.
+
+    Se `capa` for dada, salva ali a capa do Reel (1080x1920): o título da primeira cena inteiro, com a marca,
+    sem o subtítulo. Sem capa, o Instagram usa o primeiro quadro, que é quase vazio (só começa a escrever).
+    """
     theme = theme if theme in THEMES else "escuro"
     scenes, P, dropped = build_scenes(slides)
     total = _total(scenes)
@@ -254,6 +258,13 @@ def render_reel_text(slides, theme, workdir: Path):
                 fp = workdir / f"c{si}_{k:03d}.png"
                 pg.screenshot(path=str(fp))
                 frames.append((fp, round(dur, 3)))
+            if capa and si == 1:   # estado final da primeira cena, já com o título completo e a marca
+                try:
+                    pg.evaluate("() => {document.querySelectorAll('.ss').forEach(e => e.classList.add('h'))}")
+                    Path(capa).parent.mkdir(parents=True, exist_ok=True)
+                    pg.screenshot(path=str(capa))
+                except Exception as e:   # a capa é um extra: se falhar, o Reel segue sem ela
+                    print(f"[reel] não consegui gerar a capa: {e}", flush=True)
             f.unlink()
         browser.close()
     return frames
