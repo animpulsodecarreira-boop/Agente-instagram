@@ -1,0 +1,44 @@
+{
+  "topic": "Desenvolvimento e aprendizado contínuo através da prática",
+  "funnel": "topo",
+  "theme": "escuro",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Você sente que estuda muito, mas na hora de colocar em prática trava?",
+      "body": "Aprender algo novo exige mais do que acumular teoria e cursos."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 1: A estante cheia de certificados",
+      "body": "Você conclui vários cursos e treinamentos, mas na rotina do trabalho não consegue aplicar o que viu."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 2: O medo de errar na prática",
+      "body": "Espera dominar 100% de um assunto novo antes de tentar fazer a primeira tarefa real."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 3: A teoria que fica só no papel",
+      "body": "Lê livros e artigos excelentes, mas esquece o conteúdo porque nunca precisou resolver um problema com ele."
+    },
+    {
+      "kind": "check",
+      "title": "Como mudar essa rota e aprender fazendo",
+      "items": [
+        "Escolha um problema real do seu dia a dia",
+        "Estude apenas o que resolve essa questão agora",
+        "Teste na prática e ajuste o que não funcionou"
+      ],
+      "note": "O aprendizado real acontece na tentativa."
+    },
+    {
+      "kind": "cta",
+      "title": "Qual foi a última habilidade que você tentou aprender colocando a mão na massa?",
+      "body": "Conta aqui nos comentários como foi essa experiência para você.",
+      "show_link": false
+    }
+  ]
+}
