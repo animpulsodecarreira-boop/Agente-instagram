@@ -50,7 +50,7 @@ TOTAL_MIN = 10             # com menos posts avaliados que isso, o relat√≥rio n√
 
 DIMENSOES = {
     "carrossel": [("funnel", "etapa"), ("pillar", "pilar"), ("format", "formato"), ("hook", "gancho"), ("theme", "cor")],
-    "reel": [("funnel", "etapa"), ("pillar", "pilar"), ("theme", "cor")],
+    "reel": [("reel_formato", "formato do Reel"), ("funnel", "etapa"), ("pillar", "pilar"), ("theme", "cor")],
 }
 
 
@@ -134,6 +134,7 @@ def _atributos(meta, hist):
     for k in ("format", "hook"):
         a[k] = h.get(k)
     a["topic"] = meta.get("topic")
+    a["reel_formato"] = meta.get("reel_formato")   # lista, mito, pare, antes_depois, erro, pov, texto ou slides
     return a
 
 
