@@ -1,0 +1,109 @@
+name: Reel direto
+on:
+  schedule:
+    - cron: "0 11 * * 1-5"    # 08:00 Brasília, seg a sex: Reel de topo
+    - cron: "0 21 * * 1-5"    # 18:00 Brasília, seg a sex: Reel de topo
+  workflow_dispatch:
+    inputs:
+      etapa:
+        description: "Etapa do funil"
+        required: false
+        default: "topo"
+        type: choice
+        options: ["topo", "meio", "fundo"]
+      modelo:
+        description: "Modelo do Reel (vazio = o menos usado recentemente)"
+        required: false
+        type: choice
+        options: ["", "lista", "mito", "pare", "antes_depois", "erro", "pov", "pergunta_recrutador", "antes_de", "resposta_rapida"]
+      tema:
+        description: "Assunto sugerido (opcional), ex.: Como responder fale sobre você"
+        required: false
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: agente
+  cancel-in-progress: false
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar ffmpeg, repetindo se a rede do GitHub falhar
+        timeout-minutes: 8
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            for i in 1 2; do
+              sudo timeout 100 apt-get -o Acquire::Retries=0 -o Acquire::http::Timeout=15 -o Acquire::ForceIPv4=true update -qq || true
+              sudo timeout 150 apt-get install -y -qq ffmpeg && break
+              echo "apt falhou (tentativa $i)"; sleep 15
+            done
+          fi
+          if ! command -v ffmpeg >/dev/null; then
+            echo "Usando o ffmpeg empacotado no pip (plano B)"
+            pip install imageio-ffmpeg
+            sudo ln -sf "$(python -c 'import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg
+          fi
+          ffmpeg -version | head -1
+      - name: Instalar dependências e o Chromium (com repetição)
+        timeout-minutes: 8
+        run: |
+          pip install -r requirements.txt
+          for i in 1 2 3; do
+            timeout 240 playwright install --with-deps chromium && break
+            echo "tentativa $i falhou; aguardando"; sleep $((i*20))
+          done
+      - name: Criar o Reel (roteiro, cenas, vídeo e armazenamento)
+        id: d
+        timeout-minutes: 12
+        env:
+          PYTHONUNBUFFERED: "1"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_KV_NAMESPACE_ID: ${{ secrets.CF_KV_NAMESPACE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          MIDIA_PUBLIC_URL: ${{ secrets.MIDIA_PUBLIC_URL }}
+          ETAPA: ${{ inputs.etapa }}
+          MODELO: ${{ inputs.modelo }}
+          TEMA: ${{ inputs.tema }}
+        run: |
+          args=(--etapa "${ETAPA:-topo}")
+          if [ -n "$MODELO" ]; then args+=(--modelo "$MODELO"); fi
+          if [ -n "$TEMA" ]; then args+=(--tema "$TEMA"); fi
+          python -m agent.main reel-direto "${args[@]}"
+      - name: Salvar o Reel no repositório (o botão Publicar lê o estado daqui)
+        if: always()
+        run: |
+          git config user.name "agente-instagram"
+          git config user.email "agente@users.noreply.github.com"
+          rm -rf queue/*/_reel_frames
+          git add -A queue history.json 2>/dev/null || true
+          git add -A temas.json 2>/dev/null || true
+          git add -A temas.md 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "reel direto" && git pull --rebase && git push)
+      - name: Enviar o Reel ao Telegram
+        if: ${{ steps.d.outcome == 'success' }}
+        env:
+          PYTHONUNBUFFERED: "1"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          POST_ID: ${{ steps.d.outputs.post_id }}
+        run: python -m agent.main reel --post-id "$POST_ID" --enviar
+      - name: Avisar no Telegram se algo falhou
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Alerta automático: o workflow 'Reel direto' falhou ou travou. Detalhes: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
