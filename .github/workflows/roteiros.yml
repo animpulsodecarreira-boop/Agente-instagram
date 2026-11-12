@@ -1,0 +1,44 @@
+name: Roteiros de vídeo (YAP)
+on:
+  schedule:
+    - cron: "30 9 * * *"     # todo dia 06:30 Brasília: manda os roteiros para você gravar
+  workflow_dispatch:
+    inputs:
+      qtd:
+        description: "Quantos roteiros gerar"
+        required: false
+        default: "1"
+        type: choice
+        options: ["1", "2", "3"]
+permissions:
+  contents: write
+concurrency:
+  group: agente
+  cancel-in-progress: false
+jobs:
+  roteiros:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Gerar e enviar os roteiros
+        timeout-minutes: 8
+        env:
+          PYTHONUNBUFFERED: "1"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          QTD: ${{ inputs.qtd }}
+        run: python -m agent.roteiros --qtd "${QTD:-1}"
+      - name: Salvar o histórico dos roteiros
+        if: always()
+        run: |
+          git config user.name "agente-instagram"
+          git config user.email "agente@users.noreply.github.com"
+          git add roteiros.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -m "roteiros do dia" && git pull --rebase && git push)
+ 
