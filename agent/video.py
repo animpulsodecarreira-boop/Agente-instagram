@@ -139,10 +139,11 @@ def make_reel_video(slides, out: Path, seed: str):
     return out
 
 
-def make_reel_from_frames(frames, out: Path, seed: str):
+def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3):
     """Junta os quadros do Reel de texto [(arquivo, segundos)] em vídeo 1080x1920 (H.264 + AAC) com a trilha.
 
     Se o Reel for mais longo que a faixa, a trilha se repete (lo-fi emenda bem).
+    fade_in = 0 tira o escurecimento do primeiro quadro (o Reel de gancho precisa do gancho visível desde o início).
     """
     out = Path(out)
     frames = [(Path(p), float(d)) for p, d in frames]
@@ -171,7 +172,7 @@ def make_reel_from_frames(frames, out: Path, seed: str):
         cmd += ["-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=r=44100:cl=stereo"]
     cmd += ["-map", "0:v", "-map", "1:a",
             # 24 fps (a Meta aceita de 23 a 60) e ajustes para imagem quase parada: montagem bem mais rápida
-            "-vf", f"fps=24,scale={REEL_W}:{REEL_H},format=yuv420p,fade=t=in:st=0:d=0.3",
+            "-vf", f"fps=24,scale={REEL_W}:{REEL_H},format=yuv420p" + (f",fade=t=in:st=0:d={fade_in}" if fade_in > 0 else ""),
             "-af", f"afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5",
             "-c:v", "libx264", "-preset", "ultrafast", "-tune", "stillimage", "-crf", "21", "-profile:v", "high", "-r", "24",
             "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-t", f"{total:.3f}", "-shortest",
