@@ -1,5 +1,6 @@
 """Uso:
-  python -m agent.main generate [--funnel topo|meio|fundo|leve] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
+  python -m agent.main reel-direto [--etapa topo|meio|fundo] [--tema "assunto"] [--modelo lista|mito|pare|erro|pov|...]   # Reel sem carrossel
+  python -m agent.main generate [--funnel topo|meio|fundo|leve] [--saida post|reel] [--tema "assunto"] [--outro ID]   # gera post + story, renderiza e manda pro Telegram
   python -m agent.main poll                                  # lê aprovações e publica
   python -m agent.main approve --post-id ID [--action ap|po|rj|re|rr]   # aprova/reprocessa um post (ou o Reel dele) pelo GitHub
   python -m agent.main storage-test   # confere o armazenamento externo (KV)
@@ -123,6 +124,42 @@ def prune(days=10):
             shutil.rmtree(d, ignore_errors=True)
 
 
+def _saida_ci(post_id, saida):
+    """No GitHub Actions, avisa os próximos passos do workflow qual é o post e se a saída é carrossel ou só Reel."""
+    path = os.getenv("GITHUB_OUTPUT")
+    if path:
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(f"post_id={post_id}\nsaida={saida}\n")
+
+
+def _gerar_so_reel(post, funnel, theme, variant, post_id, out, prev, prev_file, outro):
+    """Posts de Reel: só o conteúdo-base é gerado e guardado (sem slides nem stories). O vídeo é montado em seguida pelo
+    comando `reel` e vai ao Telegram com os botões Publicar Reel / Descartar."""
+    out.mkdir(parents=True, exist_ok=True)
+    rc, src = post["recipe"], post["story_recipe"]
+    meta = {"id": post_id, "status": "reel_only", "saida": "reel", "funnel": funnel, "theme": theme, "variant": variant,
+            "topic": post["topic"], "caption": full_caption(post), "slides": 0, "stories": 0,
+            "pillar": post["pillar"], "angle": post.get("angle")}
+    (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    (out / "conteudo.json").write_text(json.dumps({"topic": post["topic"], "funnel": funnel, "theme": theme,
+                                                   "keyword": rc.get("keyword"), "slides": post["slides"]},
+                                                  ensure_ascii=False, indent=2), encoding="utf-8")
+    save_history(post["topic"], funnel, theme, {
+        "variant": variant, "format": rc["format"], "hook": rc["hook"], "cta": rc["cta"], "keyword": rc["keyword"],
+        "cover": post["cover"], "opener": post["opener"],
+        "story_format": src["format"], "story_mode": src["mode"], "story_title": post["stories"][0]["title"][:90],
+        "pillar": post["pillar"], "angle": post.get("angle")})
+    if post.get("angle"):
+        record_theme(post["pillar"], post["angle"], post["topic"])
+    if prev is not None and prev.get("status") in ("pending", "reel_only"):   # "Gerar outro": o anterior sai da fila
+        prev["status"] = "rejected"
+        if prev.get("reel_status") == "pending":
+            prev["reel_status"] = "rejected"
+        prev_file.write_text(json.dumps(prev, ensure_ascii=False, indent=2), encoding="utf-8")
+    _saida_ci(post_id, "reel")
+    print(f"Post {post_id} gerado só para Reel ({funnel}, pilar {post['pillar']}): {post['topic']}", flush=True)
+
+
 def cmd_generate(args):
     now = datetime.now(TZ)
     # "Gerar outro": --outro traz o número do post a substituir. A etapa vem dele, e ele só é rejeitado depois que o novo chega.
@@ -133,15 +170,20 @@ def cmd_generate(args):
         if prev_file.exists():
             prev = json.loads(prev_file.read_text(encoding="utf-8"))
     funnel = args.funnel or (prev or {}).get("funnel") or funnel_by_hour(now.hour, now.weekday())
+    saida = "reel" if (args.saida or (prev or {}).get("saida") or "post") == "reel" else "post"
     tema = " ".join((args.tema or "").split())[:200] or None  # assunto sugerido pela dona da marca
     post_id = now.strftime("%Y%m%d-%H%M")
     try:
         prune()
         _log(f"gerando o texto com o Gemini (etapa {funnel}" + (f", tema sugerido: {tema}" if tema else "") + ")")
         post = generate_post(funnel, tema=tema)
-        _log("texto pronto; renderizando slides e stories")
         theme, variant = pick_theme(funnel), pick_variant(funnel)
         out = QUEUE / post_id
+        if saida == "reel":
+            _log("texto pronto; post de Reel (sem slides nem stories)")
+            _gerar_so_reel(post, funnel, theme, variant, post_id, out, prev, prev_file, outro)
+            return
+        _log("texto pronto; renderizando slides e stories")
         # no modo leve a logo grande some do feed (a marca fica só no rodapé e no story)
         paths, clips = render_all(post["slides"], post["stories"], out, theme, variant, brand_logo=funnel != "leve")
         _log("imagens prontas; montando os vídeos dos stories")
@@ -180,6 +222,7 @@ def cmd_generate(args):
                 prev["reel_status"] = "rejected"
             prev_file.write_text(json.dumps(prev, ensure_ascii=False, indent=2), encoding="utf-8")
             print(f"[outro] post {outro} marcado como rejeitado (substituído por {post_id})", flush=True)
+        _saida_ci(post_id, "post")
         print(f"Post {post_id} gerado ({funnel}, pilar {post['pillar']}, formato {post['recipe']['format']}, estilo {theme}/v{variant}, "
               f"story {src['format']}/{src['mode']}): {post['topic']}")
     except Exception:
@@ -387,6 +430,51 @@ def cmd_reel(args):
         sys.exit(1)
 
 
+def cmd_reel_direto(args):
+    """Reel direto, sem carrossel: escolhe tema e modelo, o Gemini preenche as lacunas (ou entra o banco de reserva), monta o
+    vídeo e sobe para o armazenamento. O envio ao Telegram é o passo seguinte do workflow (comando reel --enviar)."""
+    now = datetime.now(TZ)
+    post_id = now.strftime("%Y%m%d-%H%M")
+    etapa = args.etapa or "topo"
+    out = QUEUE / post_id
+    frames_dir = out / "_reel_frames"
+    tema = " ".join((args.tema or "").split())[:200] or None
+    try:
+        prune()
+        from .reel_direto import criar_reel_direto
+        from .reel_gancho import render_reel_gancho
+        _log(f"criando o Reel direto (etapa {etapa}" + (f", tema sugerido: {tema}" if tema else "") + ")")
+        d = criar_reel_direto(etapa, post_id, tema=tema, modelo=args.modelo)
+        _log(f"roteiro pronto ({d['origem']}, modelo {d['formato']}, pilar {d['pillar']}); montando as cenas")
+        out.mkdir(parents=True, exist_ok=True)
+        frames, _seg, usado = render_reel_gancho(d["roteiro"], d["theme"], frames_dir, capa=out / "reel_capa.png",
+                                                 mostrar_link=d["mostrar_link"])
+        _log(f"{len(frames)} quadros prontos; montando o vídeo")
+        make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0)
+        (out / "reel_roteiro.json").write_text(json.dumps({"formato": d["formato"], "origem": d["origem"], "roteiro": usado},
+                                                          ensure_ascii=False, indent=1), encoding="utf-8")
+        meta = {"id": post_id, "status": "reel_only", "saida": "reel_direto", "funnel": etapa, "theme": d["theme"],
+                "variant": d["variant"], "topic": d["topic"], "caption": d["caption"], "slides": 0, "stories": 0,
+                "pillar": d["pillar"], "angle": d["angle"], "reel_status": "pending", "reel_modo": "direto",
+                "reel_formato": d["formato"], "reel_origem": d["origem"]}
+        _subir_reel(post_id, out, meta)
+        (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        save_history(d["topic"], etapa, d["theme"], {"variant": d["variant"], "pillar": d["pillar"], "angle": d["angle"],
+                                                     "reel_formato": d["formato"], "cover": d["roteiro"]["gancho"]})
+        if d["angle"] and not tema:   # tema sugerido (e roteiro de reserva) não entram na contagem de ângulos
+            record_theme(d["pillar"], d["angle"], d["topic"])
+        _saida_ci(post_id, "reel")
+        _log("Reel direto pronto")
+    except Exception:
+        err = tg.redact(traceback.format_exc())
+        print(err, file=sys.stderr)
+        if os.getenv("SKIP_TELEGRAM") != "1":
+            tg.notify(f"⚠️ Não consegui criar o Reel direto ({etapa}):\n{err[-700:]}")
+        sys.exit(1)
+    finally:
+        shutil.rmtree(frames_dir, ignore_errors=True)
+
+
 def cmd_storage_test(_args):
     """Confere o armazenamento externo: sobe um arquivinho, confere a URL pública e apaga. O resultado vai para o Telegram."""
     def say(ok, texto):
@@ -544,15 +632,16 @@ def cmd_preview(args):
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
-    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--tema"); g.add_argument("--outro")
+    g = sub.add_parser("generate"); g.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); g.add_argument("--saida", choices=["post", "reel"]); g.add_argument("--tema"); g.add_argument("--outro")
     sub.add_parser("poll")
     sub.add_parser("storage-test")
+    rd_ = sub.add_parser("reel-direto"); rd_.add_argument("--etapa", choices=["topo", "meio", "fundo"], default="topo"); rd_.add_argument("--tema"); rd_.add_argument("--modelo")
     ap_ = sub.add_parser("approve"); ap_.add_argument("--post-id", required=True); ap_.add_argument("--action", choices=["ap", "po", "rj", "re", "rr"], default="ap")
     r_ = sub.add_parser("reel"); r_.add_argument("--post-id", required=True); r_.add_argument("--enviar", action="store_true"); r_.add_argument("--modo", choices=["texto", "slides"], default="texto")
     p = sub.add_parser("preview"); p.add_argument("--mock", action="store_true"); p.add_argument("--funnel", choices=["topo", "meio", "fundo", "leve"]); p.add_argument("--theme", choices=THEMES); p.add_argument("--variant", type=int, choices=[0, 1, 2]); p.add_argument("--story", choices=list(STORY_FORMATS) + ["all"])
     args = ap.parse_args()
     {"generate": cmd_generate, "poll": cmd_poll, "approve": cmd_approve, "preview": cmd_preview, "reel": cmd_reel,
-     "storage-test": cmd_storage_test}[args.cmd](args)
+     "reel-direto": cmd_reel_direto, "storage-test": cmd_storage_test}[args.cmd](args)
 
 
 if __name__ == "__main__":
