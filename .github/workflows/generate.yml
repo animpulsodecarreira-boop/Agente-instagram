@@ -1,13 +1,13 @@
 name: Gerar post
 on:
   schedule:
-    - cron: "30 15 * * 1-5"   # 12:30 Brasília, de segunda a sexta: 1 carrossel por dia (a etapa do funil gira pelo dia da semana)
-    - cron: "30 13 * * 6,0"   # sábado e domingo 10:30 Brasília -> LEVE
-    - cron: "0 20 * * 6,0"    # sábado e domingo 17:00 Brasília -> LEVE
+    - cron: "30 15 * * 1-5"   # 12:30 Brasília, seg a sex -> CARROSSEL (qua = meio, sex = fundo, demais dias = topo)
+    - cron: "30 13 * * 6,0"   # sábado e domingo 10:30 Brasília -> CARROSSEL leve
+    - cron: "0 20 * * 6,0"    # sábado e domingo 17:00 Brasília -> CARROSSEL leve
   workflow_dispatch:
     inputs:
       funnel:
-        description: "Etapa do funil (vazio = pelo dia da semana)"
+        description: "Etapa do funil (vazio = pela hora atual)"
         required: false
         type: choice
         options: ["", "topo", "meio", "fundo", "leve"]
@@ -63,18 +63,21 @@ jobs:
         run: |
           F="${{ inputs.funnel }}"
           if [ -z "$F" ]; then
-            # segunda topo | terça meio | quarta topo | quinta fundo | sexta meio | sábado e domingo leve
-            case "$(TZ=America/Sao_Paulo date +%u)" in
-              1) F="topo" ;;
-              2) F="meio" ;;
-              3) F="topo" ;;
-              4) F="fundo" ;;
-              5) F="meio" ;;
-              *) F="leve" ;;
+            case "${{ github.event.schedule }}" in
+              "30 15 * * 1-5")
+                # os Reels das 08:00 e 18:00 são do workflow "Reel direto" (sempre topo); o carrossel muda de etapa só na quarta e na sexta
+                case "$(TZ=America/Sao_Paulo date +%u)" in
+                  3) F="meio" ;;
+                  5) F="fundo" ;;
+                  *) F="topo" ;;
+                esac ;;
+              "30 13 * * 6,0") F="leve" ;;
+              "0 20 * * 6,0") F="leve" ;;
             esac
           fi
           echo "funnel=$F" >> "$GITHUB_OUTPUT"
       - name: Gerar, renderizar e enviar para o Telegram
+        id: g
         timeout-minutes: 15
         env:
           PYTHONUNBUFFERED: "1"
