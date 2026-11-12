@@ -1,0 +1,26 @@
+{
+ "formato": "lista",
+ "origem": "banco",
+ "roteiro": {
+  "gancho": "3 sinais de que seu LinkedIn está invisível",
+  "destaque": "invisível",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Título só com o cargo",
+    "apoio": "Quem lê não entende o valor que você entrega."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Sobre sem palavras-chave",
+    "apoio": "A busca não encontra perfis que não dizem o que fazem."
+   },
+   {
+    "rotulo": "3",
+    "texto": "Experiência sem conquistas",
+    "apoio": "Conte o que mudou com o seu trabalho."
+   }
+  ],
+  "chamada": "Segue para mais dicas de carreira"
+ }
+}
