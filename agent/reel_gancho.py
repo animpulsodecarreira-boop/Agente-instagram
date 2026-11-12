@@ -88,18 +88,19 @@ function swap(){$$('.l1').forEach(e=>e.style.opacity=0);}
 
 
 # ---------------- roteiro (Gemini) ----------------
-def _gemini_json(prompt):
+def _gemini_json(prompt, system=None, schema=None, deadline=None, max_tokens=4096):
     key = os.environ["GEMINI_API_KEY"]
     inicio, erros = time.time(), []
+    limite = deadline or DEADLINE
     for volta in range(2):
         for model in GEMINI_MODELS:
-            sobra = DEADLINE - (time.time() - inicio)
+            sobra = limite - (time.time() - inicio)
             if sobra < 25:
                 raise RuntimeError("Gemini (roteiro do Reel) sem tempo: " + " | ".join(erros[-3:])[-400:])
-            body = {"systemInstruction": {"parts": [{"text": SYSTEM}]},
+            body = {"systemInstruction": {"parts": [{"text": system or SYSTEM}]},
                     "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                    "generationConfig": {"responseMimeType": "application/json", "responseSchema": SCHEMA,
-                                         "temperature": 0.8, "maxOutputTokens": 4096}}
+                    "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema or SCHEMA,
+                                         "temperature": 0.8, "maxOutputTokens": max_tokens}}
             try:
                 r = requests.post(API.format(model=model), params={"key": key}, json=body,
                                   timeout=(15, max(20, min(75, sobra - 5))))
@@ -227,7 +228,7 @@ def _pagina(theme, corpo, logo_t):
             f"<script>{STORY_JS}{JS_G}</script></body></html>")
 
 
-def render_reel_gancho(roteiro, theme, workdir: Path, capa: Path = None):
+def render_reel_gancho(roteiro, theme, workdir: Path, capa: Path = None, mostrar_link: bool = True):
     """Renderiza as cenas e devolve ([(quadro, segundos)], segundos totais, roteiro usado)."""
     theme = theme if theme in THEMES else "escuro"
     r, (t_gancho, t_cenas, t_cta, total), wps, com_apoio = montar(roteiro)
@@ -266,7 +267,7 @@ def render_reel_gancho(roteiro, theme, workdir: Path, capa: Path = None):
         cenas.append((corpo, _dots(i, n) if n > 1 else "", p))
 
     cta = f"<div class='tx g0 mn' data-fit>{rich(r['chamada'])}</div>"
-    link = clean(LINK_LABEL)
+    link = clean(LINK_LABEL) if mostrar_link else ""   # posts de topo não pedem nada: sem botão de link
     if link:
         cta += f"<div class='pill g0 pl'>{html.escape(link)}</div>"
     pc = [("pose('.mn',.8,18,.95)", 0.05), ("pose('.mn',1,0,1)", 0.9 if link else t_cta - 0.1)]
