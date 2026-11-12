@@ -1,4 +1,42 @@
 {
+ "conta": {
+  "2026-11-12": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 61,
+      "NON_FOLLOWER": 314
+     },
+     "total": 377
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 201,
+      "REEL": 273,
+      "STORY": 48
+     },
+     "total": 377
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 34,
+      "NON_FOLLOWER": 62
+     },
+     "total": 96
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 73,
+      "REEL": 36,
+      "STORY": 27
+     },
+     "total": 96
+    }
+   }
+  }
+ },
  "midias": {
   "20261102-0916:carrossel": {
    "atributos": {
@@ -399,7 +437,21 @@
     "topic": "Mitos engraçados sobre a segunda-feira",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-12T07:48:10+0000",
+     "idade": 2.41,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 4,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 5
+     }
+    }
+   ],
    "media_id": "18116036264172048",
    "permalink": "https://www.instagram.com/p/DfiW5X4EQeg/",
    "post_id": "20261109-1822",
@@ -477,6 +529,25 @@
    "post_id": "20261111-1654",
    "publicado_em": "2026-11-11T20:08:37+0000",
    "tipo": "reel"
+  },
+  "20261111-1903:carrossel": {
+   "atributos": {
+    "angle": "mensagens a recrutadores",
+    "format": "caso_hipotetico",
+    "funnel": "fundo",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "pillar": "linkedin",
+    "reel_formato": null,
+    "theme": "claro",
+    "topic": "Abordagem a recrutadores e posicionamento no LinkedIn através de caso hipotético",
+    "variant": 1
+   },
+   "coletas": [],
+   "media_id": "18382597378243424",
+   "permalink": "https://www.instagram.com/p/DfnhgbVD2_2/",
+   "post_id": "20261111-1903",
+   "publicado_em": "2026-11-11T22:11:08+0000",
+   "tipo": "carrossel"
   }
  },
  "versao": 1
