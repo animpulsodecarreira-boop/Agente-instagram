@@ -300,10 +300,29 @@ def _reel_texto(out, meta, post_id):
         cont_file = out / "conteudo.json"
         conteudo = json.loads(cont_file.read_text(encoding="utf-8")) if cont_file.exists() else {}
         slides = conteudo.get("slides") or slides_from_caption(meta.get("caption", ""), meta.get("topic", ""))
+        # 1) Reel de gancho: roteiro próprio do Gemini em formatos conhecidos (lista, mito, pare de..., etc.)
+        try:
+            from .reel_gancho import criar_roteiro, render_reel_gancho
+            formato, roteiro = criar_roteiro(slides, meta, post_id)
+            _log(f"montando o Reel de gancho (formato {formato})")
+            frames, _seg, roteiro_usado = render_reel_gancho(roteiro, meta.get("theme", "escuro"), frames_dir, capa=out / "reel_capa.png")
+            _log(f"{len(frames)} quadros prontos; montando o vídeo")
+            make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0)
+            (out / "reel_roteiro.json").write_text(json.dumps({"formato": formato, "roteiro": roteiro_usado},
+                                                              ensure_ascii=False, indent=1), encoding="utf-8")
+            meta["reel_formato"] = formato
+            return "gancho"
+        except Exception:
+            print(tg.redact(traceback.format_exc()), file=sys.stderr)
+            _log("o Reel de gancho falhou; usando o Reel de texto de sempre")
+            shutil.rmtree(frames_dir, ignore_errors=True)
+            (out / "reel_capa.png").unlink(missing_ok=True)
+        # 2) Reel de texto (plano B): os slides do carrossel viram cenas
         _log("montando o Reel de texto a partir do " + ("conteúdo do post" if conteudo.get("slides") else "texto da legenda (post antigo)"))
         frames = render_reel_text(slides, meta.get("theme", "escuro"), frames_dir, capa=out / "reel_capa.png")
         _log(f"{len(frames)} quadros prontos; montando o vídeo")
         make_reel_from_frames(frames, out / "reel.mp4", post_id)
+        meta["reel_formato"] = "texto"
         return "texto"
     except Exception:
         print(tg.redact(traceback.format_exc()), file=sys.stderr)
@@ -341,6 +360,7 @@ def cmd_reel(args):
             raise RuntimeError(f"O Reel do post {post_id} já foi publicado.")
         baixados = []
         (out / "reel_capa.png").unlink(missing_ok=True)   # nada de capa velha de um Reel anterior
+        meta.pop("reel_formato", None)
         try:
             usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
             if usado is None:
@@ -351,6 +371,7 @@ def cmd_reel(args):
                 _log(f"montando o Reel do post {post_id} com {len(slides)} slides (carrossel em vídeo)")
                 make_reel_video(slides, out / "reel.mp4", post_id)
                 usado = "slides"
+                meta["reel_formato"] = "slides"
         finally:
             for p in baixados:  # os slides baixados não voltam para o repositório
                 p.unlink(missing_ok=True)
