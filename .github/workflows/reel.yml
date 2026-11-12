@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       modo:
-        description: "Estilo do Reel: texto = animação de texto no estilo dos stories | slides = carrossel em vídeo"
+        description: "Estilo do Reel: texto = Reel de gancho (roteiro rápido; se falhar, animação de texto) | slides = carrossel em vídeo"
         required: false
         default: "texto"
         type: choice
@@ -57,6 +57,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           POST_ID: ${{ inputs.post_id }}
           MODO: ${{ inputs.modo }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
