@@ -11,10 +11,11 @@
   "stories": 0,
   "pillar": "linkedin",
   "angle": null,
-  "reel_status": "pending",
+  "reel_status": "published",
   "reel_modo": "direto",
   "reel_formato": "lista",
   "reel_origem": "banco",
   "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261112-1246/reel_capa.png",
-  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261112-1246/reel.mp4"
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261112-1246/reel.mp4",
+  "reel_media_id": "18095033309193541"
 }
