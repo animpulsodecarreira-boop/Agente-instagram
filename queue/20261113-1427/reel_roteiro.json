@@ -1,0 +1,26 @@
+{
+ "formato": "mito",
+ "roteiro": {
+  "gancho": "Isso é o maior mito do currículo",
+  "cenas": [
+   {
+    "rotulo": "MITO",
+    "texto": "Tentar produzir na sexta a tarde",
+    "apoio": "O relógio parou e a energia sumiu"
+   },
+   {
+    "rotulo": "VERDADE",
+    "texto": "O cerebro precisa desligar sem culpa",
+    "apoio": "Forçar reuniões gera retrabalho"
+   },
+   {
+    "rotulo": "NA PRÁTICA",
+    "texto": "Fecha as abas e descansa",
+    "apoio": "Volte com clareza na segunda feira"
+   }
+  ],
+  "chamada": "Comenta PAUSA e volte na segunda",
+  "destaque": "maior",
+  "palavra_chave": "PAUSA"
+ }
+}

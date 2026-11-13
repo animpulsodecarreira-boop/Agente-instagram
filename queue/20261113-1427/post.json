@@ -12,5 +12,14 @@
   "story_mode": "paralela",
   "pillar": "linkedin",
   "angle": null,
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1427"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1427",
+  "revisao": [
+    "cena 2: “cerebro” não está no dicionário (sugestões: cérebro, celebro)",
+    "cena 2: “retrabalho” não está no dicionário (sugestões: trabalho)"
+  ],
+  "reel_formato": "mito",
+  "reel_status": "pending",
+  "reel_modo": "gancho",
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1427/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1427/reel.mp4"
 }
