@@ -1118,5 +1118,22 @@
     "story_title": "Sexta-feira, 14h",
     "pillar": "linkedin",
     "angle": null
+  },
+  {
+    "topic": "topo",
+    "funnel": "fundo",
+    "theme": "claro",
+    "variant": 2,
+    "format": "comparativo",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "PERFIL",
+    "cover": "Olhar para o topo do perfil e não saber o que colocar ali",
+    "opener": "Ficar encarando o topo do perfil sem saber se o cargo antigo ainda faz sentido ou se a nova direção está clara costuma t",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "Abrir o perfil no LinkedIn e ficar encarando a linha do topo sem saber o que escrever",
+    "pillar": "linkedin",
+    "angle": null
   }
 ]

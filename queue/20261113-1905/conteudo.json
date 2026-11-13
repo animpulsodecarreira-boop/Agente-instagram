@@ -1,0 +1,41 @@
+{
+  "topic": "topo",
+  "funnel": "fundo",
+  "theme": "claro",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Olhar para o topo do perfil e não saber o que colocar ali",
+      "body": "Duas formas de lidar com a primeira impressão no LinkedIn."
+    },
+    {
+      "kind": "versus",
+      "title": "O que aparece logo abaixo do seu nome",
+      "left": "Apenas o nome do cargo atual ou a palavra em busca",
+      "left_label": "JEITO COMUM",
+      "right": "O problema que você resolve e para quem você resolve",
+      "right_label": "JEITO QUE ATRAI"
+    },
+    {
+      "kind": "versus",
+      "title": "Como a sua trajetória é resumida",
+      "left": "Uma lista longa de tarefas antigas que não dizem para que você serve",
+      "left_label": "JEITO COMUM",
+      "right": "Um resumo claro do valor que você entrega na prática",
+      "right_label": "JEITO QUE ATRAI"
+    },
+    {
+      "kind": "content",
+      "title": "O topo do seu perfil é o seu letreiro",
+      "body": "Quem chega precisa entender em segundos o que você faz. Quando o topo é confuso, a pessoa fecha a página e vai embora.",
+      "highlight": "Clareza atrai conversas reais."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver como seu perfil está sendo lido?",
+      "body": "Preparamos um diagnóstico gratuito do seu LinkedIn para te ajudar a ajustar o topo e atrair mais olhares. Comente PERFIL aqui embaixo que te enviamos o link.",
+      "show_link": true
+    }
+  ]
+}
