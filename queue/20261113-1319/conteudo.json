@@ -1,0 +1,39 @@
+{
+  "topic": "Transição e recolocação de carreira e o diagnóstico gratuito do LinkedIn",
+  "funnel": "fundo",
+  "theme": "geometrico",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "3 passos para organizar as primeiras semanas de recolocação",
+      "body": "Como dar o primeiro passo na transição de carreira sem se perder no excesso de tarefas."
+    },
+    {
+      "kind": "content",
+      "title": "Para quem é este momento",
+      "body": "Para quem mudou de área, voltou ao mercado após uma pausa ou foi demitido e precisa organizar a casa para recomeçar com clareza."
+    },
+    {
+      "kind": "list",
+      "title": "O que você recebe no diagnóstico",
+      "items": [
+        "Análise clara do seu perfil profissional atual",
+        "Ajustes de posicionamento para a sua nova direção",
+        "Orientações práticas para organizar sua trajetória",
+        "Direção para atrair o olhar de quem contrata"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "Como funciona na prática",
+      "body": "Você envia seu perfil ou sua dúvida e nossa equipe analisa os pontos cegos que atrapalham sua clareza no mercado. Tudo de forma direta."
+    },
+    {
+      "kind": "cta",
+      "title": "Dê o próximo passo agora",
+      "body": "Comente a palavra AJUDA aqui embaixo para garantir o seu diagnóstico gratuito e destravar o seu posicionamento no LinkedIn através do link na bio.",
+      "show_link": true
+    }
+  ]
+}

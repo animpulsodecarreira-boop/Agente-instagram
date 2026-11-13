@@ -1067,5 +1067,22 @@
     "angle": null,
     "reel_formato": "lista",
     "cover": "3 sinais de que seu LinkedIn está invisível"
+  },
+  {
+    "topic": "Transição e recolocação de carreira e o diagnóstico gratuito do LinkedIn",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 0,
+    "format": "oferta",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "AJUDA",
+    "cover": "3 passos para organizar as primeiras semanas de recolocação",
+    "opener": "Voltar ao mercado ou mudar de direção profissional costuma trazer aquela sensação de não saber por onde começar a arruma",
+    "story_format": "pergunta",
+    "story_mode": "acompanha",
+    "story_title": "Qual está sendo o seu maior desafio nas primeiras semanas de busca por um novo trabalho?",
+    "pillar": "transicao",
+    "angle": "o que fazer nas primeiras semanas"
   }
 ]
