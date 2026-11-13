@@ -177,6 +177,10 @@ def cmd_generate(args):
         prune()
         _log(f"gerando o texto com o Gemini (etapa {funnel}" + (f", tema sugerido: {tema}" if tema else "") + ")")
         post = generate_post(funnel, tema=tema)
+        from .revisao import formatar_avisos, revisar_post, revisar_roteiro
+        avisos = revisar_post(post)   # corrige o que é seguro (ex.: "Finji" -> "Fingi") e guarda os avisos para o Telegram
+        if avisos:
+            _log(f"revisão do texto: {len(avisos)} aviso(s)")
         theme, variant = pick_theme(funnel), pick_variant(funnel)
         out = QUEUE / post_id
         if saida == "reel":
@@ -211,6 +215,8 @@ def cmd_generate(args):
         label = f"{funnel} · {PILLARS[post['pillar']]['nome']}" + (" · 💡 tema sugerido" if tema else "")
         if os.getenv("SKIP_TELEGRAM") != "1":
             tg.send_for_approval(post_id, paths, cap, label, theme, videos)
+            if avisos:
+                tg.notify(f"Post {post_id}\n" + formatar_avisos(avisos))
         _log("enviado ao Telegram")
         if media_base:
             _limpar_midia_local(out)
@@ -347,6 +353,8 @@ def _reel_texto(out, meta, post_id):
         try:
             from .reel_gancho import criar_roteiro, render_reel_gancho
             formato, roteiro = criar_roteiro(slides, meta, post_id)
+            from .revisao import revisar_roteiro
+            _, meta["revisao"] = revisar_roteiro(roteiro)
             _log(f"montando o Reel de gancho (formato {formato})")
             frames, _seg, roteiro_usado = render_reel_gancho(roteiro, meta.get("theme", "escuro"), frames_dir, capa=out / "reel_capa.png")
             _log(f"{len(frames)} quadros prontos; montando o vídeo")
@@ -391,6 +399,8 @@ def cmd_reel(args):
                 storage.download_url(meta["reel_url"], reel_local)  # o vídeo está no armazenamento externo
                 baixou = True
             nota = "ℹ️ Não consegui montar a versão em texto animado; este é o carrossel em vídeo." if meta.get("reel_modo") == "slides" else ""
+            from .revisao import formatar_avisos
+            nota = (nota + "\n" + formatar_avisos(meta.get("revisao") or [])).strip()
             try:
                 tg.send_reel_for_approval(post_id, reel_local, reel_caption(meta), nota)
             finally:
@@ -404,6 +414,7 @@ def cmd_reel(args):
         baixados = []
         (out / "reel_capa.png").unlink(missing_ok=True)   # nada de capa velha de um Reel anterior
         meta.pop("reel_formato", None)
+        meta.pop("revisao", None)
         try:
             usado = _reel_texto(out, meta, post_id) if (args.modo or "texto") == "texto" else None
             if usado is None:
@@ -445,6 +456,8 @@ def cmd_reel_direto(args):
         from .reel_gancho import render_reel_gancho
         _log(f"criando o Reel direto (etapa {etapa}" + (f", tema sugerido: {tema}" if tema else "") + ")")
         d = criar_reel_direto(etapa, post_id, tema=tema, modelo=args.modelo)
+        from .revisao import revisar_roteiro
+        d["caption"], avisos_rev = revisar_roteiro(d["roteiro"], d["caption"])
         _log(f"roteiro pronto ({d['origem']}, modelo {d['formato']}, pilar {d['pillar']}); montando as cenas")
         out.mkdir(parents=True, exist_ok=True)
         frames, _seg, usado = render_reel_gancho(d["roteiro"], d["theme"], frames_dir, capa=out / "reel_capa.png",
@@ -456,7 +469,7 @@ def cmd_reel_direto(args):
         meta = {"id": post_id, "status": "reel_only", "saida": "reel_direto", "funnel": etapa, "theme": d["theme"],
                 "variant": d["variant"], "topic": d["topic"], "caption": d["caption"], "slides": 0, "stories": 0,
                 "pillar": d["pillar"], "angle": d["angle"], "reel_status": "pending", "reel_modo": "direto",
-                "reel_formato": d["formato"], "reel_origem": d["origem"]}
+                "reel_formato": d["formato"], "reel_origem": d["origem"], "revisao": avisos_rev}
         _subir_reel(post_id, out, meta)
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         save_history(d["topic"], etapa, d["theme"], {"variant": d["variant"], "pillar": d["pillar"], "angle": d["angle"],
