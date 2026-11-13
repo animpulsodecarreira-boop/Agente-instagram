@@ -35,6 +35,42 @@
      "total": 96
     }
    }
+  },
+  "2026-11-13": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 61,
+      "NON_FOLLOWER": 316
+     },
+     "total": 379
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 201,
+      "REEL": 278,
+      "STORY": 48
+     },
+     "total": 379
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 36,
+      "NON_FOLLOWER": 61
+     },
+     "total": 97
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 73,
+      "REEL": 61,
+      "STORY": 28
+     },
+     "total": 97
+    }
+   }
   }
  },
  "midias": {
@@ -222,6 +258,19 @@
       "total_interactions": 0,
       "views": 36
      }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 8.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 36
+     }
     }
    ],
    "media_id": "18643751452012347",
@@ -245,6 +294,21 @@
     {
      "em": "2026-11-11T21:10:06+0000",
      "idade": 7.16,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4337,
+      "likes": 2,
+      "reach": 61,
+      "reels_skip_rate": 82.1,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 3,
+      "views": 84
+     }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 8.61,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 4337,
@@ -288,6 +352,19 @@
       "total_interactions": 2,
       "views": 21
      }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 6.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 21
+     }
     }
    ],
    "media_id": "18015766355969317",
@@ -311,6 +388,19 @@
     {
      "em": "2026-11-11T21:10:06+0000",
      "idade": 4.03,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 5.47,
      "metricas": {
       "comments": 0,
       "likes": 0,
@@ -352,6 +442,19 @@
       "total_interactions": 1,
       "views": 27
      }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 4.73,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 30
+     }
     }
    ],
    "media_id": "17966382402234453",
@@ -375,6 +478,21 @@
     {
      "em": "2026-11-11T21:10:06+0000",
      "idade": 2.36,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 3.8,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 2707,
@@ -418,6 +536,19 @@
       "total_interactions": 3,
       "views": 60
      }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 3.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 43,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 62
+     }
     }
    ],
    "media_id": "17913599778603389",
@@ -450,6 +581,19 @@
       "total_interactions": 1,
       "views": 5
      }
+    },
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 3.41,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 8
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -469,7 +613,21 @@
     "topic": "Como usar palavras-chave estratégicas no LinkedIn para ser encontrado por quem contrata",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 2.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    }
+   ],
    "media_id": "17878294653582626",
    "permalink": "https://www.instagram.com/p/Dfj3b-uleEo/",
    "post_id": "20261110-0856",
@@ -487,7 +645,21 @@
     "topic": "Coisas que ninguém avisa na primeira semana de um trabalho novo",
     "variant": 0
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-13T07:47:10+0000",
+     "idade": 2.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
+    }
+   ],
    "media_id": "18116496245329005",
    "permalink": "https://www.instagram.com/p/DfkV5s0iSAo/",
    "post_id": "20261110-1322",
@@ -548,6 +720,25 @@
    "post_id": "20261111-1903",
    "publicado_em": "2026-11-11T22:11:08+0000",
    "tipo": "carrossel"
+  },
+  "20261112-1246:reel": {
+   "atributos": {
+    "angle": null,
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "linkedin",
+    "reel_formato": "lista",
+    "theme": "azul",
+    "topic": "Sinais de que o LinkedIn está invisível",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "18095033309193541",
+   "permalink": "https://www.instagram.com/reel/DfpbK1YGZMu/",
+   "post_id": "20261112-1246",
+   "publicado_em": "2026-11-12T15:54:34+0000",
+   "tipo": "reel"
   }
  },
  "versao": 1
