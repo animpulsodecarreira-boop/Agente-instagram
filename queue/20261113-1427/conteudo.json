@@ -1,0 +1,34 @@
+{
+  "topic": "Sexta feira pós meio dia",
+  "funnel": "topo",
+  "theme": "escuro",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Pare de tentar produzir algo útil na sexta-feira após o meio-dia",
+      "body": "Por que o cérebro desliga e como aceitar isso sem culpa."
+    },
+    {
+      "kind": "content",
+      "title": "O relógio parou de andar",
+      "body": "Eram 12:01 e a energia sumiu. O monitor parece brilhar mais forte e a única tarefa possível é olhar para a janela."
+    },
+    {
+      "kind": "content",
+      "title": "A ilusão da produtividade tardia",
+      "body": "Forçar reuniões ou prazos nesse horário só gera retrabalho. O mercado não vai desabar se você fechar as abas."
+    },
+    {
+      "kind": "content",
+      "title": "O verdadeiro valor da pausa",
+      "body": "Desligar a mente agora é o que permite voltar com clareza na segunda-feira para cuidar da sua carreira e do seu perfil."
+    },
+    {
+      "kind": "cta",
+      "title": "Quem mais já está com a cabeça no fim de semana?",
+      "body": "Mande este post para alguém que também já largou o teclado hoje.",
+      "show_link": false
+    }
+  ]
+}

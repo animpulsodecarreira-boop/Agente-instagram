@@ -1101,5 +1101,22 @@
     "story_title": "Qual é a primeira coisa que você faz assim que o relógio marca meio-dia de sexta-feira?",
     "pillar": "leve_fora",
     "angle": null
+  },
+  {
+    "topic": "Sexta feira pós meio dia",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 1,
+    "format": "pergunta",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a mandar o post para alguém que está buscando recolocação",
+    "keyword": "QUERO",
+    "cover": "Pare de tentar produzir algo útil na sexta-feira após o meio-dia",
+    "opener": "A sensação de que o relógio emperrou logo depois do almoço é universal. Tentar render algo produtivo nesse momento costu",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "Sexta-feira, 14h",
+    "pillar": "linkedin",
+    "angle": null
   }
 ]
