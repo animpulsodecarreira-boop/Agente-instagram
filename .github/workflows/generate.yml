@@ -53,7 +53,7 @@ jobs:
       - name: Instalar dependências e o Chromium (com repetição)
         timeout-minutes: 8
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements.txt pyspellchecker
           for i in 1 2 3; do
             timeout 240 playwright install --with-deps chromium && break
             echo "tentativa $i falhou; aguardando"; sleep $((i*20))
