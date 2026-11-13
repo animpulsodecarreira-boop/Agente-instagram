@@ -1,0 +1,26 @@
+{
+ "formato": "pov",
+ "roteiro": {
+  "gancho": "POV: você tenta descansar na sexta mas o cérebro não desliga",
+  "cenas": [
+   {
+    "rotulo": "A VIRADA",
+    "texto": "Recarregar exige silenciar notificações urgentes",
+    "apoio": "A cabeça continua imaginando pendências."
+   },
+   {
+    "rotulo": "FAÇA ISSO",
+    "texto": "Durma sem despertador e caminhe ao ar livre",
+    "apoio": "Pequenas pausas mudam o humor."
+   },
+   {
+    "rotulo": "DEPOIS",
+    "texto": "O corpo desacelera no próprio ritmo",
+    "apoio": "Tempo de pausa e tranquilidade."
+   }
+  ],
+  "chamada": "Comenta DESCANSO e cuide da sua mente",
+  "destaque": "sexta",
+  "palavra_chave": "DESCANSO"
+ }
+}
