@@ -15,8 +15,9 @@
   "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1905",
   "revisao": [],
   "reel_formato": "lista",
-  "reel_status": "pending",
+  "reel_status": "published",
   "reel_modo": "gancho",
   "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1905/reel_capa.png",
-  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1905/reel.mp4"
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1905/reel.mp4",
+  "reel_media_id": "17888031285505963"
 }
