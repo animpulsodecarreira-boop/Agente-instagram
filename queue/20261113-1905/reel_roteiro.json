@@ -1,0 +1,21 @@
+{
+ "formato": "lista",
+ "roteiro": {
+  "gancho": "2 erros no topo do seu LinkedIn",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Cargo atual ou em busca",
+    "apoio": "Esquece o problema que você resolve de verdade."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Lista longa de tarefas antigas",
+    "apoio": "Não mostra o valor prático que você entrega."
+   }
+  ],
+  "chamada": "Comente PERFIL aqui embaixo",
+  "destaque": "erros",
+  "palavra_chave": "PERFIL"
+ }
+}
