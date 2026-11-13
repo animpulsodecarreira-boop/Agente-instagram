@@ -1,6 +1,6 @@
 {
   "id": "20261113-1319",
-  "status": "pending",
+  "status": "published",
   "funnel": "fundo",
   "theme": "geometrico",
   "variant": 0,
@@ -12,5 +12,7 @@
   "story_mode": "acompanha",
   "pillar": "transicao",
   "angle": "o que fazer nas primeiras semanas",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1319"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261113-1319",
+  "media_id": "18039366437890516",
+  "stories_published": 1
 }
