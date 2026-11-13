@@ -1,0 +1,39 @@
+{
+  "topic": "Sexta feira pós meio dia e hábitos de recarga",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Aviso oficial: após o meio-dia de sexta, o cérebro oficialmente desconecta de qualquer assunto sério",
+      "body": "Brincadeira à parte, o relógio bateu doze horas e a única missão que sobra é garantir que o descanso seja real."
+    },
+    {
+      "kind": "list",
+      "title": "Quatro hábitos rápidos de recarga para o seu fim de semana",
+      "items": [
+        "Desconectar as notificações mais chatas do celular",
+        "Dormir sem colocar despertador para o dia seguinte",
+        "Fazer uma refeição demorada e sem pressa",
+        "Caminhar ao ar livre sem olhar para o relógio"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "O poder de desligar o celular das mensagens urgentes",
+      "body": "Ninguém consegue recarregar as energias se a cabeça continuar imaginando que vai surgir uma pendência a qualquer momento. Silenciar o que não é urgente é um ato de carinho com a própria mente."
+    },
+    {
+      "kind": "content",
+      "title": "O luxo absoluto de acordar sem o barulho do alarme",
+      "body": "Deixar o corpo acordar no próprio ritmo muda o humor de qualquer pessoa. É a forma mais simples de avisar para o relógio interno que agora é tempo de pausa e tranquilidade."
+    },
+    {
+      "kind": "cta",
+      "title": "O que você planeja fazer neste fim de semana para desacelerar?",
+      "body": "Conta aqui nos comentários qual vai ser o seu programa favorito para recarregar as baterias.",
+      "show_link": false
+    }
+  ]
+}

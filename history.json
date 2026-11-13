@@ -1084,5 +1084,22 @@
     "story_title": "Qual está sendo o seu maior desafio nas primeiras semanas de busca por um novo trabalho?",
     "pillar": "transicao",
     "angle": "o que fazer nas primeiras semanas"
+  },
+  {
+    "topic": "Sexta feira pós meio dia e hábitos de recarga",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 2,
+    "format": "descanso",
+    "hook": "exagero de brincadeira (deixe claro que é brincadeira)",
+    "cta": "perguntar o que a pessoa vai fazer no fim de semana",
+    "keyword": "QUERO",
+    "cover": "Aviso oficial: após o meio-dia de sexta, o cérebro oficialmente desconecta de qualquer assunto sério",
+    "opener": "A sensação de ver o ponteiro passar do meio-dia na sexta-feira deveria ser considerada um dos melhores momentos da seman",
+    "story_format": "pergunta",
+    "story_mode": "acompanha",
+    "story_title": "Qual é a primeira coisa que você faz assim que o relógio marca meio-dia de sexta-feira?",
+    "pillar": "leve_fora",
+    "angle": null
   }
 ]
