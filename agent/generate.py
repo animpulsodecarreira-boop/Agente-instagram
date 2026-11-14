@@ -1,503 +1,287 @@
-"""Gera o conteúdo (carrossel + stories + legenda) com a API gratuita do Gemini."""
-import json
-import os
-import random
-import time
-from datetime import datetime
-from zoneinfo import ZoneInfo
+"""Reel direto: o Reel nasce sozinho, sem carrossel antes. Funciona com MODELOS PRONTOS.
 
-import requests
+Como funciona
+1. O robô escolhe (sem usar o Gemini): etapa do funil, pilar, ângulo menos usado, modelo (formato) e a chamada final.
+2. O Gemini só PREENCHE AS LACUNAS do modelo: gancho (a partir de moldes), 2 ou 3 cenas curtas, legenda e hashtags.
+   Cada modelo traz a estrutura, os moldes de gancho e um exemplo completo; a chamada final vem pronta do código.
+3. Se o Gemini falhar ou a resposta não passar na validação, o robô usa um roteiro pronto do BANCO DE RESERVA (escrito à mão).
+   Assim o Reel sai do mesmo jeito, mesmo quando o Google está fora do ar.
 
-from .config import (BANNED_PHRASES, BRAND_NAME, CTAS, FORMATS, FUNNEL, GEMINI_MODELS, HISTORY_FILE, HOOKS,
-                     KEYWORDS, MAX_HASHTAGS, MAX_SLIDES, MIN_SLIDES, MISSIONS, OFFER, STORY_FORMATS, STORY_MODES,
-                     STORY_MODE_TEXT, THEMES, PILLARS, LEVE_BANNED, LEVE_HOOKS, LEVE_THEMES)
-
-API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-
-SYSTEM = f"""Você é o estrategista de conteúdo de Instagram da marca "{BRAND_NAME}", consultoria de posicionamento
-profissional no LinkedIn para pessoas em transição/recolocação. Escreva em português do Brasil, tom humano,
-direto e acolhedor, sem jargão e sem promessas de resultado garantido. NÃO use markdown (nada de ** ou #) nos textos dos slides.
-Parte dos posts trata de temas profissionais em geral (currículo, entrevista, rotina, comunicação, negociação, aprendizado),
-sempre com o olhar de quem ajuda pessoas a se posicionarem melhor no mercado. O PILAR do dia vem na mensagem do usuário: SIGA-O.
-
-MODO LEVE (quando a etapa do funil for LEVE, aos fins de semana): tom de conversa de amigo, humor suave e acolhedor, frases curtas,
-sem jargão de carreira. NÃO venda nada: nada de diagnóstico, consultoria, link na bio, palavra-chave de oferta nem LinkedIn.
-Nunca faça piada com quem está desempregado ou buscando recolocação, com grupos de pessoas, com cargos ou com empresas reais;
-sem estereótipos. Sem estatísticas, estudos, livros, filmes ou autores citados. O objetivo é identificação, um sorriso e conversa.
-No modo leve o CTA é só interação (comentar, marcar alguém, salvar para a segunda).
-
-REGRAS DE CONTEÚDO
-- Nunca invente estatísticas, depoimentos, nomes ou resultados. Use só generalizações seguras.
-- Nada de promessas como "garanto emprego". Fale de clareza, posicionamento e percepção do perfil.
-- Não repita temas já usados (lista abaixo).
-- Títulos curtos (até 70 caracteres). Corpo de slide até 230 caracteres. Frases curtas.
-
-TIPOS DE SLIDE (campo "kind")
-- cover: gancho (title) + subtítulo curto (body). Sempre o PRIMEIRO.
-- content: um ponto por slide (title + body; "highlight" opcional = frase final de impacto).
-- quote: frase de impacto grande (title) + apoio curto (body).
-- versus: contraste "em vez de / faça assim": title + left (o erro, curto) + right (a melhor versão, curta). Opcional: left_label e right_label (até 18 caracteres, em maiúsculas) para trocar os rótulos, quando o contraste não for erro x acerto (ex.: 'DOMINGO À NOITE' / 'SEGUNDA CEDO').
-- list: título + items (3 a 4 passos curtos, até 70 caracteres cada).
-- check: checklist (title + items com 3 a 4 itens + note curta).
-- cta: chamada final (title + body). Sempre o ÚLTIMO.
-Monte de 5 a 8 slides. A receita do dia (formato, gancho e CTA) vem na mensagem do usuário: SIGA-A. Cada post deve
-parecer diferente dos anteriores: varie o jeito de abrir, de transicionar e de fechar. O slide de conexão é OPCIONAL
-e, se usar, nunca repita a mesma frase de transição dos posts anteriores.
-Não escreva "Salva este post" ou pedidos de salvar em todo post: peça só quando fizer sentido para a receita do dia.
-Exemplos e casos devem ser FICTÍCIOS e identificados como exemplo ("Imagine...", "Por exemplo:"). Nunca apresente um caso inventado como real.
-
-STORY (campo "stories": EXATAMENTE 1 item). Não é um slide do carrossel: é uma conversa rápida de 8 segundos, com UMA ideia só,
-tom de amigo que entende do assunto, frases curtas, sem tom de anúncio e sem listas longas. O tipo (kind), o modo e os limites de
-cada campo vêm na receita do dia: SIGA-OS. Conversas e exemplos são FICTÍCIOS e nunca prometem resultado.
-
-LEGENDA: 1ª linha é um gancho forte e diferente das anteriores; corpo curto; termine com a chamada do CTA da receita (não repita o mesmo pedido todo dia); até 1500 caracteres.
-HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português, relevantes ao tema do dia e à carreira (#LinkedIn só se o tema ou o post citar a plataforma).
+Para mudar o tom, os moldes, as chamadas ou os roteiros de reserva, é só editar as listas aqui embaixo.
 """
+import hashlib
+import json
+import random
+import re
 
-SCHEMA = {
-    "type": "OBJECT",
-    "properties": {
-        "topic": {"type": "STRING"},
-        "slides": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
-            "kind": {"type": "STRING", "enum": ["cover", "content", "quote", "versus", "list", "check", "cta"]},
-            "title": {"type": "STRING"}, "body": {"type": "STRING"},
-            "highlight": {"type": "STRING"}, "note": {"type": "STRING"},
-            "left": {"type": "STRING"}, "right": {"type": "STRING"},
-            "left_label": {"type": "STRING"}, "right_label": {"type": "STRING"},
-            "items": {"type": "ARRAY", "items": {"type": "STRING"}},
-        }, "required": ["kind", "title"]}},
-        "stories": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
-            "kind": {"type": "STRING", "enum": list(STORY_FORMATS)},
-            "title": {"type": "STRING"}, "body": {"type": "STRING"}, "highlight": {"type": "STRING"},
-            "antes": {"type": "STRING"}, "depois": {"type": "STRING"}, "outro_label": {"type": "STRING"},
-            "items": {"type": "ARRAY", "items": {"type": "STRING"}},
-            "messages": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
-                "quem": {"type": "STRING", "enum": ["outro", "voce"]}, "texto": {"type": "STRING"},
-            }, "required": ["quem", "texto"]}},
-        }, "required": ["kind", "title"]}},
-        "caption": {"type": "STRING"},
-        "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
-    },
-    "required": ["topic", "slides", "stories", "caption", "hashtags"],
+from .config import BANNED_PHRASES, FUNNEL, KEYWORDS, MISSIONS, PILLARS
+from .generate import _lru, hist_for, load_history, pick_angle, pick_pillar, pick_theme, pick_variant
+from .reel_gancho import FORMATOS as MODELOS_BASE
+from .reel_gancho import SYSTEM as SYSTEM_BASE
+from .reel_gancho import _gemini_json, _nw, _txt, validar
+
+# ---------------------------------------------------------------- modelos
+NOVOS = {
+    "pergunta_recrutador": ("Pergunta que o recrutador faz. O gancho traz uma pergunta típica de processo seletivo. Cenas (3): rotulo "
+                            "\"O QUE ELE QUER SABER\", rotulo \"COMO RESPONDER\", rotulo \"EVITE\"."),
+    "antes_de": ("Antes de... O gancho começa com \"Antes de\" + uma ação de quem busca emprego, e promete conferir 3 coisas. Cenas (3): "
+                 "rotulo \"1\", \"2\" e \"3\", cada uma com uma checagem simples (texto) e o porquê (apoio)."),
+    "resposta_rapida": ("Resposta rápida a uma dúvida comum. O gancho é a dúvida, em forma de pergunta. Cenas (3): rotulo \"RESPOSTA CURTA\", "
+                        "rotulo \"POR QUÊ\", rotulo \"DICA\"."),
+}
+MODELOS = {**MODELOS_BASE, **NOVOS}
+
+# etapas em que cada modelo faz sentido (topo aceita todos)
+POR_ETAPA = {"topo": list(MODELOS), "meio": ["mito", "erro", "resposta_rapida", "pergunta_recrutador"],
+             "fundo": ["pare", "erro", "antes_depois"]}
+
+MOLDES = {
+    "lista": ["3 sinais de que {problema}", "3 erros no {assunto} que afastam recrutadores", "3 coisas que ninguém conta sobre {assunto}"],
+    "mito": ["{mito} é o maior mito de {assunto}", "Disseram que {mito}. Será?", "Isso sobre {assunto} é mito"],
+    "pare": ["Pare de {hábito} no seu {assunto}", "Pare de {hábito} se você busca emprego"],
+    "antes_depois": ["Seu {item} diz o que você faz?", "{item}: veja a diferença"],
+    "erro": ["O erro nº 1 em {assunto}", "O erro que muita gente comete em {assunto}"],
+    "pov": ["POV: você {situação} e {problema}", "POV: {situação de quem busca emprego}"],
+    "pergunta_recrutador": ["Recrutador pergunta: {pergunta}", "A pergunta que todo recrutador faz: {pergunta}"],
+    "antes_de": ["Antes de {ação}, faça isto", "Antes de {ação}, confira 3 coisas"],
+    "resposta_rapida": ["{dúvida frequente}?", "Pode {ação}? Resposta rápida"],
 }
 
+EXEMPLOS = {   # um exemplo completo de cada modelo: serve de molde de tom e tamanho (o assunto muda sempre)
+    "lista": {"gancho": "3 sinais de que seu LinkedIn está invisível", "destaque": "invisível", "cenas": [
+        {"rotulo": "1", "texto": "Título só com o cargo", "apoio": "Quem lê não entende o valor que você entrega."},
+        {"rotulo": "2", "texto": "Sobre sem palavras-chave", "apoio": "A busca não encontra perfis que não dizem o que fazem."},
+        {"rotulo": "3", "texto": "Experiência sem conquistas", "apoio": "Conte o que mudou com o seu trabalho."}]},
+    "mito": {"gancho": "Currículo grande impressiona mais? Mito", "destaque": "Mito", "cenas": [
+        {"rotulo": "MITO", "texto": "Mais páginas mostram mais valor", "apoio": ""},
+        {"rotulo": "VERDADE", "texto": "Clareza vale mais que tamanho", "apoio": "Quem lê procura rápido o que combina com a vaga."},
+        {"rotulo": "NA PRÁTICA", "texto": "Priorize o que combina com a vaga", "apoio": ""}]},
+    "pare": {"gancho": "Pare de usar só o cargo no título", "destaque": "cargo", "cenas": [
+        {"rotulo": "FAÇA ASSIM", "texto": "Diga o que você entrega", "apoio": "Para quem você trabalha e que problema resolve."},
+        {"rotulo": "POR QUÊ", "texto": "A busca lê o seu título", "apoio": "Palavras claras ajudam o perfil a ser encontrado."},
+        {"rotulo": "HOJE", "texto": "Reescreva em cinco minutos", "apoio": ""}]},
+    "antes_depois": {"gancho": "Seu título diz o que você faz?", "destaque": "título", "cenas": [
+        {"rotulo": "ANTES / DEPOIS", "antes": "Analista de Marketing", "texto": "Ajudo pequenas empresas a atrair clientes", "apoio": ""},
+        {"rotulo": "ANTES / DEPOIS", "antes": "Em busca de oportunidades", "texto": "Atendimento ao cliente com foco em vendas", "apoio": "Diga a área e o que você faz."}]},
+    "erro": {"gancho": "O erro nº 1 no currículo", "destaque": "erro", "cenas": [
+        {"rotulo": "O ERRO", "texto": "Listar tarefas em vez de conquistas", "apoio": ""},
+        {"rotulo": "POR QUE ATRAPALHA", "texto": "Ninguém vê o que você mudou", "apoio": ""},
+        {"rotulo": "CORRIJA ASSIM", "texto": "Mostre o resultado do seu trabalho", "apoio": "Sem inventar números: use fatos que você pode comprovar."}]},
+    "pov": {"gancho": "POV: você quer mudar de área", "destaque": "mudar", "cenas": [
+        {"rotulo": "A VIRADA", "texto": "Você já tem habilidades que servem", "apoio": ""},
+        {"rotulo": "FAÇA ISSO", "texto": "Liste o que você sabe fazer", "apoio": "Pense nas tarefas, não só no cargo."},
+        {"rotulo": "DEPOIS", "texto": "Seu perfil passa a contar essa ponte", "apoio": "Quem lê entende como sua experiência se conecta."}]},
+    "pergunta_recrutador": {"gancho": "Recrutador pergunta: fale sobre você", "destaque": "você", "cenas": [
+        {"rotulo": "O QUE ELE QUER SABER", "texto": "Quem é você para esta vaga", "apoio": "Não é a sua história de vida inteira."},
+        {"rotulo": "COMO RESPONDER", "texto": "Presente, passado e foco", "apoio": "Quem você é hoje, o que já fez e o que busca."},
+        {"rotulo": "EVITE", "texto": "Ler o currículo em voz alta", "apoio": ""}]},
+    "antes_de": {"gancho": "Antes de uma entrevista, faça isto", "destaque": "entrevista", "cenas": [
+        {"rotulo": "1", "texto": "Releia a descrição da vaga", "apoio": "Ela mostra o que a empresa procura."},
+        {"rotulo": "2", "texto": "Prepare duas histórias reais", "apoio": "Situações em que você resolveu algo."},
+        {"rotulo": "3", "texto": "Tenha uma pergunta para fazer", "apoio": "Mostra interesse de verdade."}]},
+    "resposta_rapida": {"gancho": "Posso pedir tempo para pensar na proposta?", "destaque": "tempo", "cenas": [
+        {"rotulo": "RESPOSTA CURTA", "texto": "Pode, e é normal", "apoio": "Avaliar com calma faz parte do processo."},
+        {"rotulo": "POR QUÊ", "texto": "Decisão apressada custa caro", "apoio": "Compare rotina e crescimento, não só o valor."},
+        {"rotulo": "DICA", "texto": "Combine um prazo e agradeça", "apoio": ""}]},
+}
 
-def load_history():
-    if HISTORY_FILE.exists():
-        return json.loads(HISTORY_FILE.read_text(encoding="utf-8"))
-    return []
+# chamadas finais prontas (o Gemini não escreve a chamada). {kw} = palavra-chave rotativa de config.KEYWORDS
+CHAMADAS = {
+    "topo": ["Salva para consultar depois", "Segue para mais dicas de carreira", "Comenta {kw} e eu te mando", "Manda para quem precisa ver"],
+    "meio": ["Chama na DM com {kw}", "Quer ver como funciona? Chama na DM"],
+    "fundo": ["Diagnóstico gratuito no link da bio"],
+}
+MOSTRAR_LINK = {"topo": False, "meio": False, "fundo": True}   # botão "Link na bio" no fim do vídeo
 
+SYSTEM_DIRETO = SYSTEM_BASE + """
 
-def save_history(topic, funnel, theme="", extra=None):
-    h = load_history()
-    entry = {"topic": topic, "funnel": funnel, "theme": theme}
-    entry.update(extra or {})
-    h.append(entry)
-    HISTORY_FILE.write_text(json.dumps(h[-120:], ensure_ascii=False, indent=2), encoding="utf-8")
+Neste pedido você PREENCHE LACUNAS de um modelo pronto: siga a estrutura, escolha UM molde de gancho e complete as lacunas com o
+assunto do dia. Não invente formato novo. A chamada final NÃO é sua tarefa (o sistema coloca). Escreva também o campo "tema"
+(uma frase curta que descreve o assunto do vídeo), a "legenda" (2 ou 3 linhas curtas; a última convida a salvar ou comentar,
+sem promessa de resultado) e de 5 a 8 hashtags em português, sem espaços."""
 
+SCHEMA_DIRETO = {"type": "OBJECT", "properties": {
+    "tema": {"type": "STRING"}, "gancho": {"type": "STRING"}, "destaque": {"type": "STRING"},
+    "cenas": {"type": "ARRAY", "items": {"type": "OBJECT", "properties": {
+        "rotulo": {"type": "STRING"}, "antes": {"type": "STRING"}, "texto": {"type": "STRING"}, "apoio": {"type": "STRING"}},
+        "required": ["rotulo", "texto"]}},
+    "legenda": {"type": "STRING"}, "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
+}, "required": ["tema", "gancho", "destaque", "cenas", "legenda", "hashtags"]}
 
-def _lru(options, key, history=None):
-    """Escolhe a opção usada há mais tempo (nunca usadas primeiro; nunca repete a última)."""
-    hist = [h[key] for h in (history if history is not None else load_history()) if h.get(key) is not None]
-    last = hist[-1] if hist else None
-    pool = [o for o in options if o != last] or list(options)
-
-    def age(o):  # índice da última vez usada (-1 = nunca usada)
-        return max((i for i, v in enumerate(hist) if v == o), default=-1)
-    return min(pool, key=lambda o: (age(o), options.index(o)))
-
-
-def hist_for(funnel, hist=None):
-    """O modo leve (fim de semana) tem rotação própria: não se mistura com o histórico dos posts de semana."""
-    hist = load_history() if hist is None else hist
-    leve = funnel == "leve"
-    return [h for h in hist if (h.get("funnel") == "leve") == leve]
-
-
-def pick_theme(funnel=None):
-    return _lru(LEVE_THEMES if funnel == "leve" else THEMES, "theme", hist_for(funnel))
-
-
-def pick_variant(funnel=None):
-    return _lru([0, 1, 2], "variant", hist_for(funnel))
-
-
-def pick_pillar(funnel, hist=None, rng=random):
-    """Sorteia o pilar do post por peso, respeitando as etapas do funil.
-    Não repete pilares dos 2 últimos posts (o LinkedIn só fica de fora se saiu nos 2 últimos)."""
-    hist = load_history() if hist is None else hist
-    cands = {k: v for k, v in PILLARS.items() if funnel in v["funnels"]}
-    recent = [h.get("pillar") for h in hist[-2:] if h.get("pillar")]
-    pool = {k: v for k, v in cands.items() if k not in recent or (k == "linkedin" and recent.count("linkedin") < 2)}
-    pool = pool or cands
-    keys = list(pool)
-    return rng.choices(keys, weights=[pool[k]["weight"] for k in keys])[0]
-
-
-def pick_recipe(funnel, pillar="linkedin", hist=None):
-    """Sorteia a 'receita' do post: formato, gancho, estilo de CTA e palavra-chave."""
-    hist = load_history() if hist is None else hist
-    fmts = [k for k, v in FORMATS.items() if funnel in v["funnels"] and (not v.get("pillars") or pillar in v["pillars"])]
-    fmt = _lru(fmts, "format", hist)
-    hook = _lru(LEVE_HOOKS if funnel == "leve" else HOOKS, "hook", hist)
-    cta_opts = CTAS[funnel]
-    cta = _lru(cta_opts, "cta", hist)
-    kw = _lru(KEYWORDS, "keyword", hist)
-    return {"format": fmt, "hook": hook, "cta": cta, "keyword": kw}
-
-
-def pick_story_recipe(funnel, post_format, hist=None):
-    """Sorteia o modo (acompanha/paralela) e o formato do story, respeitando a tabela de compatibilidade."""
-    hist = load_history() if hist is None else hist
-    mode = _lru(STORY_MODES, "story_mode", hist)
-    cands = [k for k, v in STORY_FORMATS.items()
-             if funnel in v["funnels"] and mode in v["modes"]
-             and (mode == "paralela" or not v["post_formats"] or post_format in v["post_formats"])]
-    fmt = _lru(cands or ["digitar"], "story_format", hist)
-    return {"mode": mode, "format": fmt}
+# ---------------------------------------------------------------- banco de reserva (escrito à mão, só topo)
+def _r(pilar, formato, tema, gancho, destaque, cenas, legenda, tags):
+    return {"pillar": pilar, "formato": formato, "tema": tema, "gancho": gancho, "destaque": destaque, "cenas": cenas,
+            "legenda": legenda, "hashtags": tags}
 
 
-# Perfis de "pensamento": o primeiro usa o padrão do modelo; se a resposta vier vazia (o pensamento interno gasta o limite de
-# saída), os seguintes pedem menos pensamento. Modelos novos usam thinkingLevel; os 2.5 usam thinkingBudget.
-THINKING_PROFILES = [None, {"thinkingLevel": "low"}, {"thinkingBudget": 512}]
-MAX_OUTPUT_TOKENS = 16384
-GEMINI_DEADLINE = 480  # segundos no total (o passo do GitHub tem 15 minutos; o restante fica para renderizar)
-GEMINI_RODADAS = 3     # quantas voltas completas pelos modelos antes de desistir
-SOBRECARGA = (429, 500, 502, 503, 504)  # falhas do lado do Google: trocar de modelo, não de "perfil de pensamento"
+BANCO = [
+    _r("linkedin", "lista", "Sinais de que o LinkedIn está invisível", "3 sinais de que seu LinkedIn está invisível", "invisível", [
+        {"rotulo": "1", "texto": "Título só com o cargo", "apoio": "Quem lê não entende o valor que você entrega."},
+        {"rotulo": "2", "texto": "Sobre sem palavras-chave", "apoio": "A busca não encontra perfis que não dizem o que fazem."},
+        {"rotulo": "3", "texto": "Experiência sem conquistas", "apoio": "Conte o que mudou com o seu trabalho."}],
+       "Seu perfil conta o que você entrega?\nConfira esses três pontos hoje. Salva para revisar depois.", ["linkedin", "carreira", "recolocacao", "perfilprofissional", "dicasdecarreira"]),
+    _r("linkedin", "pare", "Título do LinkedIn com mais do que o cargo", "Pare de usar só o cargo no título", "cargo", [
+        {"rotulo": "FAÇA ASSIM", "texto": "Diga o que você entrega", "apoio": "Para quem você trabalha e que problema resolve."},
+        {"rotulo": "POR QUÊ", "texto": "A busca lê o seu título", "apoio": "Palavras claras ajudam o perfil a ser encontrado."},
+        {"rotulo": "HOJE", "texto": "Reescreva em cinco minutos", "apoio": "Uma frase simples já melhora a leitura."}],
+       "O título é a primeira coisa que o recrutador lê.\nReescreva o seu hoje e salva este vídeo.", ["linkedin", "carreira", "titulo", "recolocacao", "dicasdecarreira"]),
+    _r("curriculo", "erro", "Conquistas em vez de tarefas no currículo", "O erro nº 1 no currículo", "erro", [
+        {"rotulo": "O ERRO", "texto": "Listar tarefas em vez de conquistas", "apoio": ""},
+        {"rotulo": "POR QUE ATRAPALHA", "texto": "Ninguém vê o que você mudou", "apoio": ""},
+        {"rotulo": "CORRIJA ASSIM", "texto": "Mostre o resultado do seu trabalho", "apoio": "Sem inventar números: use fatos que você pode comprovar."}],
+       "Tarefa diz o que você fazia. Conquista diz o que mudou.\nRevise seu currículo hoje.", ["curriculo", "carreira", "recolocacao", "entrevista", "dicasdecarreira"]),
+    _r("curriculo", "mito", "Tamanho do currículo", "Currículo grande impressiona mais? Mito", "Mito", [
+        {"rotulo": "MITO", "texto": "Mais páginas mostram mais valor", "apoio": ""},
+        {"rotulo": "VERDADE", "texto": "Clareza vale mais que tamanho", "apoio": "Quem lê procura rápido o que combina com a vaga."},
+        {"rotulo": "NA PRÁTICA", "texto": "Priorize o que combina com a vaga", "apoio": ""}],
+       "Currículo bom é o que se lê rápido.\nSalva para revisar o seu.", ["curriculo", "carreira", "vagas", "recolocacao", "dicasdecarreira"]),
+    _r("entrevista", "pergunta_recrutador", "Como responder fale sobre você", "Recrutador pergunta: fale sobre você", "você", [
+        {"rotulo": "O QUE ELE QUER SABER", "texto": "Quem é você para esta vaga", "apoio": "Não é a sua história de vida inteira."},
+        {"rotulo": "COMO RESPONDER", "texto": "Presente, passado e foco", "apoio": "Quem você é hoje, o que já fez e o que busca."},
+        {"rotulo": "EVITE", "texto": "Ler o currículo em voz alta", "apoio": ""}],
+       "Prepare essa resposta antes da entrevista.\nSalva e treina em voz alta.", ["entrevista", "carreira", "recrutamento", "vagas", "dicasdecarreira"]),
+    _r("entrevista", "antes_de", "Preparação para entrevista", "Antes de uma entrevista, faça isto", "entrevista", [
+        {"rotulo": "1", "texto": "Releia a descrição da vaga", "apoio": "Ela mostra o que a empresa procura."},
+        {"rotulo": "2", "texto": "Prepare duas histórias reais", "apoio": "Situações em que você resolveu algo."},
+        {"rotulo": "3", "texto": "Tenha uma pergunta para fazer", "apoio": "Mostra interesse de verdade."}],
+       "Três passos simples para chegar mais seguro.\nSalva para a próxima entrevista.", ["entrevista", "carreira", "vagas", "recolocacao", "dicasdecarreira"]),
+    _r("transicao", "pov", "Mudar de área aproveitando habilidades", "POV: você quer mudar de área", "mudar", [
+        {"rotulo": "A VIRADA", "texto": "Você já tem habilidades que servem", "apoio": ""},
+        {"rotulo": "FAÇA ISSO", "texto": "Liste o que você sabe fazer", "apoio": "Pense nas tarefas, não só no cargo."},
+        {"rotulo": "DEPOIS", "texto": "Seu perfil passa a contar essa ponte", "apoio": "Quem lê entende como sua experiência se conecta."}],
+       "Mudar de área começa por enxergar o que você já sabe fazer.\nManda para quem está nessa fase.", ["transicaodecarreira", "carreira", "recolocacao", "mudancadecarreira", "dicasdecarreira"]),
+    _r("transicao", "lista", "Habilidades que servem em várias áreas", "3 habilidades que servem em qualquer área", "qualquer", [
+        {"rotulo": "1", "texto": "Comunicação clara", "apoio": "Explicar bem uma ideia ajuda em qualquer função."},
+        {"rotulo": "2", "texto": "Organização do próprio trabalho", "apoio": "Prazos e prioridades são universais."},
+        {"rotulo": "3", "texto": "Aprender rápido", "apoio": "Mostre exemplos reais de quando você aprendeu algo novo."}],
+       "Suas habilidades vão além do cargo.\nSalva e revisa o seu perfil.", ["transicaodecarreira", "habilidades", "carreira", "recolocacao", "dicasdecarreira"]),
+    _r("comunicacao", "pare", "Mensagens objetivas no trabalho", "Pare de escrever mensagens longas no trabalho", "longas", [
+        {"rotulo": "FAÇA ASSIM", "texto": "Comece pelo ponto principal", "apoio": "Depois dê o contexto, se precisar."},
+        {"rotulo": "POR QUÊ", "texto": "Texto enorme perde a atenção", "apoio": "Quem lê quer saber o que fazer."},
+        {"rotulo": "HOJE", "texto": "Reescreva a última em duas linhas", "apoio": ""}],
+       "Mensagem clara economiza tempo de todo mundo.\nSalva e testa hoje.", ["comunicacao", "trabalho", "carreira", "produtividade", "dicasdecarreira"]),
+    _r("produtividade", "lista", "Hábitos para fechar o dia com clareza", "3 hábitos para fechar o dia com clareza", "clareza", [
+        {"rotulo": "1", "texto": "Liste o que você concluiu", "apoio": "Ver o que andou ajuda a descansar."},
+        {"rotulo": "2", "texto": "Escolha a prioridade de amanhã", "apoio": "Comece o dia sabendo por onde ir."},
+        {"rotulo": "3", "texto": "Feche as abas e respire", "apoio": "O dia terminou. Deixe o trabalho aí."}],
+       "Terminar o dia com clareza muda o seguinte.\nSalva para testar.", ["produtividade", "rotina", "trabalho", "carreira", "dicasdecarreira"]),
+    _r("negociacao", "resposta_rapida", "Pedir tempo para avaliar uma proposta", "Posso pedir tempo para pensar na proposta?", "tempo", [
+        {"rotulo": "RESPOSTA CURTA", "texto": "Pode, e é normal", "apoio": "Avaliar com calma faz parte do processo."},
+        {"rotulo": "POR QUÊ", "texto": "Decisão apressada custa caro", "apoio": "Compare rotina e crescimento, não só o valor."},
+        {"rotulo": "DICA", "texto": "Combine um prazo e agradeça", "apoio": "Diga quando vai responder."}],
+       "Pedir tempo é parte da negociação.\nSalva para quando chegar a proposta.", ["negociacao", "carreira", "proposta", "vagas", "dicasdecarreira"]),
+    _r("aprendizado", "mito", "Aprender é só fazer cursos?", "Aprender é só fazer cursos? Mito", "Mito", [
+        {"rotulo": "MITO", "texto": "Mais cursos, mais preparo", "apoio": ""},
+        {"rotulo": "VERDADE", "texto": "Prática fixa o que o curso ensina", "apoio": "Sem aplicar, o conteúdo se perde."},
+        {"rotulo": "NA PRÁTICA", "texto": "Aplique algo pequeno nesta semana", "apoio": ""}],
+       "Estudar e praticar andam juntos.\nSalva e escolha o que aplicar.", ["aprendizado", "carreira", "desenvolvimento", "estudos", "dicasdecarreira"]),
+]
 
 
-def _glog(msg):
-    print(f"      [gemini {time.time() - _T0:4.0f}s] {msg}", flush=True)
+# ---------------------------------------------------------------- escolha e validação
+def _seed(post_id):
+    return int(hashlib.sha1(str(post_id).encode()).hexdigest()[:8], 16)
 
 
-_T0 = time.time()
+def chamada_final(etapa, post_id):
+    kws = KEYWORDS or ["QUERO"]
+    rnd = random.Random(_seed(post_id))
+    texto = rnd.choice(CHAMADAS.get(etapa) or CHAMADAS["topo"]).replace("{kw}", rnd.choice(kws))
+    return texto
 
 
-def _extract(data):
-    """Tira o JSON da resposta. Devolve (texto, motivo): se não veio texto, o motivo explica o porquê."""
-    fb = data.get("promptFeedback") or {}
-    if fb.get("blockReason"):
-        return None, f"bloqueado ({fb['blockReason']})"
-    cands = data.get("candidates") or []
-    if not cands:
-        return None, "sem candidatos"
-    c = cands[0]
-    fin = c.get("finishReason", "?")
-    usage = data.get("usageMetadata") or {}
-    info = f"finishReason={fin}, pensamento={usage.get('thoughtsTokenCount')}, saida={usage.get('candidatesTokenCount')}"
-    parts = (c.get("content") or {}).get("parts") or []
-    text = "".join(p.get("text", "") for p in parts if not p.get("thought"))
-    if not text.strip():
-        return None, f"resposta vazia ({info})"
-    if fin == "MAX_TOKENS":
-        return None, f"cortada pelo limite ({info})"
-    return text, info
+PALAVRAS_FRACAS = {"para", "como", "mais", "menos", "seus", "suas", "isso", "esse", "essa", "este", "esta", "você", "voce", "faça",
+                   "antes", "depois", "sobre", "quando", "porque", "sempre", "nunca", "fale", "pare", "erro", "uma", "dos", "das"}
 
 
-def call_gemini(prompt):
-    """Chama o Gemini com paciência: sobrecarga (503/429) e lentidão passam para o PRÓXIMO MODELO (mudar o perfil de
-    pensamento não adianta nada nesse caso); resposta vazia/cortada ou erro 400 passam para o próximo perfil.
-    Se todos falharem, espera um pouco e dá outra volta, até o tempo total esgotar."""
-    global _T0
-    key = os.environ["GEMINI_API_KEY"]
-    start = _T0 = time.time()
-    errors, so_google = [], True  # so_google: todas as falhas foram sobrecarga/lentidão do lado do Google
-
-    def sobra():
-        return GEMINI_DEADLINE - (time.time() - start)
-
-    def falhar(motivo):
-        resumo = " | ".join(errors[-6:])[-900:]
-        raise RuntimeError(f"Gemini falhou ({motivo}): {resumo}")
-
-    for rodada in range(GEMINI_RODADAS):
-        for model in GEMINI_MODELS:
-            pi, sobrecargas = 0, 0
-            while pi < len(THINKING_PROFILES):
-                if sobra() < 25:
-                    falhar("tempo esgotado" + (", instabilidade do Google" if so_google else ""))
-                profile = THINKING_PROFILES[pi]
-                gen = {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0.9,
-                       "maxOutputTokens": MAX_OUTPUT_TOKENS}
-                if profile:
-                    gen["thinkingConfig"] = profile
-                body = {"systemInstruction": {"parts": [{"text": SYSTEM}]},
-                        "contents": [{"role": "user", "parts": [{"text": prompt}]}], "generationConfig": gen}
-                tag = f"{model}/perfil{pi}/volta{rodada + 1}"
-                try:
-                    r = requests.post(API.format(model=model), params={"key": key}, json=body,
-                                      timeout=(15, max(20, min(120, sobra() - 5))))
-                except requests.exceptions.RequestException as e:  # timeout, conexão caiu etc.
-                    errors.append(f"{tag}: {type(e).__name__}")
-                    _glog(errors[-1] + " (sem resposta; passando para o próximo modelo)")
-                    break
-                if r.status_code == 200:
-                    text, why = _extract(r.json())
-                    if text:
-                        try:
-                            post = json.loads(text)
-                            _glog(f"ok em {tag}")
-                            return post
-                        except json.JSONDecodeError as e:
-                            why = f"JSON inválido ({e})"
-                    so_google = False
-                    errors.append(f"{tag}: {why}")
-                    _glog(errors[-1])
-                    pi += 1  # resposta vazia/cortada: o próximo perfil pede menos pensamento
-                    continue
-                errors.append(f"{tag}: HTTP {r.status_code} {r.text[:120]}")
-                _glog(errors[-1])
-                if r.status_code in SOBRECARGA:
-                    sobrecargas += 1
-                    if sobrecargas < 2:
-                        time.sleep(6)  # picos de demanda às vezes passam em segundos: uma segunda chance no mesmo modelo
-                        continue
-                    break  # continua sobrecarregado: próximo modelo
-                so_google = False
-                pi += 1  # ex.: 400 (o modelo não aceita esse perfil de pensamento): tenta o próximo perfil
-        if rodada < GEMINI_RODADAS - 1 and sobra() > 90:
-            espera = 20 * (rodada + 1)
-            _glog(f"todos os modelos falharam na volta {rodada + 1}; esperando {espera}s")
-            time.sleep(espera)
-    falhar("todas as tentativas" + (", instabilidade do Google" if so_google else ""))
+def destaque_valido(r):
+    """A palavra do gancho que vai em cor. Usa a do Gemini se ela existir no gancho; senão, a palavra mais forte (a mais longa)."""
+    gancho = _txt(r.get("gancho"))
+    d = _txt(r.get("destaque")).strip(".,!?:;")
+    if d and re.search(re.escape(d), gancho, flags=re.I):
+        return d
+    palavras = [p.strip(".,!?:;\"“”") for p in gancho.split()]
+    fortes = [p for p in palavras if len(p) >= 5 and p.lower() not in PALAVRAS_FRACAS]
+    return max(fortes, key=len) if fortes else ""
 
 
-def validate_story(st, kind):
-    """Confere o story do tipo sorteado. Levanta AssertionError se estiver fora do combinado."""
-    st = dict(st)
-    assert st.get("kind") == kind, f"o story deveria ser do tipo '{kind}'"
-    st["title"] = st["title"].strip()
-    assert st["title"] and len(st["title"]) <= 110, "título de story vazio ou longo demais"
-    if kind == "digitar":
-        if st.get("highlight", "").strip() not in st["title"]:
-            st["highlight"] = ""  # destaque que não está na frase: ignora
-    elif kind == "riscar":
-        assert st.get("antes", "").strip() and st.get("depois", "").strip(), "riscar precisa de antes e depois"
-        assert len(st["antes"]) <= 110 and len(st["depois"]) <= 120, "antes/depois longos demais"
-    elif kind == "chat":
-        if len(st.get("outro_label", "")) > 20:
-            st["outro_label"] = ""
-        m = st.get("messages") or []
-        assert 2 <= len(m) <= 4, "chat precisa de 2 a 4 mensagens"
-        for x in m:
-            assert x.get("quem") in ("outro", "voce") and x.get("texto", "").strip(), "mensagem inválida"
-            assert len(x["texto"]) <= 130, "mensagem longa demais"
-    elif kind == "checklist":
-        assert 3 <= len(st.get("items") or []) <= 4, "checklist precisa de 3 ou 4 itens"
-        assert all(len(i) <= 70 for i in st["items"]), "item longo demais"
-    elif kind == "nota":
-        assert 2 <= len(st.get("items") or []) <= 4, "nota precisa de 2 a 4 linhas"
-        assert all(len(i) <= 80 for i in st["items"]), "linha da nota longa demais"
-    return st
+def _valida_extra(r):
+    if not 2 <= len(r.get("hashtags") or []) <= 10:
+        return "hashtags fora do esperado"
+    if not _txt(r.get("legenda")) or len(_txt(r["legenda"])) > 420:
+        return "legenda vazia ou longa demais"
+    if not _txt(r.get("tema")):
+        return "sem tema"
+    tudo = " ".join(_txt(r.get(k)) for k in ("gancho", "legenda")) + " " + " ".join(
+        _txt(c.get(k)) for c in r["cenas"] for k in ("texto", "apoio", "antes"))
+    for frase in BANNED_PHRASES:
+        if frase and frase.lower() in tudo.lower():
+            return f"frase proibida: {frase}"
+    return None
 
 
-def fallback_story(post):
-    """Story de segurança (teaser do post) se o Gemini errar o formato na última tentativa."""
-    return {"kind": "teaser", "title": post["slides"][0]["title"][:80], "body": "Veja o novo post no feed agora."}
+def escolher_modelo(etapa, modelo=None):
+    if modelo in MODELOS:
+        return modelo
+    opcoes = POR_ETAPA.get(etapa) or POR_ETAPA["topo"]
+    return _lru(opcoes, "reel_formato", load_history())
 
 
-def _fix_versus(x):
-    """Aproveita um slide 'versus' em que o Gemini deixou left/right vazios (usando items, body ou highlight).
-    Se não houver como montar o contraste, o slide vira um slide de conteúdo. Só devolve False se não veio texto nenhum."""
-    left, right = (x.get("left") or "").strip(), (x.get("right") or "").strip()
-    if left and right:
-        return True
-    body, hl, note = (x.get("body") or "").strip(), (x.get("highlight") or "").strip(), (x.get("note") or "").strip()
-    other = body or hl or note
-    if left and other:
-        x["right"] = other
-        return True
-    if right and other:
-        x["left"] = other
-        return True
-    items = [str(i).strip() for i in (x.get("items") or []) if str(i).strip()]
-    if len(items) >= 2:
-        x["left"], x["right"] = items[0], items[1]
-        return True
-    for sep in ("\n", " → ", " -> ", " ➜ ", " | ", " vs ", " x "):
-        parts = [p.strip(" -•\t") for p in body.split(sep) if p.strip(" -•\t")]
-        if len(parts) == 2:
-            x["left"], x["right"] = parts
-            return True
-    text = " ".join(t for t in (left, right, body, *items, hl, note) if t)
-    if text:
-        x["kind"], x["body"] = "content", text[:230]
-        return True
-    return False
+def _do_banco(etapa, formato=None):
+    """Roteiro pronto de reserva: o menos usado recentemente, de preferência no formato escolhido."""
+    usados = [h.get("topic") for h in load_history()]
+
+    def idade(item):
+        return max((i for i, t in enumerate(usados) if t == item["tema"]), default=-1)
+    pool = [b for b in BANCO if b["formato"] == formato] or BANCO
+    return min(pool, key=lambda b: (idade(b), BANCO.index(b)))
 
 
-def validate(post, strict=True, story_kind=None, pillar=None, funnel=None):
-    s = post["slides"]
-    assert MIN_SLIDES <= len(s) <= MAX_SLIDES, f"{len(s)} slides"
-    assert s[0]["kind"] == "cover" and s[-1]["kind"] == "cta", "primeiro deve ser cover e último cta"
-    for x in s:
-        assert len(x["title"]) <= 110, "título longo demais"
-        assert len(x.get("body", "")) <= 400, "corpo longo demais"
-        if x["kind"] == "versus":
-            assert _fix_versus(x), "versus precisa dos campos left e right preenchidos (não use body nem items para o contraste)"
-            for lab in ("left_label", "right_label"):
-                if len(x.get(lab, "")) > 20:
-                    x[lab] = ""  # rótulo longo demais: volta ao padrão
-        if x["kind"] in ("list", "check"):
-            assert 3 <= len(x.get("items", [])) <= 5, f"{x['kind']} precisa de 3 a 5 itens"
-    tags = ["#" + t.lstrip("#").replace(" ", "") for t in post["hashtags"]][:MAX_HASHTAGS]
-    post["hashtags"] = tags
-    assert len(post["caption"]) <= 1800, "legenda longa demais"
-    st = post.get("stories") or []
-    assert len(st) >= 1, "faltam stories"
-    try:
-        story = validate_story(st[0], story_kind or st[0]["kind"])
-    except (AssertionError, KeyError):
-        if strict:
-            raise
-        story = fallback_story(post)  # última tentativa: não fica sem story
-    post["stories"] = [story]
-    if strict:
-        if pillar and PILLARS[pillar]["capa_sem_linkedin"]:
-            assert "linkedin" not in s[0]["title"].lower(), "a capa de um tema fora do LinkedIn não deve citar o LinkedIn"
-        sblob = " ".join(str(v) for v in story.values() if isinstance(v, (str, list)))
-        blob = " ".join([post["caption"], sblob] + [x["title"] + " " + x.get("body", "") + " " + x.get("highlight", "") for x in s]).lower()
-        hit = [p for p in BANNED_PHRASES if p in blob]
-        assert not hit, f"usou fórmulas repetidas: {hit}"
-        if funnel == "leve":
-            sales = [w for w in LEVE_BANNED if w in blob]
-            assert not sales, f"o modo leve não pode citar: {sales}"
-    return post
-
-
-# ---------- Banco de temas: quantas vezes cada ângulo de cada pilar já saiu ----------
-THEMES_FILE = HISTORY_FILE.parent / "temas.json"   # dados (o robô lê e grava)
-THEMES_REPORT = HISTORY_FILE.parent / "temas.md"   # versão para você ler no GitHub
-_TZ = ZoneInfo("America/Sao_Paulo")
-
-
-def load_themes():
-    try:
-        if THEMES_FILE.exists():
-            return json.loads(THEMES_FILE.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as e:
-        print(f"[temas] não consegui ler o temas.json: {e}")
-    return {}
-
-
-def pick_angle(pillar, rng=random):
-    """Escolhe o ângulo MENOS usado do pilar. Empate: o que ficou mais tempo sem sair (nunca usados vêm primeiro)."""
-    bank = load_themes().get(pillar, {})
-
-    def key(a):
-        e = bank.get(a, {})
-        return (e.get("vezes", 0), e.get("ultima", ""), rng.random())
-    angle = min(PILLARS[pillar]["angulos"], key=key)
-    e = bank.get(angle, {})
-    return {"angulo": angle, "vezes": e.get("vezes", 0), "topicos": e.get("topicos", [])[-6:]}
-
-
-def _write_theme_report(bank):
-    lines = ["# Banco de temas", "",
-             "Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o menos usado de cada pilar.", ""]
-    for pk, pl in PILLARS.items():
-        used = bank.get(pk, {})
-        lines += [f"## {pl['nome']}", "", "| Ângulo | Vezes | Última vez |", "|---|---|---|"]
-        for a in sorted(pl["angulos"], key=lambda a: (-used.get(a, {}).get("vezes", 0), a)):
-            e = used.get(a, {})
-            lines.append(f"| {a.replace('|', '/')} | {e.get('vezes', 0)} | {e.get('ultima') or '-'} |")
-        lines.append("")
-    THEMES_REPORT.write_text("\n".join(lines), encoding="utf-8")
-
-
-def record_theme(pillar, angle, topic):
-    """Soma 1 ao ângulo usado e guarda o tópico. Chamado depois que o post chegou ao Telegram."""
-    try:
-        bank = load_themes()
-        e = bank.setdefault(pillar, {}).setdefault(angle, {"vezes": 0, "ultima": "", "topicos": []})
-        e["vezes"] += 1
-        e["ultima"] = datetime.now(_TZ).strftime("%Y-%m-%d")
-        e["topicos"] = (e.get("topicos", []) + [topic])[-10:]
-        THEMES_FILE.write_text(json.dumps(bank, ensure_ascii=False, indent=2), encoding="utf-8")
-        _write_theme_report(bank)
-    except OSError as ex:
-        print(f"[temas] não consegui gravar o banco de temas: {ex}")
-
-
-def generate_post(funnel, extra_instruction="", tema=None):
-    tema = " ".join(str(tema).split())[:200] if tema else None  # tema sugerido pela dona da marca (opcional)
-    hist_all = load_history()
-    used = [h["topic"] for h in hist_all[-40:]]
-    hist = hist_for(funnel, hist_all)  # semana e fim de semana giram separados
-    recent_hooks = [h.get("cover") for h in hist[-14:] if h.get("cover")]
-    recent_openers = [h.get("opener") for h in hist[-14:] if h.get("opener")]
-    recent_stories = [h.get("story_title") for h in hist[-14:] if h.get("story_title")]
-    pillar = pick_pillar(funnel, hist)
+def criar_reel_direto(etapa, post_id, tema=None, modelo=None):
+    """Devolve o necessário para montar e registrar o Reel: roteiro, legenda, tema, pilar, ângulo, tema de cor etc."""
+    hist = hist_for(etapa)
+    pillar = pick_pillar(etapa, hist)
     pl = PILLARS[pillar]
-    ang = None if tema else pick_angle(pillar)  # com tema sugerido, não mexe na contagem de ângulos
-    recipe = pick_recipe(funnel, pillar, hist)
-    story_rc = pick_story_recipe(funnel, recipe["format"], hist)
-    sf = STORY_FORMATS[story_rc["format"]]
-    fmt = FORMATS[recipe["format"]]
-    cta = recipe["cta"].replace("{kw}", f"“{recipe['keyword']}”")
-    leve = funnel == "leve"
-    offer_line = ("Oferta: NÃO mencione oferta, diagnóstico, consultoria, link na bio nem palavra-chave.\n\n" if leve
-                  else f"Oferta (só use em post de FUNDO): {OFFER}\n\n")
-    pillar_rule = "- Modo LEVE: não cite LinkedIn nem a consultoria; humor suave e acolhedor.\n" if leve else "" if pillar == "linkedin" else (
-        "- Este pilar NÃO é sobre LinkedIn: o post fala do tema profissional em geral. Cite o LinkedIn só na ponte, "
-        "de forma natural e curta (no máximo em um slide) ou não cite. A missão do funil vale, aplicada a este tema.\n"
-        + ("- NÃO use a palavra LinkedIn na capa.\n" if pl["capa_sem_linkedin"] else ""))
-    if tema:
-        angle_block = (
-            f"- TEMA SUGERIDO PELA DONA DA MARCA (obrigatório): “{tema}”\n"
-            "- O assunto do post é este tema. Use o pilar só como moldura e para a ponte com a marca; ignore os ângulos do pilar.\n"
-            f"- Mesmo com tema sugerido, entregue o carrossel COMPLETO: de {MIN_SLIDES} a {MAX_SLIDES} slides (cover primeiro, cta por último), "
-            "seguindo o plano de slides do formato do dia. Conecte o tema à missão do funil de hoje de forma natural, sem forçar.\n"
-            "- Se o tema envolver leis, direitos, prazos, valores, saúde ou dinheiro: use só afirmações gerais e seguras, SEM números, "
-            "prazos, valores nem citação de artigos ou leis; convide a pessoa a confirmar em fonte oficial e nunca dê aconselhamento jurídico.\n")
-    else:
-        angle_block = f"- ÂNGULO DO DIA (obrigatório; é o menos usado até agora, já saiu {ang['vezes']}x): {ang['angulo']}\n"
-        if ang["topicos"]:
-            angle_block += (f"- Posts anteriores sobre este ângulo (faça um recorte DIFERENTE, sem repetir): "
-                            f"{json.dumps(ang['topicos'], ensure_ascii=False)}\n")
-    prompt = (
-        f"Crie o conteúdo de hoje.\nEtapa do funil: {funnel.upper()} -> {FUNNEL[funnel]}\n"
-        f"Missão do post: {MISSIONS[funnel]}\n{offer_line}"
-        f"PILAR DO DIA: {pl['nome']}. {pl['descricao']}\n"
-        f"{angle_block}"
-        f"- Ponte com a marca: {pl['ponte']}\n"
-        f"{pillar_rule}"
-        f"\nRECEITA DO DIA (siga):\n- Formato: {fmt['nome']}. Plano dos slides: {fmt['plano']}\n"
-        f"- Estilo do gancho da capa: {recipe['hook']}\n- CTA do último slide: {cta}\n\n"
-        f"RECEITA DO STORY (exatamente 1 story de 8 segundos):\n"
-        f"- Tipo: {sf['nome']} (kind \"{story_rc['format']}\"). {sf['instrucao']}\n"
-        f"- Modo: {STORY_MODE_TEXT[story_rc['mode']]}\n"
-        f"- Stories recentes (NÃO repetir ideia nem estrutura): {json.dumps(recent_stories, ensure_ascii=False)}\n\n"
-        f"Temas já usados (NÃO repetir): {json.dumps(used, ensure_ascii=False)}\n"
-        f"Capas recentes (NÃO usar estrutura parecida): {json.dumps(recent_hooks, ensure_ascii=False)}\n"
-        f"Aberturas de legenda recentes (NÃO repetir o jeito de começar): {json.dumps(recent_openers, ensure_ascii=False)}\n"
-        f"Frases PROIBIDAS (já ficaram repetitivas): {json.dumps(BANNED_PHRASES, ensure_ascii=False)}\n"
-        f"{extra_instruction}"
-    )
-    last_err = None
-    for attempt in range(3):  # se a validação falhar, pede de novo
-        t_call = time.time()
-        post = call_gemini(prompt)
-        print(f"[gemini] resposta recebida em {time.time() - t_call:.0f}s (tentativa {attempt + 1}/3)", flush=True)
-        try:
-            post = validate(post, strict=attempt < 2, story_kind=story_rc["format"], pillar=None if tema else pillar, funnel=funnel)  # na última tentativa aceita, para não ficar sem post
-            post["funnel"] = funnel
-            last = post["slides"][-1]
-            last["show_link"] = funnel != "leve" and (funnel == "fundo" or "link" in (last.get("body", "") + last["title"]).lower())
-            post["recipe"] = recipe
-            post["pillar"] = pillar
-            post["angle"] = ang["angulo"] if ang else None
-            post["story_recipe"] = {**story_rc, "format": post["stories"][0]["kind"]}  # reflete o fallback, se houve
-            post["cover"] = post["slides"][0]["title"]
-            post["opener"] = post["caption"].strip().split("\n")[0][:120]
-            return post
-        except (AssertionError, KeyError) as e:
-            last_err = e
-            print(f"[validação] tentativa {attempt + 1}/3 reprovada: {e}", flush=True)
-            try:
-                print(f"[validação] slides recebidos: {[x.get('kind') for x in post.get('slides', [])]}", flush=True)
-            except Exception:
-                pass
-            prompt += (f"\nA tentativa anterior falhou na validação ({e}). Corrija: entregue de {MIN_SLIDES} a {MAX_SLIDES} slides, "
-                       "com o cover primeiro e o cta por último, e preencha todos os campos de cada tipo de slide.")
-    raise RuntimeError(f"Conteúdo inválido após 3 tentativas: {last_err}")
+    ang = None if tema else pick_angle(pillar)
+    formato = escolher_modelo(etapa, modelo)
+    chamada = chamada_final(etapa, post_id)
+    origem, r = "gemini", None
+    try:
+        recentes = [h.get("topic") for h in load_history()[-30:] if h.get("topic")]
+        assunto = (f"Assunto sugerido (obrigatório): {tema}" if tema else
+                   f"Ângulo do dia (obrigatório): {ang['angulo']}"
+                   + (f". Já saíram sobre ele, faça um recorte DIFERENTE: {json.dumps(ang['topicos'], ensure_ascii=False)}" if ang["topicos"] else ""))
+        prompt = (f"MODELO: {formato}. {MODELOS[formato]}\n"
+                  f"Moldes de gancho (escolha um e preencha as lacunas): {json.dumps(MOLDES[formato], ensure_ascii=False)}\n"
+                  f"Exemplo COMPLETO do modelo (só de estilo e tamanho; o assunto de hoje é outro): "
+                  f"{json.dumps(EXEMPLOS[formato], ensure_ascii=False)}\n\n"
+                  f"Etapa do funil: {etapa.upper()} -> {FUNNEL[etapa]}\nMissão: {MISSIONS[etapa]}\n"
+                  f"Pilar: {pl['nome']}. {pl['descricao']}\n{assunto}\n"
+                  + ("" if pillar == "linkedin" else "Este pilar não é sobre LinkedIn: fale do tema profissional em geral, sem forçar o LinkedIn.\n")
+                  + ("Etapa de topo: não venda nada e não mencione oferta, diagnóstico nem link na bio.\n" if etapa == "topo" else "")
+                  + (f"Assuntos recentes (não repita): {json.dumps(recentes[-12:], ensure_ascii=False)}\n" if recentes else ""))
+        for tentativa in range(2):
+            r = _gemini_json(prompt, system=SYSTEM_DIRETO, schema=SCHEMA_DIRETO, deadline=150, max_tokens=2048)
+            r["chamada"] = chamada
+            erro = validar(r, formato) or _valida_extra(r)
+            if not erro:
+                break
+            print(f"[reel-direto] roteiro reprovado ({erro})" + ("; tentando de novo" if tentativa == 0 else ""), flush=True)
+            r = None
+        if r is not None:
+            r["destaque"] = destaque_valido(r)
+    except Exception as e:
+        print(f"[reel-direto] Gemini indisponível ({str(e)[:160]}); usando o banco de reserva", flush=True)
+        r = None
+    if r is None:
+        b = _do_banco(etapa, formato)
+        origem, formato, pillar, ang = "banco", b["formato"], b["pillar"], None
+        r = {k: b[k] for k in ("gancho", "destaque", "cenas", "legenda", "hashtags")}
+        r["tema"], r["chamada"] = b["tema"], chamada
+    tags = " ".join("#" + _txt(h).lstrip("#").replace(" ", "") for h in r["hashtags"][:8])
+    r["destaque"] = destaque_valido(r)
+    return {"roteiro": {"gancho": r["gancho"], "destaque": r["destaque"], "cenas": r["cenas"], "chamada": r["chamada"]},
+            "formato": formato, "origem": origem, "topic": _txt(r["tema"]), "pillar": pillar,
+            "angle": ang["angulo"] if ang else None, "caption": r["legenda"].strip() + "\n\n" + tags,
+            "theme": pick_theme(etapa), "variant": pick_variant(etapa),
+            "mostrar_link": MOSTRAR_LINK.get(etapa, False)}
