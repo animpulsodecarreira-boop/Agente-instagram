@@ -71,6 +71,42 @@
      "total": 97
     }
    }
+  },
+  "2026-11-14": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 61,
+      "NON_FOLLOWER": 317
+     },
+     "total": 380
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 201,
+      "REEL": 279,
+      "STORY": 49
+     },
+     "total": 380
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 38,
+      "NON_FOLLOWER": 49
+     },
+     "total": 87
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 54,
+      "REEL": 67,
+      "STORY": 30
+     },
+     "total": 87
+    }
+   }
   }
  },
  "midias": {
@@ -365,6 +401,19 @@
       "total_interactions": 2,
       "views": 21
      }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 7.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 21
+     }
     }
    ],
    "media_id": "18015766355969317",
@@ -410,6 +459,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 6.46,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 26
+     }
     }
    ],
    "media_id": "18149561797585990",
@@ -446,6 +508,19 @@
     {
      "em": "2026-11-13T07:47:10+0000",
      "idade": 4.73,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 30
+     }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 5.72,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -504,6 +579,21 @@
       "total_interactions": 0,
       "views": 24
      }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 4.79,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
     }
    ],
    "media_id": "18451859977192515",
@@ -540,6 +630,19 @@
     {
      "em": "2026-11-13T07:47:10+0000",
      "idade": 3.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 43,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 62
+     }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 4.62,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -594,6 +697,19 @@
       "total_interactions": 1,
       "views": 8
      }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 4.4,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 8
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -617,6 +733,19 @@
     {
      "em": "2026-11-13T07:47:10+0000",
      "idade": 2.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 3.81,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -658,6 +787,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 3.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -677,7 +819,21 @@
     "topic": "Desenvolvimento e aprendizado contínuo através da prática",
     "variant": 0
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 2.57,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 16
+     }
+    }
+   ],
    "media_id": "17998696853994176",
    "permalink": "https://www.instagram.com/p/DfnE3YzlZlq/",
    "post_id": "20261111-1453",
@@ -695,7 +851,23 @@
     "topic": "Quarta feira, semana praticamente encerrada",
     "variant": 1
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 2.48,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4667,
+      "likes": 1,
+      "reach": 6,
+      "reels_skip_rate": 87.5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
+    }
+   ],
    "media_id": "17985574071105456",
    "permalink": "https://www.instagram.com/reel/DfnTclWFHtx/",
    "post_id": "20261111-1654",
@@ -714,7 +886,21 @@
     "topic": "Abordagem a recrutadores e posicionamento no LinkedIn através de caso hipotético",
     "variant": 1
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-14T07:34:37+0000",
+     "idade": 2.39,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 14
+     }
+    }
+   ],
    "media_id": "18382597378243424",
    "permalink": "https://www.instagram.com/p/DfnhgbVD2_2/",
    "post_id": "20261111-1903",
@@ -738,6 +924,44 @@
    "permalink": "https://www.instagram.com/reel/DfpbK1YGZMu/",
    "post_id": "20261112-1246",
    "publicado_em": "2026-11-12T15:54:34+0000",
+   "tipo": "reel"
+  },
+  "20261113-1319:carrossel": {
+   "atributos": {
+    "angle": "o que fazer nas primeiras semanas",
+    "format": "oferta",
+    "funnel": "fundo",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "pillar": "transicao",
+    "reel_formato": null,
+    "theme": "geometrico",
+    "topic": "Transição e recolocação de carreira e o diagnóstico gratuito do LinkedIn",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "18039366437890516",
+   "permalink": "https://www.instagram.com/p/DfsDVPtmi2N/",
+   "post_id": "20261113-1319",
+   "publicado_em": "2026-11-13T16:23:44+0000",
+   "tipo": "carrossel"
+  },
+  "20261113-1905:reel": {
+   "atributos": {
+    "angle": null,
+    "format": "comparativo",
+    "funnel": "fundo",
+    "hook": "observação do dia a dia de quem procura emprego",
+    "pillar": "linkedin",
+    "reel_formato": "lista",
+    "theme": "claro",
+    "topic": "topo",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "17888031285505963",
+   "permalink": "https://www.instagram.com/reel/DfswYwnj6Dd/",
+   "post_id": "20261113-1905",
+   "publicado_em": "2026-11-13T22:57:38+0000",
    "tipo": "reel"
   }
  },
