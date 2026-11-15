@@ -107,6 +107,42 @@
      "total": 87
     }
    }
+  },
+  "2026-11-15": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 61,
+      "NON_FOLLOWER": 317
+     },
+     "total": 380
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 201,
+      "REEL": 279,
+      "STORY": 49
+     },
+     "total": 380
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 37,
+      "NON_FOLLOWER": 47
+     },
+     "total": 84
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 50,
+      "REEL": 67,
+      "STORY": 30
+     },
+     "total": 84
+    }
+   }
   }
  },
  "midias": {
@@ -414,6 +450,19 @@
       "total_interactions": 2,
       "views": 21
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 8.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 21
+     }
     }
    ],
    "media_id": "18015766355969317",
@@ -472,6 +521,19 @@
       "total_interactions": 0,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 7.46,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 26
+     }
     }
    ],
    "media_id": "18149561797585990",
@@ -521,6 +583,19 @@
     {
      "em": "2026-11-14T07:34:37+0000",
      "idade": 5.72,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 30
+     }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 6.72,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -594,6 +669,21 @@
       "total_interactions": 0,
       "views": 24
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 5.79,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
     }
    ],
    "media_id": "18451859977192515",
@@ -643,6 +733,19 @@
     {
      "em": "2026-11-14T07:34:37+0000",
      "idade": 4.62,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 43,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 62
+     }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 5.62,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -710,6 +813,19 @@
       "total_interactions": 1,
       "views": 8
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 5.4,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 8
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -746,6 +862,19 @@
     {
      "em": "2026-11-14T07:34:37+0000",
      "idade": 3.81,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 4.81,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -800,6 +929,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 4.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -832,6 +974,19 @@
       "total_interactions": 0,
       "views": 16
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 3.57,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 19
+     }
     }
    ],
    "media_id": "17998696853994176",
@@ -855,6 +1010,21 @@
     {
      "em": "2026-11-14T07:34:37+0000",
      "idade": 2.48,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4667,
+      "likes": 1,
+      "reach": 6,
+      "reels_skip_rate": 87.5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 3.48,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 4667,
@@ -899,6 +1069,19 @@
       "total_interactions": 1,
       "views": 14
      }
+    },
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 3.39,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 20
+     }
     }
    ],
    "media_id": "18382597378243424",
@@ -919,7 +1102,23 @@
     "topic": "Sinais de que o LinkedIn está invisível",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-15T07:36:53+0000",
+     "idade": 2.65,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3297,
+      "likes": 1,
+      "reach": 52,
+      "reels_skip_rate": 78.3,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 3,
+      "views": 75
+     }
+    }
+   ],
    "media_id": "18095033309193541",
    "permalink": "https://www.instagram.com/reel/DfpbK1YGZMu/",
    "post_id": "20261112-1246",
