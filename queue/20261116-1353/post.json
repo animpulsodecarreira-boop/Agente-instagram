@@ -1,6 +1,6 @@
 {
   "id": "20261116-1353",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "escuro",
   "variant": 2,
@@ -12,5 +12,7 @@
   "story_mode": "acompanha",
   "pillar": "entrevista",
   "angle": "como falar de uma saída ou lacuna",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-1353"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-1353",
+  "media_id": "18177698731458111",
+  "stories_published": 1
 }
