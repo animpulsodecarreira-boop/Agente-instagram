@@ -1135,5 +1135,15 @@
     "story_title": "Abrir o perfil no LinkedIn e ficar encarando a linha do topo sem saber o que escrever",
     "pillar": "linkedin",
     "angle": null
+  },
+  {
+    "topic": "Tamanho do currículo",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 0,
+    "pillar": "curriculo",
+    "angle": null,
+    "reel_formato": "mito",
+    "cover": "Currículo grande impressiona mais? Mito"
   }
 ]
