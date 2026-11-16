@@ -143,6 +143,42 @@
      "total": 83
     }
    }
+  },
+  "2026-11-16": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 61,
+      "NON_FOLLOWER": 316
+     },
+     "total": 379
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 200,
+      "REEL": 279,
+      "STORY": 49
+     },
+     "total": 379
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 35,
+      "NON_FOLLOWER": 30
+     },
+     "total": 65
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 21,
+      "REEL": 54,
+      "STORY": 28
+     },
+     "total": 65
+    }
+   }
   }
  },
  "midias": {
@@ -534,6 +570,19 @@
       "total_interactions": 0,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 8.53,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 26
+     }
     }
    ],
    "media_id": "18149561797585990",
@@ -596,6 +645,19 @@
     {
      "em": "2026-11-15T07:36:53+0000",
      "idade": 6.72,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 30
+     }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 7.79,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -684,6 +746,21 @@
       "total_interactions": 0,
       "views": 24
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 6.86,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
     }
    ],
    "media_id": "18451859977192515",
@@ -746,6 +823,19 @@
     {
      "em": "2026-11-15T07:36:53+0000",
      "idade": 5.62,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 43,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 62
+     }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 6.69,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -826,6 +916,19 @@
       "total_interactions": 1,
       "views": 8
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 6.47,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 8
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -875,6 +978,19 @@
     {
      "em": "2026-11-15T07:36:53+0000",
      "idade": 4.81,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 5.88,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -942,6 +1058,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 5.7,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -987,6 +1116,19 @@
       "total_interactions": 1,
       "views": 19
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 4.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 25
+     }
     }
    ],
    "media_id": "17998696853994176",
@@ -1025,6 +1167,21 @@
     {
      "em": "2026-11-15T07:36:53+0000",
      "idade": 3.48,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4667,
+      "likes": 1,
+      "reach": 6,
+      "reels_skip_rate": 87.5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 4.55,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 4667,
@@ -1082,6 +1239,19 @@
       "total_interactions": 1,
       "views": 20
      }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 4.46,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 26
+     }
     }
    ],
    "media_id": "18382597378243424",
@@ -1106,6 +1276,21 @@
     {
      "em": "2026-11-15T07:36:53+0000",
      "idade": 2.65,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3297,
+      "likes": 1,
+      "reach": 52,
+      "reels_skip_rate": 78.3,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 3,
+      "views": 75
+     }
+    },
+    {
+     "em": "2026-11-16T09:15:23+0000",
+     "idade": 3.72,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 3297,
