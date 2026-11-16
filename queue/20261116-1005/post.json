@@ -1,6 +1,6 @@
 {
   "id": "20261116-1005",
-  "status": "pending",
+  "status": "published",
   "funnel": "topo",
   "theme": "geometrico",
   "variant": 1,
@@ -12,5 +12,7 @@
   "story_mode": "paralela",
   "pillar": "linkedin",
   "angle": "rede de contatos",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-1005"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-1005",
+  "media_id": "18101148686214506",
+  "stories_published": 1
 }
