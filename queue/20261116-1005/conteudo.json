@@ -1,0 +1,47 @@
+{
+  "topic": "Como sua rede de contatos no LinkedIn avalia seu perfil",
+  "funnel": "topo",
+  "theme": "geometrico",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Cuidar da rede de contatos é como regar uma planta ou deixar secar",
+      "body": "Veja se sua rede está ativa de verdade."
+    },
+    {
+      "kind": "check",
+      "title": "Checklist rápido da sua rede",
+      "items": [
+        "Você interage com quem conversa",
+        "Suas conexões fazem sentido",
+        "Seu histórico conversa com sua meta"
+      ],
+      "note": "Um perfil conectado gera conversas reais."
+    },
+    {
+      "kind": "content",
+      "title": "Conectar por conectar não gera troca",
+      "body": "Ter milhares de nomes sem nenhuma interação real não ajuda na sua visibilidade. O algoritmo e as pessoas valorizam quem troca ideia de verdade.",
+      "highlight": "Qualidade vale mais que número."
+    },
+    {
+      "kind": "content",
+      "title": "O perigo do perfil muda-mudo",
+      "body": "Muita gente aceita todo mundo, mas nunca comenta nada, nunca posta e nunca manda uma mensagem genuína. Quem não é visto na conversa, não é lembrado.",
+      "highlight": "Rede precisa de movimento."
+    },
+    {
+      "kind": "content",
+      "title": "A conversa que começa no privado",
+      "body": "O verdadeiro valor da rede aparece quando você puxa um papo sem interesse comercial imediato. Pergunte sobre o mercado, troque figurinhas, crie pontes.",
+      "highlight": "Conexão humana em primeiro lugar."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer ver como sua rede está sendo vista?",
+      "body": "Siga nosso perfil para não perder as próximas dicas práticas de posicionamento no LinkedIn.",
+      "show_link": true
+    }
+  ]
+}

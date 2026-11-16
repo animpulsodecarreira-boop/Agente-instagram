@@ -1145,5 +1145,22 @@
     "angle": null,
     "reel_formato": "mito",
     "cover": "Currículo grande impressiona mais? Mito"
+  },
+  {
+    "topic": "Como sua rede de contatos no LinkedIn avalia seu perfil",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 1,
+    "format": "checklist",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a seguir o perfil para a próxima dica",
+    "keyword": "TITULO",
+    "cover": "Cuidar da rede de contatos é como regar uma planta ou deixar secar",
+    "opener": "Olhar para a lista de conexões e perceber que a maioria é formada por pessoas com quem você nunca trocou uma palavra ger",
+    "story_format": "riscar",
+    "story_mode": "paralela",
+    "story_title": "Mensagem para contato",
+    "pillar": "linkedin",
+    "angle": "rede de contatos"
   }
 ]
