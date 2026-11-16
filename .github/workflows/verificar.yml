@@ -1,0 +1,53 @@
+name: Verificar instalação
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pyspellchecker
+      - name: Conferir se todos os arquivos do agente estão certos
+        run: |
+          python - <<'PY'
+          import importlib, pathlib, re, sys
+          pasta = pathlib.Path("agent")
+          problemas = []
+          for f in sorted(pasta.glob("*.py")):
+              nome = f.stem
+              if nome == "__init__":
+                  continue
+              txt = f.read_text(encoding="utf-8")
+              primeira = next((l for l in txt.splitlines() if l.strip()), "")
+              if re.search(rf"^\s*from \.{nome} import", txt, flags=re.M):
+                  problemas.append(f"{f}: importa de si mesmo; o conteúdo parece ser de OUTRO arquivo (começa com: {primeira[:70]})")
+                  continue
+              try:
+                  importlib.import_module(f"agent.{nome}")
+                  print(f"ok   {f}  ({primeira[:60]})")
+              except Exception as e:
+                  problemas.append(f"{f}: {type(e).__name__}: {str(e)[:160]}  (começa com: {primeira[:70]})")
+          print()
+          if problemas:
+              print("PROBLEMAS ENCONTRADOS:")
+              for p in problemas:
+                  print(" -", p)
+              sys.exit(1)
+          print("Tudo certo: todos os arquivos do agente carregam sem erro.")
+          PY
+      - name: Avisar no Telegram se algo falhou
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Verificar instalação: algum arquivo do agente está errado. Veja: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
