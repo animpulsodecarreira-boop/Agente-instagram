@@ -1162,5 +1162,22 @@
     "story_title": "Mensagem para contato",
     "pillar": "linkedin",
     "angle": "rede de contatos"
+  },
+  {
+    "topic": "Como falar de uma lacuna ou saída da empresa na entrevista de emprego",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 2,
+    "format": "antes_depois",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "convidar a comentar a palavra-chave {kw}",
+    "keyword": "CHECK",
+    "cover": "Por que a pergunta sobre a lacuna no currículo causa tanto medo?",
+    "opener": "Explicar uma saída inesperada ou um tempo longe do mercado costuma gerar aquele frio na barriga antes da entrevista. A t",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Bastidores",
+    "pillar": "entrevista",
+    "angle": "como falar de uma saída ou lacuna"
   }
 ]
