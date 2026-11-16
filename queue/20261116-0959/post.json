@@ -11,11 +11,12 @@
   "stories": 0,
   "pillar": "curriculo",
   "angle": null,
-  "reel_status": "pending",
+  "reel_status": "published",
   "reel_modo": "direto",
   "reel_formato": "mito",
   "reel_origem": "banco",
   "revisao": [],
   "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-0959/reel_capa.png",
-  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-0959/reel.mp4"
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261116-0959/reel.mp4",
+  "reel_media_id": "17888637768691366"
 }
