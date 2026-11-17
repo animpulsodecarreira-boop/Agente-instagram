@@ -1223,5 +1223,15 @@
     "story_title": "O que você escreve bem no topo faz toda a diferença",
     "pillar": "entrevista",
     "angle": null
+  },
+  {
+    "topic": "Título do LinkedIn com mais do que o cargo",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 0,
+    "pillar": "linkedin",
+    "angle": null,
+    "reel_formato": "pare",
+    "cover": "Pare de usar só o cargo no título"
   }
 ]
