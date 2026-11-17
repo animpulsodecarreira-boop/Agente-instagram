@@ -179,6 +179,42 @@
      "total": 65
     }
    }
+  },
+  "2026-11-17": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 60,
+      "NON_FOLLOWER": 317
+     },
+     "total": 379
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 196,
+      "REEL": 280,
+      "STORY": 47
+     },
+     "total": 379
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 36,
+      "NON_FOLLOWER": 31
+     },
+     "total": 67
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 22,
+      "REEL": 55,
+      "STORY": 31
+     },
+     "total": 67
+    }
+   }
   }
  },
  "midias": {
@@ -667,6 +703,19 @@
       "total_interactions": 1,
       "views": 30
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 8.73,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 30
+     }
     }
    ],
    "media_id": "17966382402234453",
@@ -750,6 +799,21 @@
     {
      "em": "2026-11-16T09:15:23+0000",
      "idade": 6.86,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2707,
+      "likes": 0,
+      "reach": 18,
+      "reels_skip_rate": 78.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 24
+     }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 7.8,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 2707,
@@ -845,6 +909,19 @@
       "total_interactions": 3,
       "views": 62
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 7.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 44,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 3,
+      "views": 65
+     }
     }
    ],
    "media_id": "17913599778603389",
@@ -929,6 +1006,19 @@
       "total_interactions": 1,
       "views": 8
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 7.41,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 8
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -991,6 +1081,19 @@
     {
      "em": "2026-11-16T09:15:23+0000",
      "idade": 5.88,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 6.82,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -1071,6 +1174,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 6.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 25
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -1120,6 +1236,19 @@
     {
      "em": "2026-11-16T09:15:23+0000",
      "idade": 4.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 25
+     }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 5.58,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -1193,6 +1322,21 @@
       "total_interactions": 1,
       "views": 13
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 5.49,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 4211,
+      "likes": 1,
+      "reach": 6,
+      "reels_skip_rate": 88.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 14
+     }
     }
    ],
    "media_id": "17985574071105456",
@@ -1252,6 +1396,19 @@
       "total_interactions": 1,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 5.4,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 26
+     }
     }
    ],
    "media_id": "18382597378243424",
@@ -1302,6 +1459,21 @@
       "total_interactions": 3,
       "views": 75
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 4.66,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3297,
+      "likes": 1,
+      "reach": 52,
+      "reels_skip_rate": 78.3,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 3,
+      "views": 75
+     }
     }
    ],
    "media_id": "18095033309193541",
@@ -1334,6 +1506,19 @@
       "shares": 0,
       "total_interactions": 0,
       "views": 10
+     }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 3.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 5,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 12
      }
     }
    ],
@@ -1370,6 +1555,21 @@
       "total_interactions": 0,
       "views": 19
      }
+    },
+    {
+     "em": "2026-11-17T07:49:41+0000",
+     "idade": 3.37,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3964,
+      "likes": 0,
+      "reach": 9,
+      "reels_skip_rate": 80,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 20
+     }
     }
    ],
    "media_id": "17888031285505963",
@@ -1377,6 +1577,63 @@
    "post_id": "20261113-1905",
    "publicado_em": "2026-11-13T22:57:38+0000",
    "tipo": "reel"
+  },
+  "20261116-0959:reel": {
+   "atributos": {
+    "angle": null,
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "curriculo",
+    "reel_formato": "mito",
+    "theme": "azul",
+    "topic": "Tamanho do currículo",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "17888637768691366",
+   "permalink": "https://www.instagram.com/reel/Dfza7idis6_/",
+   "post_id": "20261116-0959",
+   "publicado_em": "2026-11-16T13:04:56+0000",
+   "tipo": "reel"
+  },
+  "20261116-1005:carrossel": {
+   "atributos": {
+    "angle": "rede de contatos",
+    "format": "checklist",
+    "funnel": "topo",
+    "hook": "comparação inesperada entre duas coisas",
+    "pillar": "linkedin",
+    "reel_formato": null,
+    "theme": "geometrico",
+    "topic": "Como sua rede de contatos no LinkedIn avalia seu perfil",
+    "variant": 1
+   },
+   "coletas": [],
+   "media_id": "18101148686214506",
+   "permalink": "https://www.instagram.com/p/DfzbnF0EUw6/",
+   "post_id": "20261116-1005",
+   "publicado_em": "2026-11-16T13:10:35+0000",
+   "tipo": "carrossel"
+  },
+  "20261116-1353:carrossel": {
+   "atributos": {
+    "angle": "como falar de uma saída ou lacuna",
+    "format": "antes_depois",
+    "funnel": "topo",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "pillar": "entrevista",
+    "reel_formato": null,
+    "theme": "escuro",
+    "topic": "Como falar de uma lacuna ou saída da empresa na entrevista de emprego",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "18177698731458111",
+   "permalink": "https://www.instagram.com/p/Dfz1yEkFMyt/",
+   "post_id": "20261116-1353",
+   "publicado_em": "2026-11-16T16:59:15+0000",
+   "tipo": "carrossel"
   }
  },
  "versao": 1
