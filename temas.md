@@ -10,8 +10,8 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 | mensagens a recrutadores | 2 | 2026-11-11 |
 | palavras-chave | 2 | 2026-11-10 |
 | rede de contatos | 2 | 2026-11-16 |
+| título e Sobre | 2 | 2026-11-17 |
 | foto, banner e primeira impressão | 1 | 2026-11-06 |
-| título e Sobre | 1 | 2026-11-05 |
 
 ## Currículo e candidatura
 

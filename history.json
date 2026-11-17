@@ -1189,5 +1189,22 @@
     "angle": "alinhar expectativas",
     "reel_formato": "pare",
     "cover": "Pare de aceitar prazos sem negociar antes"
+  },
+  {
+    "topic": "Mitos sobre o titulo e o Sobre do LinkedIn",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 1,
+    "format": "mito_verdade",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "convidar a salvar para consultar na hora de aplicar a dica",
+    "keyword": "AJUDA",
+    "cover": "Voce ja travou na hora de escrever o seu titulo e o resumo no LinkedIn?",
+    "opener": "Escrever sobre si mesmo no LinkedIn costuma gerar aquela duvida sobre soar arrogante ou simples demais. A verdade e que ",
+    "story_format": "checklist",
+    "story_mode": "paralela",
+    "story_title": "Como esta sua relacao com a segunda-feira?",
+    "pillar": "linkedin",
+    "angle": "título e Sobre"
   }
 ]
