@@ -1,0 +1,26 @@
+{
+ "formato": "pare",
+ "origem": "gemini",
+ "roteiro": {
+  "gancho": "Pare de aceitar prazos sem negociar antes",
+  "destaque": "prazos",
+  "cenas": [
+   {
+    "rotulo": "FAÇA ASSIM",
+    "texto": "Peça tempo para analisar a proposta",
+    "apoio": "Verifique se a demanda cabe na sua rotina."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Alinhar expectativas evita sobrecarga depois",
+    "apoio": "Limites claros mostram clareza e profissionalismo."
+   },
+   {
+    "rotulo": "HOJE",
+    "texto": "Defina seu limite de prazo",
+    "apoio": ""
+   }
+  ],
+  "chamada": "Comenta CHECK e eu te mando"
+ }
+}
