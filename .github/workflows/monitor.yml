@@ -1,0 +1,61 @@
+name: Monitor e resumo do dia
+on:
+  schedule:
+    # conferência 1 hora depois de cada horário de postagem (só avisa se houver problema)
+    - cron: "0 12 * * 1-5"    # 09:00 Brasília -> confere o Reel das 08:00
+    - cron: "30 16 * * 1-5"   # 13:30 Brasília -> confere o carrossel das 12:30
+    - cron: "0 22 * * 1-5"    # 19:00 Brasília -> confere o Reel das 18:00
+    - cron: "30 14 * * 6,0"   # 11:30 Brasília (fim de semana) -> confere o post das 10:30
+    - cron: "0 21 * * 6,0"    # 18:00 Brasília (fim de semana) -> confere o post das 17:00
+    # resumo do dia
+    - cron: "0 23 * * *"      # 20:00 Brasília, todos os dias
+  workflow_dispatch:
+    inputs:
+      acao:
+        description: "resumo = resumo do dia agora | checar = confere o último horário"
+        required: true
+        default: "resumo"
+        type: choice
+        options: ["resumo", "checar"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Definir a ação
+        id: a
+        run: |
+          A="${{ inputs.acao }}"
+          if [ -z "$A" ]; then
+            case "${{ github.event.schedule }}" in
+              "0 23 * * *") A="resumo" ;;
+              *) A="checar" ;;
+            esac
+          fi
+          echo "acao=$A" >> "$GITHUB_OUTPUT"
+      - name: Conferir e avisar
+        env:
+          PYTHONUNBUFFERED: "1"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m agent.monitor "${{ steps.a.outputs.acao }}"
+      - name: Avisar no Telegram se o próprio monitor falhou
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Alerta automático: o 'Monitor e resumo do dia' falhou. Detalhes: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
