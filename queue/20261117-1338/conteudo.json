@@ -1,0 +1,47 @@
+{
+  "topic": "Como organizar o topo do perfil para gerar conversas reais com recrutadores",
+  "funnel": "meio",
+  "theme": "geometrico",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "O que você coloca no topo da sua página importa menos do que a clareza",
+      "body": "Uma boa introdução profissional resolve boa parte das dúvidas de quem contrata."
+    },
+    {
+      "kind": "list",
+      "title": "Passo a passo para organizar o topo do seu perfil",
+      "items": [
+        "Defina a sua especialidade principal",
+        "Mostre o valor que você entrega",
+        "Use termos que o mercado entende",
+        "Deixe claro como podem falar com você"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "Diga exatamente o que você faz",
+      "body": "Evite termos muito internos ou siglas que só quem trabalha com você conhece. O mercado precisa entender sua função em segundos.",
+      "highlight": "Simplicidade atrai olhares interessados."
+    },
+    {
+      "kind": "content",
+      "title": "Conecte sua experiência ao problema que você resolve",
+      "body": "Em vez de apenas listar cargos antigos, mostre o tipo de desafio que você costuma resolver no dia a dia profissional.",
+      "highlight": "Mostre valor, não apenas histórico."
+    },
+    {
+      "kind": "content",
+      "title": "Facilite o contato de quem decide",
+      "body": "Garanta que sua principal forma de contato esteja visível e atualizada, para que o recrutador não precise adivinhar como falar com você.",
+      "highlight": "Portas abertas geram conversas."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer saber como o seu perfil está se saindo?",
+      "body": "Mande uma mensagem na nossa DM agora mesmo com a palavra QUERO e vamos conversar sobre os bastidores da sua trajetória.",
+      "show_link": false
+    }
+  ]
+}
