@@ -1250,5 +1250,22 @@
     "story_title": "Qual foi a última vez que você atualizou a sua foto ou o banner do LinkedIn?",
     "pillar": "linkedin",
     "angle": "foto, banner e primeira impressão"
+  },
+  {
+    "topic": "Como lidar com lacunas no histórico ao montar o currículo",
+    "funnel": "meio",
+    "theme": "azul",
+    "variant": 2,
+    "format": "caso_hipotetico",
+    "hook": "alerta curto no imperativo (ex.: 'Pare de...', 'Antes de...')",
+    "cta": "convidar a responder o story do dia",
+    "keyword": "TITULO",
+    "cover": "Antes de esconder aquela pausa no currículo, leia isto",
+    "opener": "Ficar olhando para um ano sem registro formal no currículo costuma gerar aquela vontade de inventar qualquer justificati",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Antes de esconder aquela pausa no currículo, leia isto",
+    "pillar": "curriculo",
+    "angle": "lacunas no histórico"
   }
 ]

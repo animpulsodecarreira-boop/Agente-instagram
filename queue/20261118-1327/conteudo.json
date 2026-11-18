@@ -1,0 +1,39 @@
+{
+  "topic": "Como lidar com lacunas no histórico ao montar o currículo",
+  "funnel": "meio",
+  "theme": "azul",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Antes de esconder aquela pausa no currículo, leia isto",
+      "body": "Uma lacuna no histórico profissional não precisa ser um mistério. Veja como tratamos isso na consultoria."
+    },
+    {
+      "kind": "content",
+      "title": "O caso de Camila",
+      "body": "Por exemplo: Camila ficou um ano cuidando de assuntos pessoais e reorganizando a casa. Na hora de montar o currículo, o medo dela era como explicar aquele espaço em branco."
+    },
+    {
+      "kind": "content",
+      "title": "O medo do julgamento",
+      "body": "Ela pensava em inventar um cargo temporário ou esticar as datas da empresa anterior. Na consultoria, mostramos que o caminho mais seguro é a clareza e a verdade."
+    },
+    {
+      "kind": "content",
+      "title": "Ajustando o foco",
+      "body": "Em vez de esconder a pausa, transformamos a seção de resumo para destacar o aprendizado daquele período e a clareza do que ela buscava a seguir, conectando o currículo ao perfil do LinkedIn."
+    },
+    {
+      "kind": "quote",
+      "title": "A experiência vale mais do que a linha contínua no papel",
+      "body": "O mercado valoriza quem sabe explicar o próprio caminho com segurança."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer organizar o seu histórico?",
+      "body": "Responda à pergunta do nosso story de hoje para conversarmos sobre os seus bastidores de carreira.",
+      "show_link": false
+    }
+  ]
+}
