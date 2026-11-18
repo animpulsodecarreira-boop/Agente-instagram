@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 from . import telegram_io as tg
+from .estilo import GUIA_REEL
 from .config import BANNED_PHRASES, BRAND_NAME, GEMINI_MODELS, HISTORY_FILE, KEYWORDS, PILLARS
 from .generate import API, _extract
 
@@ -50,6 +51,8 @@ conseguiu..."; nenhuma promessa de resultado (nada de "garanto", "você vai cons
 valores e saúde, use só afirmações gerais e convide a confirmar em fonte oficial. Não fale mal de pessoas nem de empresas.
 Sem markdown, sem asteriscos, sem hashtags dentro do texto falado. Revise a ortografia e a gramática antes de responder.
 Evite estas fórmulas que ficaram repetitivas: {"; ".join(BANNED_PHRASES)}."""
+SYSTEM = SYSTEM + GUIA_REEL   # guia de voz da marca (estilo.py)
+
 
 ITEM = {"type": "OBJECT", "properties": {
     "tema": {"type": "STRING"}, "gancho": {"type": "STRING"}, "texto_na_tela": {"type": "STRING"},
