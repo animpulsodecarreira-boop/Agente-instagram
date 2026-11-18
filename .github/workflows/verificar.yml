@@ -19,6 +19,12 @@ jobs:
           import importlib, pathlib, re, sys
           pasta = pathlib.Path("agent")
           problemas = []
+          # como cada arquivo começa (para achar um arquivo com o conteúdo de outro)
+          assinaturas = {"generate": "Gera o conteúdo", "reel_direto": "Reel direto", "reel_gancho": "Reel de gancho",
+                         "reel_texto": "Reel de texto", "roteiros": "Roteiros de vídeo", "revisao": "Revisão rápida",
+                         "monitor": "Monitor do agente", "insights": "Analista de conteúdo", "estilo": "Guia de voz",
+                         "instagram": "Publica carrosséis", "video": "Junta os quadros", "storage": "Armazenamento externo",
+                         "insights_teste": "Teste de leitura"}
           for f in sorted(pasta.glob("*.py")):
               nome = f.stem
               if nome == "__init__":
@@ -27,6 +33,10 @@ jobs:
               primeira = next((l for l in txt.splitlines() if l.strip()), "")
               if re.search(rf"^\s*from \.{nome} import", txt, flags=re.M):
                   problemas.append(f"{f}: importa de si mesmo; o conteúdo parece ser de OUTRO arquivo (começa com: {primeira[:70]})")
+                  continue
+              esperado = assinaturas.get(nome)
+              if esperado and esperado not in txt[:400]:
+                  problemas.append(f"{f}: o começo do arquivo não é o esperado (esperava '{esperado}'; começa com: {primeira[:70]})")
                   continue
               try:
                   importlib.import_module(f"agent.{nome}")
