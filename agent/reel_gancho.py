@@ -15,6 +15,7 @@ from pathlib import Path
 import requests
 from playwright.sync_api import sync_playwright
 
+from .estilo import GUIA_REEL
 from .config import ASSETS, BANNED_PHRASES, BRAND_NAME, GEMINI_MODELS, LINK_LABEL
 from .generate import API, _extract
 from .reel_texto import rich
@@ -56,6 +57,8 @@ Regras da marca (obrigatórias): use SOMENTE o conteúdo do post fornecido; não
 nomes; nenhuma promessa de resultado (nada de "garanto", "você vai conseguir"); para leis, direitos, prazos, valores e saúde use
 só afirmações gerais. Não ataque pessoas nem empresas.
 Evite estas fórmulas repetitivas: {"; ".join(BANNED_PHRASES)}."""
+SYSTEM = SYSTEM + GUIA_REEL   # guia de voz da marca para texto na tela (estilo.py)
+
 
 SCHEMA = {"type": "OBJECT", "properties": {
     "gancho": {"type": "STRING"}, "destaque": {"type": "STRING"},
