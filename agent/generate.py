@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+from .estilo import GUIA_POSTS
 from .config import (BANNED_PHRASES, BRAND_NAME, CTAS, FORMATS, FUNNEL, GEMINI_MODELS, HISTORY_FILE, HOOKS,
                      KEYWORDS, MAX_HASHTAGS, MAX_SLIDES, MIN_SLIDES, MISSIONS, OFFER, STORY_FORMATS, STORY_MODES,
                      STORY_MODE_TEXT, THEMES, PILLARS, LEVE_BANNED, LEVE_HOOKS, LEVE_THEMES)
@@ -53,6 +54,8 @@ cada campo vêm na receita do dia: SIGA-OS. Conversas e exemplos são FICTÍCIOS
 LEGENDA: 1ª linha é um gancho forte e diferente das anteriores; corpo curto; termine com a chamada do CTA da receita (não repita o mesmo pedido todo dia); até 1500 caracteres.
 HASHTAGS: de 6 a {MAX_HASHTAGS}, sem espaços, em português, relevantes ao tema do dia e à carreira (#LinkedIn só se o tema ou o post citar a plataforma).
 """
+SYSTEM = SYSTEM + GUIA_POSTS   # guia de voz da marca (estilo.py)
+
 
 SCHEMA = {
     "type": "OBJECT",
