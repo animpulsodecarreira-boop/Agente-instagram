@@ -1,0 +1,26 @@
+{
+ "formato": "erro",
+ "origem": "banco",
+ "roteiro": {
+  "gancho": "O erro nº 1 no currículo",
+  "destaque": "erro",
+  "cenas": [
+   {
+    "rotulo": "O ERRO",
+    "texto": "Listar tarefas em vez de conquistas",
+    "apoio": ""
+   },
+   {
+    "rotulo": "POR QUE ATRAPALHA",
+    "texto": "Ninguém vê o que você mudou",
+    "apoio": ""
+   },
+   {
+    "rotulo": "CORRIJA ASSIM",
+    "texto": "Mostre o resultado do seu trabalho",
+    "apoio": "Sem inventar números: use fatos que você pode comprovar."
+   }
+  ],
+  "chamada": "Comenta CHECK e eu te mando"
+ }
+}
