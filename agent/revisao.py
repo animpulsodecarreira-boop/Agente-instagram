@@ -1,10 +1,12 @@
-"""Revisão rápida do texto, sem IA e sem rede: corrige o que é seguro e avisa o resto.
+"""Revisão rápida do texto, sem IA e sem rede: corrige o que é seguro e avisa o resto (ortografia e tom).
 
 O que faz
 - Corrige sozinha (só casos seguros): palavras terminadas em "ji" que são "gi" (ex.: "Finji" -> "Fingi", "elegi", "dirigi")
   e espaços duplicados.
 - Avisa, sem mexer no texto: palavras que o dicionário não conhece (possível erro de digitação, com sugestões) e palavras
   repetidas em seguida ("de de", "que que"). Os avisos chegam ao Telegram junto com o post.
+- Avisa também do TOM: expressões de manual ("faz parte da rotina", "é universal"), fechamentos de fórmula, afirmações científicas
+  sem base ("o cérebro desliga") e frases longas demais. As listas estão em estilo.py.
 - Se uma palavra certa for apontada como erro, escreva-a numa linha de palavras_ok.txt (na raiz do repositório) e ela
   deixa de ser apontada.
 Funciona com o pacote pyspellchecker (os workflows já o instalam). Sem ele, só corrige os casos "ji" de uma
@@ -14,6 +16,7 @@ import re
 from pathlib import Path
 
 from .config import HISTORY_FILE
+from .estilo import AFIRMACOES_SEM_BASE, EXPRESSOES_DE_MANUAL, FORMULAS_DE_FECHAMENTO, FRASE_LONGA
 
 try:
     from spellchecker import SpellChecker
@@ -119,6 +122,7 @@ def revisar_texto(texto, extra_ok=None):
     # palavras repetidas em seguida
     for m in re.finditer(r"\b([A-Za-zÀ-ÿ]{2,})\s+\1\b", novo, flags=re.I):
         avisos.append(f"palavra repetida: “{m.group(0)}”")
+    avisos += _tom(novo)
     # palavras desconhecidas
     if _speller() is not None:
         vistos = set()
@@ -140,6 +144,23 @@ def revisar_texto(texto, extra_ok=None):
                 sug = _sugestoes(low)
                 avisos.append(f"“{p}” não está no dicionário" + (f" (sugestões: {', '.join(sug)})" if sug else ""))
     return novo, avisos
+
+
+def _tom(texto):
+    """Avisos de tom: expressões de manual, fechamentos de fórmula, afirmações sem base e frases longas (1 aviso por tipo)."""
+    out, vistos = [], set()
+    for lista in (EXPRESSOES_DE_MANUAL, FORMULAS_DE_FECHAMENTO, AFIRMACOES_SEM_BASE):
+        for padrao, rotulo in lista:
+            m = re.search(padrao, texto, flags=re.I)
+            if m and rotulo not in vistos:
+                vistos.add(rotulo)
+                out.append(f"tom ({rotulo}): “{m.group(0)}”")
+    for frase in re.split(r"(?<=[.!?])\s+|\n+", texto):
+        n = len(frase.split())
+        if n > FRASE_LONGA:
+            out.append(f"tom (frase longa, {n} palavras): “{' '.join(frase.split()[:8])}…”")
+            break
+    return out
 
 
 def _original(texto, corrigida):
