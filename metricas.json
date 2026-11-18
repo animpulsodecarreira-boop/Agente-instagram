@@ -215,6 +215,42 @@
      "total": 67
     }
    }
+  },
+  "2026-11-18": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 59,
+      "NON_FOLLOWER": 381
+     },
+     "total": 444
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 196,
+      "REEL": 341,
+      "STORY": 140
+     },
+     "total": 444
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 49,
+      "NON_FOLLOWER": 156
+     },
+     "total": 205
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 16,
+      "REEL": 135,
+      "STORY": 133
+     },
+     "total": 205
+    }
+   }
   }
  },
  "midias": {
@@ -825,6 +861,21 @@
       "total_interactions": 0,
       "views": 24
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 8.8,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2549,
+      "likes": 1,
+      "reach": 20,
+      "reels_skip_rate": 81,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
     }
    ],
    "media_id": "18451859977192515",
@@ -921,6 +972,19 @@
       "shares": 2,
       "total_interactions": 3,
       "views": 65
+     }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 8.63,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 46,
+      "saved": 0,
+      "shares": 2,
+      "total_interactions": 4,
+      "views": 70
      }
     }
    ],
@@ -1019,6 +1083,19 @@
       "total_interactions": 1,
       "views": 8
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 8.41,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 10
+     }
     }
    ],
    "media_id": "18116036264172048",
@@ -1102,6 +1179,19 @@
       "shares": 0,
       "total_interactions": 1,
       "views": 27
+     }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 7.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 29
      }
     }
    ],
@@ -1187,6 +1277,19 @@
       "total_interactions": 0,
       "views": 25
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 7.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -1257,6 +1360,19 @@
       "shares": 0,
       "total_interactions": 1,
       "views": 25
+     }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 6.57,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 27
      }
     }
    ],
@@ -1337,6 +1453,21 @@
       "total_interactions": 1,
       "views": 14
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 6.48,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3605,
+      "likes": 2,
+      "reach": 8,
+      "reels_skip_rate": 90.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 16
+     }
     }
    ],
    "media_id": "17985574071105456",
@@ -1409,6 +1540,19 @@
       "total_interactions": 1,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 6.4,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 29
+     }
     }
    ],
    "media_id": "18382597378243424",
@@ -1474,6 +1618,21 @@
       "total_interactions": 3,
       "views": 75
      }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 5.66,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3275,
+      "likes": 2,
+      "reach": 54,
+      "reels_skip_rate": 76.6,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 4,
+      "views": 79
+     }
     }
    ],
    "media_id": "18095033309193541",
@@ -1519,6 +1678,19 @@
       "shares": 0,
       "total_interactions": 0,
       "views": 12
+     }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 4.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
      }
     }
    ],
@@ -1569,6 +1741,21 @@
       "shares": 0,
       "total_interactions": 0,
       "views": 20
+     }
+    },
+    {
+     "em": "2026-11-18T07:46:38+0000",
+     "idade": 4.37,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3218,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 84.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
      }
     }
    ],
@@ -1634,6 +1821,44 @@
    "post_id": "20261116-1353",
    "publicado_em": "2026-11-16T16:59:15+0000",
    "tipo": "carrossel"
+  },
+  "20261117-0841:reel": {
+   "atributos": {
+    "angle": "alinhar expectativas",
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "negociacao",
+    "reel_formato": "pare",
+    "theme": "claro",
+    "topic": "Alinhar expectativas salariais e de prazos com segurança",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "18653923819028094",
+   "permalink": "https://www.instagram.com/reel/Df18VjxIdwf/",
+   "post_id": "20261117-0841",
+   "publicado_em": "2026-11-17T12:35:17+0000",
+   "tipo": "reel"
+  },
+  "20261117-1840:reel": {
+   "atributos": {
+    "angle": null,
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "linkedin",
+    "reel_formato": "pare",
+    "theme": "escuro",
+    "topic": "Título do LinkedIn com mais do que o cargo",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "18184031527430420",
+   "permalink": "https://www.instagram.com/reel/Df27NUZjo1K/",
+   "post_id": "20261117-1840",
+   "publicado_em": "2026-11-17T21:44:38+0000",
+   "tipo": "reel"
   }
  },
  "versao": 1
