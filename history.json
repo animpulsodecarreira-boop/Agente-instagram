@@ -1233,5 +1233,22 @@
     "angle": null,
     "reel_formato": "pare",
     "cover": "Pare de usar só o cargo no título"
+  },
+  {
+    "topic": "Foto, banner e primeira impressão no LinkedIn",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 1,
+    "format": "mini_aula",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "fazer uma pergunta que a pessoa responde nos comentários (ex.: qual é a sua maior dúvida sobre o tema?)",
+    "keyword": "PERFIL",
+    "cover": "3 segundos para a primeira impressão no LinkedIn",
+    "opener": "Abrir o perfil e dar de cara com aquela foto antiga ou com o fundo azul padrão do LinkedIn é mais comum do que parece. A",
+    "story_format": "pergunta",
+    "story_mode": "paralela",
+    "story_title": "Qual foi a última vez que você atualizou a sua foto ou o banner do LinkedIn?",
+    "pillar": "linkedin",
+    "angle": "foto, banner e primeira impressão"
   }
 ]
