@@ -11,7 +11,7 @@
   "stories": 0,
   "pillar": "produtividade",
   "angle": "rotina de busca de emprego",
-  "reel_status": "pending",
+  "reel_status": "published",
   "reel_modo": "direto",
   "reel_formato": "pov",
   "reel_origem": "gemini",
@@ -26,5 +26,6 @@
     "legenda: “cansaco” não está no dicionário (sugestões: casaco, cansado, cansaço)"
   ],
   "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-0935/reel_capa.png",
-  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-0935/reel.mp4"
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-0935/reel.mp4",
+  "reel_media_id": "18029440775874731"
 }
