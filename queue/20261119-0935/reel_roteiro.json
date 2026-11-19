@@ -1,0 +1,26 @@
+{
+ "formato": "pov",
+ "origem": "gemini",
+ "roteiro": {
+  "gancho": "POV: voce envia curriculos o dia todo sem retorno",
+  "destaque": "horario",
+  "cenas": [
+   {
+    "rotulo": "A VIRADA",
+    "texto": "Procurar emprego cansa quando nao tem horario",
+    "apoio": ""
+   },
+   {
+    "rotulo": "FAÇA ISSO",
+    "texto": "Defina blocos de tempo para cada acao",
+    "apoio": "Separe momentos para pesquisa, ajustes e contatos."
+   },
+   {
+    "rotulo": "DEPOIS",
+    "texto": "O processo fica previsivel e gera menos desgaste",
+    "apoio": "Sua energia dura mais ao longo da semana."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

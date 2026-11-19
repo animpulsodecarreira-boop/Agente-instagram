@@ -1,0 +1,30 @@
+{
+  "id": "20261119-0935",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "claro",
+  "variant": 2,
+  "topic": "Como organizar a rotina diaria de envio de curriculos e busca de emprego",
+  "caption": "Organizar o tempo na busca por emprego ajuda a manter o foco sem esgotar sua energia. Comente se voce tambem sente esse cansaco ou salve para rever depois.\n\n#transicaodecarreira #recolocacaoprofissional #mercadodetrabalho #curriculo #rotina #busca_emprego #carreira",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "produtividade",
+  "angle": "rotina de busca de emprego",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "pov",
+  "reel_origem": "gemini",
+  "revisao": [
+    "gancho: “voce” não está no dicionário (sugestões: você, doce, vice)",
+    "gancho: “curriculos” não está no dicionário (sugestões: currículos)",
+    "cena 1: “nao” não está no dicionário (sugestões: não, no, na)",
+    "cena 1: “horario” não está no dicionário (sugestões: horário)",
+    "cena 2: “acao” não está no dicionário (sugestões: acho, acaso, acabo)",
+    "cena 3: “previsivel” não está no dicionário (sugestões: previsível)",
+    "legenda: “tambem” não está no dicionário (sugestões: também, lambem, sambem)",
+    "legenda: “cansaco” não está no dicionário (sugestões: casaco, cansado, cansaço)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-0935/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-0935/reel.mp4"
+}

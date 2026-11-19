@@ -1287,5 +1287,15 @@
     "angle": "primeiros minutos da conversa",
     "reel_formato": "antes_depois",
     "cover": "Entrevista: veja a diferença no início"
+  },
+  {
+    "topic": "Como organizar a rotina diaria de envio de curriculos e busca de emprego",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 2,
+    "pillar": "produtividade",
+    "angle": "rotina de busca de emprego",
+    "reel_formato": "pov",
+    "cover": "POV: voce envia curriculos o dia todo sem retorno"
   }
 ]
