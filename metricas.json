@@ -251,6 +251,42 @@
      "total": 205
     }
    }
+  },
+  "2026-11-19": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 60,
+      "NON_FOLLOWER": 393
+     },
+     "total": 456
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 195,
+      "REEL": 353,
+      "STORY": 153
+     },
+     "total": 456
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 51,
+      "NON_FOLLOWER": 177
+     },
+     "total": 228
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 14,
+      "REEL": 150,
+      "STORY": 145
+     },
+     "total": 228
+    }
+   }
   }
  },
  "midias": {
@@ -1193,6 +1229,19 @@
       "total_interactions": 2,
       "views": 29
      }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 8.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 29
+     }
     }
    ],
    "media_id": "17878294653582626",
@@ -1290,6 +1339,19 @@
       "total_interactions": 1,
       "views": 27
      }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 8.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 27
+     }
     }
    ],
    "media_id": "18116496245329005",
@@ -1365,6 +1427,19 @@
     {
      "em": "2026-11-18T07:46:38+0000",
      "idade": 6.57,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 27
+     }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 7.58,
      "metricas": {
       "comments": 0,
       "likes": 2,
@@ -1468,6 +1543,21 @@
       "total_interactions": 2,
       "views": 16
      }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 7.49,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3605,
+      "likes": 2,
+      "reach": 8,
+      "reels_skip_rate": 90.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 16
+     }
     }
    ],
    "media_id": "17985574071105456",
@@ -1544,6 +1634,19 @@
     {
      "em": "2026-11-18T07:46:38+0000",
      "idade": 6.4,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 29
+     }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 7.4,
      "metricas": {
       "comments": 0,
       "likes": 2,
@@ -1633,6 +1736,21 @@
       "total_interactions": 4,
       "views": 79
      }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 6.66,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3275,
+      "likes": 2,
+      "reach": 54,
+      "reels_skip_rate": 76.6,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 4,
+      "views": 79
+     }
     }
    ],
    "media_id": "18095033309193541",
@@ -1683,6 +1801,19 @@
     {
      "em": "2026-11-18T07:46:38+0000",
      "idade": 4.64,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
+     }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 5.64,
      "metricas": {
       "comments": 0,
       "likes": 1,
@@ -1757,6 +1888,21 @@
       "total_interactions": 1,
       "views": 23
      }
+    },
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 5.37,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3218,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 84.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
+     }
     }
    ],
    "media_id": "17888031285505963",
@@ -1777,7 +1923,23 @@
     "topic": "Tamanho do currículo",
     "variant": 0
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 2.78,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2728,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 100,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 15
+     }
+    }
+   ],
    "media_id": "17888637768691366",
    "permalink": "https://www.instagram.com/reel/Dfza7idis6_/",
    "post_id": "20261116-0959",
@@ -1796,7 +1958,21 @@
     "topic": "Como sua rede de contatos no LinkedIn avalia seu perfil",
     "variant": 1
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 2.78,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 18
+     }
+    }
+   ],
    "media_id": "18101148686214506",
    "permalink": "https://www.instagram.com/p/DfzbnF0EUw6/",
    "post_id": "20261116-1005",
@@ -1815,7 +1991,21 @@
     "topic": "Como falar de uma lacuna ou saída da empresa na entrevista de emprego",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-19T07:49:27+0000",
+     "idade": 2.62,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 19
+     }
+    }
+   ],
    "media_id": "18177698731458111",
    "permalink": "https://www.instagram.com/p/Dfz1yEkFMyt/",
    "post_id": "20261116-1353",
@@ -1858,6 +2048,25 @@
    "permalink": "https://www.instagram.com/reel/Df27NUZjo1K/",
    "post_id": "20261117-1840",
    "publicado_em": "2026-11-17T21:44:38+0000",
+   "tipo": "reel"
+  },
+  "20261118-1439:reel": {
+   "atributos": {
+    "angle": null,
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "curriculo",
+    "reel_formato": "erro",
+    "theme": "geometrico",
+    "topic": "Conquistas em vez de tarefas no currículo",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "18122410429966412",
+   "permalink": "https://www.instagram.com/reel/Df5EhCLjYv8/",
+   "post_id": "20261118-1439",
+   "publicado_em": "2026-11-18T17:44:25+0000",
    "tipo": "reel"
   }
  },
