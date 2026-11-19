@@ -1,0 +1,23 @@
+{
+ "formato": "antes_depois",
+ "origem": "gemini",
+ "roteiro": {
+  "gancho": "Entrevista: veja a diferença no início",
+  "destaque": "diferença",
+  "cenas": [
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Fale do seu trabalho com exemplos diretos",
+    "antes": "Falar apenas o nome do cargo",
+    "apoio": "Mostre o que você resolve na prática"
+   },
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Responda com foco na vaga atual",
+    "antes": "Contar toda a trajetória profissional",
+    "apoio": "Vá direto ao ponto que importa"
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

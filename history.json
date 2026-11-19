@@ -1277,5 +1277,15 @@
     "angle": null,
     "reel_formato": "erro",
     "cover": "O erro nº 1 no currículo"
+  },
+  {
+    "topic": "A postura nos primeiros minutos da entrevista de emprego",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 1,
+    "pillar": "entrevista",
+    "angle": "primeiros minutos da conversa",
+    "reel_formato": "antes_depois",
+    "cover": "Entrevista: veja a diferença no início"
   }
 ]
