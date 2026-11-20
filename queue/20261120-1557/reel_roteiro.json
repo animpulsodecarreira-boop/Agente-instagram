@@ -1,0 +1,26 @@
+{
+ "formato": "antes_de",
+ "origem": "gemini",
+ "roteiro": {
+  "gancho": "Antes de atualizar o LinkedIn, confira 3 coisas",
+  "destaque": "atualizar",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Troque tarefas por resultados obtidos",
+    "apoio": "Mostre o que mudou na sua equipe"
+   },
+   {
+    "rotulo": "2",
+    "texto": "Use números nas suas entregas",
+    "apoio": "Prazos e volumes dão dimensão ao trabalho"
+   },
+   {
+    "rotulo": "3",
+    "texto": "Atualize a última função",
+    "apoio": "Deixe claro o seu foco atual"
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}
