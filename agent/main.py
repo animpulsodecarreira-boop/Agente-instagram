@@ -341,6 +341,28 @@ def _subir_reel(post_id, out, meta):
         print("[armazenamento] falhou; o Reel fica no GitHub", flush=True)
 
 
+def _montar_reel_video(roteiro, formato, theme, frames_dir, out, post_id, mostrar_link=False):
+    """Monta o vídeo do Reel a partir do roteiro: estilo "palco" (cubos 3D) e, se falhar, o Reel de gancho (cenas de texto).
+    REEL_ESTILO=gancho força o estilo simples. Devolve (estilo usado, roteiro usado)."""
+    if os.getenv("REEL_ESTILO", "palco") == "palco":
+        try:
+            from .reel_palco import render_reel_palco
+            frames, _seg, _dados = render_reel_palco(roteiro, formato, frames_dir, capa=out / "reel_capa.png", mostrar_link=mostrar_link)
+            _log(f"{len(frames)} quadros prontos (palco); montando o vídeo")
+            make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0, animado=True)
+            return "palco", roteiro
+        except Exception:
+            print(tg.redact(traceback.format_exc()), file=sys.stderr)
+            _log("o estilo palco falhou; usando o Reel de gancho")
+            shutil.rmtree(frames_dir, ignore_errors=True)
+            (out / "reel_capa.png").unlink(missing_ok=True)
+    from .reel_gancho import render_reel_gancho
+    frames, _seg, usado = render_reel_gancho(roteiro, theme, frames_dir, capa=out / "reel_capa.png", mostrar_link=mostrar_link)
+    _log(f"{len(frames)} quadros prontos; montando o vídeo")
+    make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0)
+    return "gancho", usado
+
+
 def _reel_texto(out, meta, post_id):
     """Reel de texto animado (cenas no estilo dos stories). Devolve 'texto' se deu certo, ou None para usar o plano B."""
     frames_dir = out / "_reel_frames"
@@ -356,12 +378,11 @@ def _reel_texto(out, meta, post_id):
             from .revisao import revisar_roteiro
             _, meta["revisao"] = revisar_roteiro(roteiro)
             _log(f"montando o Reel de gancho (formato {formato})")
-            frames, _seg, roteiro_usado = render_reel_gancho(roteiro, meta.get("theme", "escuro"), frames_dir, capa=out / "reel_capa.png")
-            _log(f"{len(frames)} quadros prontos; montando o vídeo")
-            make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0)
-            (out / "reel_roteiro.json").write_text(json.dumps({"formato": formato, "roteiro": roteiro_usado},
+            estilo, roteiro_usado = _montar_reel_video(roteiro, formato, meta.get("theme", "escuro"), frames_dir, out, post_id)
+            (out / "reel_roteiro.json").write_text(json.dumps({"formato": formato, "estilo": estilo, "roteiro": roteiro_usado},
                                                               ensure_ascii=False, indent=1), encoding="utf-8")
             meta["reel_formato"] = formato
+            meta["reel_estilo"] = estilo
             return "gancho"
         except Exception:
             print(tg.redact(traceback.format_exc()), file=sys.stderr)
@@ -460,16 +481,13 @@ def cmd_reel_direto(args):
         d["caption"], avisos_rev = revisar_roteiro(d["roteiro"], d["caption"])
         _log(f"roteiro pronto ({d['origem']}, modelo {d['formato']}, pilar {d['pillar']}); montando as cenas")
         out.mkdir(parents=True, exist_ok=True)
-        frames, _seg, usado = render_reel_gancho(d["roteiro"], d["theme"], frames_dir, capa=out / "reel_capa.png",
-                                                 mostrar_link=d["mostrar_link"])
-        _log(f"{len(frames)} quadros prontos; montando o vídeo")
-        make_reel_from_frames(frames, out / "reel.mp4", post_id, fade_in=0.0)
-        (out / "reel_roteiro.json").write_text(json.dumps({"formato": d["formato"], "origem": d["origem"], "roteiro": usado},
+        estilo, usado = _montar_reel_video(d["roteiro"], d["formato"], d["theme"], frames_dir, out, post_id, mostrar_link=d["mostrar_link"])
+        (out / "reel_roteiro.json").write_text(json.dumps({"formato": d["formato"], "origem": d["origem"], "estilo": estilo, "roteiro": usado},
                                                           ensure_ascii=False, indent=1), encoding="utf-8")
         meta = {"id": post_id, "status": "reel_only", "saida": "reel_direto", "funnel": etapa, "theme": d["theme"],
                 "variant": d["variant"], "topic": d["topic"], "caption": d["caption"], "slides": 0, "stories": 0,
                 "pillar": d["pillar"], "angle": d["angle"], "reel_status": "pending", "reel_modo": "direto",
-                "reel_formato": d["formato"], "reel_origem": d["origem"], "revisao": avisos_rev}
+                "reel_formato": d["formato"], "reel_origem": d["origem"], "reel_estilo": estilo, "revisao": avisos_rev}
         _subir_reel(post_id, out, meta)
         (out / "post.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         save_history(d["topic"], etapa, d["theme"], {"variant": d["variant"], "pillar": d["pillar"], "angle": d["angle"],
