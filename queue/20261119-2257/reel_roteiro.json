@@ -1,0 +1,26 @@
+{
+ "formato": "pergunta_recrutador",
+ "origem": "gemini",
+ "roteiro": {
+  "gancho": "A pergunta que todo recrutador faz: por que a mudanca de area",
+  "destaque": "mudanca",
+  "cenas": [
+   {
+    "rotulo": "O QUE ELE QUER SABER",
+    "texto": "Se existe direcao clara",
+    "apoio": "O recrutador busca coerencia entre a sua trajetoria antiga e a nova area."
+   },
+   {
+    "rotulo": "COMO RESPONDER",
+    "texto": "Ligue sua experiencia antiga ao novo objetivo",
+    "apoio": "Mostre o que voce aprendeu la e como isso ajuda aqui."
+   },
+   {
+    "rotulo": "EVITE",
+    "texto": "Falar mal do emprego anterior",
+    "apoio": "Mantenha o foco no futuro e nas oportunidades que busca."
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

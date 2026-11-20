@@ -1,0 +1,32 @@
+{
+  "id": "20261119-2257",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "azul",
+  "variant": 0,
+  "topic": "Como contar a historia da transicao de carreira na entrevista",
+  "caption": "Explicar a transicao de carreira sem rodeios ajuda a ganhar a confianca de quem esta contratando. Como voce explica a sua mudanca hoje? Deixe seu comentario.\n\n#transicaodecarreira #recolocacaoprofissional #entrevista #carreira #mercadodetrabalho #buscadeemprego",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "transicao",
+  "angle": "como contar a história da transição",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "pergunta_recrutador",
+  "reel_origem": "gemini",
+  "revisao": [
+    "gancho: “mudanca” não está no dicionário (sugestões: mudança)",
+    "gancho: “area” não está no dicionário (sugestões: arma, área, areia)",
+    "cena 1: “direcao” não está no dicionário (sugestões: direito, direção, direto)",
+    "cena 1: “coerencia” não está no dicionário (sugestões: coerência)",
+    "cena 1: “trajetoria” não está no dicionário (sugestões: trajetória)",
+    "cena 2: “experiencia” não está no dicionário (sugestões: experiência, experiencial)",
+    "cena 2: “voce” não está no dicionário (sugestões: você, doce, vice)",
+    "legenda: “transicao” não está no dicionário (sugestões: transição, transito, transitam)",
+    "legenda: “confianca” não está no dicionário (sugestões: confiança)",
+    "legenda: “comentario” não está no dicionário (sugestões: comentário, comentarão, comentaria)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-2257/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261119-2257/reel.mp4"
+}

@@ -1297,5 +1297,15 @@
     "angle": "rotina de busca de emprego",
     "reel_formato": "pov",
     "cover": "POV: voce envia curriculos o dia todo sem retorno"
+  },
+  {
+    "topic": "Como contar a historia da transicao de carreira na entrevista",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 0,
+    "pillar": "transicao",
+    "angle": "como contar a história da transição",
+    "reel_formato": "pergunta_recrutador",
+    "cover": "A pergunta que todo recrutador faz: por que a mudanca de area"
   }
 ]
