@@ -1,0 +1,39 @@
+{
+  "topic": "Uso estratégico de palavras-chave no LinkedIn e a oferta do diagnóstico gratuito",
+  "funnel": "fundo",
+  "theme": "escuro",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Você acha que seu perfil está invisível no LinkedIn?",
+      "body": "A resposta pode estar nos termos que você escolheu usar."
+    },
+    {
+      "kind": "content",
+      "title": "Para quem é o diagnóstico gratuito",
+      "body": "Para quem está em busca de recolocação ou transição e sente que envia currículos, mas a caixa de mensagens continua silenciosa."
+    },
+    {
+      "kind": "list",
+      "title": "O que você recebe no diagnóstico",
+      "items": [
+        "Análise clara do seu título e do resumo",
+        "Revisão dos termos mais buscados na sua área",
+        "Sugestões práticas de ajuste no posicionamento",
+        "Orientações para atrair quem decide contratações"
+      ]
+    },
+    {
+      "kind": "content",
+      "title": "Como funciona na prática",
+      "body": "Você acessa o link na nossa biografia, preenche os dados básicos do seu momento profissional e recebe uma avaliação direta sobre a clareza do seu perfil."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer entender como seu perfil aparece para o mercado?",
+      "body": "Clique no link da bio e garanta o seu diagnóstico gratuito do LinkedIn agora mesmo.",
+      "show_link": true
+    }
+  ]
+}
