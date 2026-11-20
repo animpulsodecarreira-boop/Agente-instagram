@@ -21,7 +21,7 @@ jobs:
           problemas = []
           # como cada arquivo começa (para achar um arquivo com o conteúdo de outro)
           assinaturas = {"generate": "Gera o conteúdo", "reel_direto": "Reel direto", "reel_gancho": "Reel de gancho",
-                         "reel_texto": "Reel de texto", "roteiros": "Roteiros de vídeo", "revisao": "Revisão rápida",
+                         "reel_texto": "Reel de texto", "reel_palco": "Reel no estilo", "roteiros": "Roteiros de vídeo", "revisao": "Revisão rápida",
                          "monitor": "Monitor do agente", "insights": "Analista de conteúdo", "estilo": "Guia de voz",
                          "instagram": "Publica carrosséis", "video": "Junta os quadros", "storage": "Armazenamento externo",
                          "insights_teste": "Teste de leitura"}
