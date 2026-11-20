@@ -62,10 +62,10 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 | Ângulo | Vezes | Última vez |
 |---|---|---|
 | mensagens objetivas | 1 | 2026-11-04 |
+| pedir ajuda ou indicação | 1 | 2026-11-20 |
 | falar de conquistas sem exagero | 0 | - |
 | feedback | 0 | - |
 | networking sem constrangimento | 0 | - |
-| pedir ajuda ou indicação | 0 | - |
 | reuniões | 0 | - |
 
 ## Negociação e limites

@@ -1,0 +1,27 @@
+{
+ "formato": "pare",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Pare de pedir indicação sem contexto",
+  "destaque": "indicação",
+  "cenas": [
+   {
+    "rotulo": "FAÇA ASSIM",
+    "texto": "Explique para qual vaga você quer concorrer",
+    "apoio": "Mande o link exato e diga o motivo da escolha."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Fica mais fácil para a outra pessoa ajudar",
+    "apoio": "Quem recebe a mensagem não precisa adivinhar seus planos."
+   },
+   {
+    "rotulo": "HOJE",
+    "texto": "Escreva uma mensagem direta para um contato",
+    "apoio": "Seja objetivo sobre o cargo e a empresa."
+   }
+  ],
+  "chamada": "Segue para mais dicas de carreira"
+ }
+}
