@@ -1371,5 +1371,22 @@
     "story_title": "A única certeza profissional que a gente tem é que o boleto chega todo mês",
     "pillar": "leve_carreira",
     "angle": "mudar de ideia sobre a carreira"
+  },
+  {
+    "topic": "Tradutor sincero das frases de segunda-feira",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 1,
+    "format": "tradutor_corporativo",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "cta": "pedir uma palavra que resuma a semana da pessoa",
+    "keyword": "TITULO",
+    "cover": "Ninguém fala, mas a segunda-feira tem seu próprio dialeto",
+    "opener": "Basta abrir a caixa de entrada nas primeiras horas da semana para perceber que ninguém fala exatamente o que está pensan",
+    "story_format": "riscar",
+    "story_mode": "acompanha",
+    "story_title": "Mensagem de segunda de manhã",
+    "pillar": "leve_mundo",
+    "angle": "segunda-feira"
   }
 ]

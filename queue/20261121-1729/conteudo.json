@@ -1,0 +1,43 @@
+{
+  "topic": "Tradutor sincero das frases de segunda-feira",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Ninguém fala, mas a segunda-feira tem seu próprio dialeto",
+      "body": "Pequenas frases inocentes das primeiras horas do dia que dizem muito mais do que aparentam."
+    },
+    {
+      "kind": "versus",
+      "title": "Aquele clássico às 09h02",
+      "left": "Vamos nos falando ao longo do dia para ver isso.",
+      "left_label": "ELE DISSE",
+      "right": "Ainda estou procurando minha xícara de café e não processei direito a minha própria existência.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "versus",
+      "title": "O e-mail com assunto urgente",
+      "left": "Conforme conversamos na sexta-feira passada...",
+      "left_label": "ELE DISSE",
+      "right": "Eu lembro o que combinamos, mas desconfio que você apagou tudo da memória no sábado de manhã.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "versus",
+      "title": "O convite surpresa na agenda",
+      "left": "Alinhamento rápido de 15 minutos antes do almoço.",
+      "left_label": "ELE DISSE",
+      "right": "Vamos gastar 12 minutos falando sobre o fim de semana e 3 minutos resolvendo a pendência real.",
+      "right_label": "SIGNIFICA"
+    },
+    {
+      "kind": "cta",
+      "title": "Como anda o seu vocabulário por aí?",
+      "body": "Se você tivesse que definir como foi a sua semana em exatamente uma palavra, qual seria? Deixa aqui nos comentários.",
+      "show_link": false
+    }
+  ]
+}
