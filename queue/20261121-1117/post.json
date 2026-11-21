@@ -1,6 +1,6 @@
 {
   "id": "20261121-1117",
-  "status": "pending",
+  "status": "published",
   "funnel": "leve",
   "theme": "azul",
   "variant": 0,
@@ -12,5 +12,7 @@
   "story_mode": "paralela",
   "pillar": "leve_carreira",
   "angle": "mudar de ideia sobre a carreira",
-  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261121-1117"
+  "media_base": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261121-1117",
+  "media_id": "17980585347140470",
+  "stories_published": 1
 }
