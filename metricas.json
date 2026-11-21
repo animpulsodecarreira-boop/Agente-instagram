@@ -323,6 +323,42 @@
      "total": 252
     }
    }
+  },
+  "2026-11-21": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 63,
+      "NON_FOLLOWER": 419
+     },
+     "total": 485
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 194,
+      "REEL": 384,
+      "STORY": 153
+     },
+     "total": 485
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 55,
+      "NON_FOLLOWER": 206
+     },
+     "total": 261
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 14,
+      "REEL": 203,
+      "STORY": 141
+     },
+     "total": 261
+    }
+   }
   }
  },
  "midias": {
@@ -1843,6 +1879,21 @@
       "total_interactions": 4,
       "views": 79
      }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 8.96,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3275,
+      "likes": 2,
+      "reach": 54,
+      "reels_skip_rate": 76.6,
+      "saved": 0,
+      "shares": 1,
+      "total_interactions": 4,
+      "views": 79
+     }
     }
    ],
    "media_id": "18095033309193541",
@@ -1927,6 +1978,19 @@
       "shares": 0,
       "total_interactions": 1,
       "views": 23
+     }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 7.94,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 28
      }
     }
    ],
@@ -2023,6 +2087,21 @@
       "total_interactions": 1,
       "views": 23
      }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 7.66,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3218,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 84.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
+     }
     }
    ],
    "media_id": "17888031285505963",
@@ -2062,6 +2141,21 @@
     {
      "em": "2026-11-20T15:41:07+0000",
      "idade": 4.11,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2728,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 100,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 15
+     }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 5.07,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 2728,
@@ -2119,6 +2213,19 @@
       "total_interactions": 2,
       "views": 20
      }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 5.07,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 20
+     }
     }
    ],
    "media_id": "18101148686214506",
@@ -2165,6 +2272,19 @@
       "total_interactions": 1,
       "views": 24
      }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 4.91,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 13,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 29
+     }
     }
    ],
    "media_id": "18177698731458111",
@@ -2189,6 +2309,21 @@
     {
      "em": "2026-11-20T15:41:07+0000",
      "idade": 3.13,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 57574,
+      "likes": 1,
+      "reach": 12,
+      "reels_skip_rate": 83.3,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 19
+     }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 4.09,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 57574,
@@ -2235,6 +2370,21 @@
       "total_interactions": 0,
       "views": 13
      }
+    },
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 3.71,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3107,
+      "likes": 0,
+      "reach": 10,
+      "reels_skip_rate": 66.7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 16
+     }
     }
    ],
    "media_id": "18184031527430420",
@@ -2255,7 +2405,23 @@
     "topic": "Conquistas em vez de tarefas no currículo",
     "variant": 0
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 2.88,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3029,
+      "likes": 1,
+      "reach": 8,
+      "reels_skip_rate": 70,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 11
+     }
+    }
+   ],
    "media_id": "18122410429966412",
    "permalink": "https://www.instagram.com/reel/Df5EhCLjYv8/",
    "post_id": "20261118-1439",
@@ -2274,12 +2440,66 @@
     "topic": "Como organizar a rotina diaria de envio de curriculos e busca de emprego",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-21T14:51:33+0000",
+     "idade": 2.09,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 5513,
+      "likes": 2,
+      "reach": 13,
+      "reels_skip_rate": 80,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 32
+     }
+    }
+   ],
    "media_id": "18029440775874731",
    "permalink": "https://www.instagram.com/reel/Df7GRVeDd8b/",
    "post_id": "20261119-0935",
    "publicado_em": "2026-11-19T12:38:18+0000",
    "tipo": "reel"
+  },
+  "20261120-1557:reel": {
+   "atributos": {
+    "angle": "experiências e conquistas",
+    "format": null,
+    "funnel": "topo",
+    "hook": null,
+    "pillar": "linkedin",
+    "reel_formato": "antes_de",
+    "theme": "geometrico",
+    "topic": "Como transformar o histórico de experiências em conquistas reais no LinkedIn",
+    "variant": 1
+   },
+   "coletas": [],
+   "media_id": "18103873418653117",
+   "permalink": "https://www.instagram.com/reel/Df-XyOWFFW7/",
+   "post_id": "20261120-1557",
+   "publicado_em": "2026-11-20T19:09:04+0000",
+   "tipo": "reel"
+  },
+  "20261121-1117:carrossel": {
+   "atributos": {
+    "angle": "mudar de ideia sobre a carreira",
+    "format": "recomendacao",
+    "funnel": "leve",
+    "hook": "comparação inesperada entre duas situações",
+    "pillar": "leve_carreira",
+    "reel_formato": null,
+    "theme": "azul",
+    "topic": "Mudar de ideia sobre a carreira no fim de semana",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "17980585347140470",
+   "permalink": "https://www.instagram.com/p/DgAbp8LloDD/",
+   "post_id": "20261121-1117",
+   "publicado_em": "2026-11-21T14:21:06+0000",
+   "tipo": "carrossel"
   }
  },
  "versao": 1
