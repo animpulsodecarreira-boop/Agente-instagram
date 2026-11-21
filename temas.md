@@ -127,10 +127,10 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| mudar de ideia sobre a carreira | 1 | 2026-11-21 |
 | cada um tem o seu ritmo | 0 | - |
 | comemorar pequenas vitórias | 0 | - |
 | comparar-se com os outros | 0 | - |
-| mudar de ideia sobre a carreira | 0 | - |
 | não ter tudo resolvido | 0 | - |
 | recomeçar não é voltar à estaca zero | 0 | - |
 

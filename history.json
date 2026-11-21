@@ -1354,5 +1354,22 @@
     "angle": "resumo profissional",
     "reel_formato": "resposta_rapida",
     "cover": "Pode colocar resumo longo? Resposta rápida"
+  },
+  {
+    "topic": "Mudar de ideia sobre a carreira no fim de semana",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 0,
+    "format": "recomendacao",
+    "hook": "comparação inesperada entre duas situações",
+    "cta": "convidar a salvar para ler na segunda-feira",
+    "keyword": "PERFIL",
+    "cover": "Mudar de ideia no meio do caminho é como trocar de roupa no meio da rua: dá vergonha, mas depois passa",
+    "opener": "A gente passa anos defendendo uma escolha profissional só porque foi a primeira que deu certo, como quem defende um cort",
+    "story_format": "digitar",
+    "story_mode": "paralela",
+    "story_title": "A única certeza profissional que a gente tem é que o boleto chega todo mês",
+    "pillar": "leve_carreira",
+    "angle": "mudar de ideia sobre a carreira"
   }
 ]

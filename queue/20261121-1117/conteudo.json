@@ -1,0 +1,39 @@
+{
+  "topic": "Mudar de ideia sobre a carreira no fim de semana",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Mudar de ideia no meio do caminho é como trocar de roupa no meio da rua: dá vergonha, mas depois passa",
+      "body": "Uma reflexão leve sobre dar meia-volta."
+    },
+    {
+      "kind": "content",
+      "title": "A gente cresce achando que rumo certo é linha reta",
+      "body": "Quem nunca jurou que ia trabalhar com uma coisa para sempre e, anos depois, percebeu que detesta aquilo?"
+    },
+    {
+      "kind": "content",
+      "title": "Trocar de rota não é fraqueza, é só o instinto falando",
+      "body": "A vida muda, a gente muda junto e o que servia aos vinte anos pode não fazer sentido nenhum agora."
+    },
+    {
+      "kind": "content",
+      "title": "O plano antigo não precisa definir o seu próximo passo",
+      "body": "Você tem o direito sagrado de olhar para o que construiu e decidir que quer tentar algo completamente diferente."
+    },
+    {
+      "kind": "quote",
+      "title": "Recomeçar do zero não é perder tempo, é gastar o tempo com o que importa de verdade.",
+      "body": "Menos cobrança, mais espaço para a curiosidade."
+    },
+    {
+      "kind": "cta",
+      "title": "Guarde para ler de cabeça fria na segunda",
+      "body": "Toque no ícone de salvar para reler este carrossel quando a semana começar e a coragem precisar de um empurrãozinho.",
+      "show_link": false
+    }
+  ]
+}
