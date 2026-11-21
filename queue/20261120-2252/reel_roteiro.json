@@ -1,0 +1,27 @@
+{
+ "formato": "resposta_rapida",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Pode colocar resumo longo? Resposta rápida",
+  "destaque": "longo",
+  "cenas": [
+   {
+    "rotulo": "RESPOSTA CURTA",
+    "texto": "Não, mantenha em poucas linhas",
+    "apoio": "Textos compridos costumam ser pulados logo no início."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Ninguém lê parágrafos densos no começo",
+    "apoio": "O excesso de detalhes esconde o que você faz de melhor."
+   },
+   {
+    "rotulo": "DICA",
+    "texto": "Escreva quatro linhas com entregas reais",
+    "apoio": "Cite sua área principal e resultados concretos da sua trajetória."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

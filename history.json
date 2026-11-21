@@ -1344,5 +1344,15 @@
     "angle": "pedir ajuda ou indicação",
     "reel_formato": "pare",
     "cover": "Pare de pedir indicação sem contexto"
+  },
+  {
+    "topic": "Tamanho ideal do resumo profissional no currículo",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 1,
+    "pillar": "curriculo",
+    "angle": "resumo profissional",
+    "reel_formato": "resposta_rapida",
+    "cover": "Pode colocar resumo longo? Resposta rápida"
   }
 ]
