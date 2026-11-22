@@ -85,7 +85,9 @@ def _duracoes(cenas, chamada, gancho, com_apoio):
     return hook, beats, cta
 
 
-def montar_dados(roteiro, mostrar_link=False):
+def montar_dados(roteiro, mostrar_link=False, audios=None):
+    if audios:
+        return _montar_narrado(roteiro, mostrar_link, audios)
     gancho, chamada = _t(roteiro["gancho"]), _t(roteiro["chamada"])
     cenas = [c for c in roteiro["cenas"] if _t(c.get("texto"))]
     com_apoio = True
@@ -113,6 +115,61 @@ def montar_dados(roteiro, mostrar_link=False):
     caps.append({"ini": round(t + 0.1, 3), "fim": out_cta["t1"], "words": _palavras(chamada, t + 0.2, t + cta - 0.3)})
     return {"hook": {"html": _hook_html(gancho, roteiro.get("destaque", "")), "dur": hook}, "beats": out_beats, "cta": out_cta,
             "caps": caps, "total": round(t + cta, 3), "link": bool(mostrar_link)}
+
+
+def _blocos(texto, ini, dur):
+    """Legendas de narração em karaokê: blocos de até 6 palavras, quebrando na pontuação, cada palavra no ritmo da voz."""
+    ps = _palavras(texto, ini, ini + max(dur, 0.4))
+    blocos, cur = [], []
+    for w in ps:
+        cur.append(w)
+        if len(cur) >= 6 or (re.search(r"[.!?:;,]$", w["w"]) and len(cur) >= 3):
+            blocos.append(cur)
+            cur = []
+    if cur:
+        if blocos and len(cur) <= 2 and len(blocos[-1]) + len(cur) <= 8:
+            blocos[-1] += cur
+        else:
+            blocos.append(cur)
+    out = []
+    for i, b in enumerate(blocos):
+        prox = blocos[i + 1][0]["t0"] if i + 1 < len(blocos) else b[-1]["t1"] + 0.2
+        out.append({"ini": round(b[0]["t0"] - 0.05, 3), "fim": round(max(prox, b[-1]["t1"] + 0.05), 3), "words": b})
+    return out
+
+
+def _montar_narrado(roteiro, mostrar_link, audios):
+    """Linha do tempo guiada pela voz: cada cena dura o que o clipe de voz dura (mais uma pausa), e as legendas seguem a fala."""
+    from .narracao import falas
+    ft = falas(roteiro)
+    cenas = [c for c in roteiro["cenas"] if _t(c.get("texto"))]
+    gancho = _t(roteiro["gancho"])
+    hc = audios["hook"]
+    hook = max(2.4, round(0.15 + hc["dur"] + 0.4, 2))
+    voz, caps, out_beats, t = [{"path": str(hc["path"]), "t0": 0.15}], [], [], hook
+    for i, (c, fb, ab) in enumerate(zip(cenas, ft["beats"], audios["beats"])):
+        antes, texto, apoio = _t(c.get("antes")), _t(c.get("texto")), _t(c.get("apoio"))
+        rot = _t(c.get("rotulo")).upper()
+        if antes and ab.get("antes"):
+            swap = max(1.4, round(0.15 + ab["antes"]["dur"] + 0.45, 2))
+            dur = round(swap + 0.1 + ab["texto"]["dur"] + 0.45, 2)
+            voz += [{"path": str(ab["antes"]["path"]), "t0": round(t + 0.15, 3)}, {"path": str(ab["texto"]["path"]), "t0": round(t + swap + 0.1, 3)}]
+            caps += _blocos(fb["antes"], t + 0.15, ab["antes"]["dur"]) + _blocos(fb["texto"], t + swap + 0.1, ab["texto"]["dur"])
+        else:
+            swap, dur = 0.0, max(2.2, round(0.15 + ab["texto"]["dur"] + 0.45, 2))
+            voz.append({"path": str(ab["texto"]["path"]), "t0": round(t + 0.15, 3)})
+            caps += _blocos(fb["texto"], t + 0.15, ab["texto"]["dur"])
+        out_beats.append({"t0": round(t, 3), "t1": round(t + dur, 3), "rotulo": rot, "antes": antes, "texto": texto, "apoio": apoio,
+                          "side": -1 if i % 2 == 0 else 1, "react": _reacao(rot, bool(antes)), "swap": swap})
+        t += dur
+    cc = audios.get("cta")
+    cta = max(2.4, round(0.1 + cc["dur"] + 0.7, 2)) if cc else 2.6
+    if cc:
+        voz.append({"path": str(cc["path"]), "t0": round(t + 0.1, 3)})
+        caps += _blocos(ft["cta"], t + 0.1, cc["dur"])
+    return {"hook": {"html": _hook_html(gancho, roteiro.get("destaque", "")), "dur": hook}, "beats": out_beats,
+            "cta": {"t0": round(t, 3), "t1": round(t + cta, 3)}, "caps": caps, "total": round(t + cta, 3), "link": bool(mostrar_link),
+            "voz": voz, "narrado": True}
 
 
 TEMPLATE = r'''<!doctype html><html><head><meta charset="utf-8"><style>
@@ -260,12 +317,12 @@ function render(t){camera(t);ctx.clearRect(0,0,W,H);fundo(t);
 '''
 
 
-def render_reel_palco(roteiro, formato, workdir: Path, capa: Path = None, mostrar_link: bool = False):
+def render_reel_palco(roteiro, formato, workdir: Path, capa: Path = None, mostrar_link: bool = False, audios=None):
     """Renderiza o Reel e devolve ([(quadro, segundos)], segundos totais, dados da cena)."""
-    dados = montar_dados(roteiro, mostrar_link)
+    dados = montar_dados(roteiro, mostrar_link, audios)
     seed = int(hashlib.sha1(clean(roteiro["gancho"]).encode()).hexdigest()[:6], 16) % 997 + 3
     pagina = (TEMPLATE.replace("__FONTDIR__", str(ASSETS)).replace("SEED", str(seed))
-              .replace("__DATA__", json.dumps(dados, ensure_ascii=False)))
+              .replace("__DATA__", json.dumps({k: v for k, v in dados.items() if k != "voz"}, ensure_ascii=False)))
     workdir = Path(workdir).resolve()
     workdir.mkdir(parents=True, exist_ok=True)
     f = workdir / "palco.html"
@@ -299,5 +356,5 @@ def render_reel_palco(roteiro, formato, workdir: Path, capa: Path = None, mostra
             raise RuntimeError("erro no cenário do Reel: " + erros[0])
         browser.close()
     f.unlink(missing_ok=True)
-    print(f"[reel-palco] {len(dados['beats'])} cartões, {dados['total']:.0f}s de vídeo ({n} quadros, formato {formato})", flush=True)
+    print(f"[reel-palco] {len(dados['beats'])} cartões, {dados['total']:.0f}s de vídeo ({n} quadros, formato {formato}" + (", narrado" if audios else "") + ")", flush=True)
     return frames, dados["total"], dados
