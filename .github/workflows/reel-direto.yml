@@ -28,7 +28,7 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -60,10 +60,14 @@ jobs:
           done
       - name: Criar o Reel (roteiro, cenas, vídeo e armazenamento)
         id: d
-        timeout-minutes: 12
+        timeout-minutes: 20
         env:
           PYTHONUNBUFFERED: "1"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TTS_VOZ: ${{ vars.TTS_VOZ }}
+          TTS_GRAVE: ${{ vars.TTS_GRAVE }}
+          TTS_MODELO: ${{ vars.TTS_MODELO }}
+          NARRACAO: ${{ vars.NARRACAO }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
