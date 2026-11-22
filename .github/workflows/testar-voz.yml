@@ -12,6 +12,11 @@ on:
         required: false
         default: "1.0"
         type: string
+      estilo:
+        description: "Opcional: instrução curta de estilo (ex.: Diga com firmeza). Deixe vazio: o modelo costuma ler a instrução em voz alta"
+        required: false
+        default: ""
+        type: string
       texto:
         description: "Frase para a voz falar"
         required: false
@@ -54,8 +59,9 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           VOZ: ${{ inputs.voz }}
           GRAVE: ${{ inputs.grave }}
+          ESTILO: ${{ inputs.estilo }}
           TEXTO: ${{ inputs.texto }}
-        run: python -m agent.narracao --testar --voz "${VOZ:-Orus}" --grave "${GRAVE:-1.0}" --texto "$TEXTO"
+        run: python -m agent.narracao --testar --voz "${VOZ:-Orus}" --grave "${GRAVE:-1.0}" --estilo "$ESTILO" --texto "$TEXTO"
       - name: Avisar no Telegram se a voz falhou
         if: failure()
         env:
