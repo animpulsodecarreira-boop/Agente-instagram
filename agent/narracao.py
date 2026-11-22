@@ -11,6 +11,8 @@ Configuração (variáveis do repositório, em Settings > Secrets and variables 
   TTS_VOZ     nome da voz do Gemini (padrão: Orus). Outras vozes firmes/graves: Alnilam, Algenib, Charon.
   TTS_GRAVE   1.0 = voz como vem; 0.94 deixa um pouco mais grave (muda o tom sem mudar a velocidade).
   TTS_MODELO  força um modelo de voz específico; sem isso, o robô descobre o melhor modelo disponível para a sua chave.
+  TTS_ESTILO  instrução de estilo curta (ex.: "Diga com firmeza"). Por padrão fica VAZIO de propósito: o modelo de voz costuma LER a
+              instrução em voz alta antes de cada frase. O tom vem da voz escolhida (Orus é firme) e do TTS_GRAVE.
   NARRACAO    0 desliga a narração.
 Os modelos de voz do Gemini ainda estão em prévia e mudam de nome: por isso o robô lista os modelos da sua conta em vez de fixar um nome.
 """
@@ -27,7 +29,6 @@ import requests
 
 BASE = "https://generativelanguage.googleapis.com/v1beta"
 VOZ_PADRAO = "Orus"
-ESTILO = "Fale em português do Brasil, com voz grave, firme e assertiva, em ritmo calmo e seguro, como um narrador de vídeo curto"
 PRAZO_TOTAL = 420        # segundos para gerar todos os clipes de um Reel
 TETO_FALA = 38.0         # segundos de vídeo; acima disso a voz é acelerada (até 15%)
 
@@ -107,8 +108,12 @@ def _pcm_para_wav(b64, mime, destino):
     return taxa
 
 
-def _uma_chamada(key, modelo, voz, texto, destino, ritmo):
-    corpo = {"contents": [{"parts": [{"text": f"{ESTILO}: {texto}"}]}],
+def _estilo():
+    return os.getenv("TTS_ESTILO", "").strip()
+
+
+def _uma_chamada(key, modelo, voz, texto, destino, estilo=None):
+    corpo = {"contents": [{"parts": [{"text": f"{estilo}: {texto}" if estilo else texto}]}],
              "generationConfig": {"responseModalities": ["AUDIO"],
                                   "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": voz}}}}}
     for tentativa in range(4):
@@ -173,16 +178,25 @@ def _cfg():
     return (os.getenv("TTS_VOZ", "").strip() or VOZ_PADRAO), min(1.0, max(0.85, grave))
 
 
-def sintetizar_clipe(key, modelos, voz, texto, destino, grave=1.0, tempo=1.0):
-    """Gera um clipe. Devolve (modelo que funcionou, duração em segundos)."""
+def sintetizar_clipe(key, modelos, voz, texto, destino, grave=1.0, tempo=1.0, estilo=None):
+    """Gera um clipe. Devolve (modelo que funcionou, duração em segundos).
+    Se houver instrução de estilo e o áudio vier longo demais para o texto (sinal de que o modelo leu a instrução em voz alta),
+    gera de novo sem a instrução."""
     bruto = Path(destino).with_suffix(".bruto.wav")
     ultimo = None
     for modelo in modelos[:3]:
         try:
-            _uma_chamada(key, modelo, voz, texto, bruto, tempo)
+            _uma_chamada(key, modelo, voz, texto, bruto, estilo)
             _limpa(bruto, destino, grave, tempo)
             bruto.unlink(missing_ok=True)
-            return modelo, _duracao(destino)
+            dur = _duracao(destino)
+            if estilo and dur > 0.115 * len(texto) + 1.5:
+                print("[voz] o áudio veio longo demais (o modelo provavelmente leu a instrução de estilo); gerando de novo sem ela", flush=True)
+                _uma_chamada(key, modelo, voz, texto, bruto, None)
+                _limpa(bruto, destino, grave, tempo)
+                bruto.unlink(missing_ok=True)
+                dur = _duracao(destino)
+            return modelo, dur
         except RuntimeError as e:
             ultimo = e
             if not re.search(r"HTTP (400|403|404)", str(e)):
@@ -212,7 +226,7 @@ def gerar_narracao(roteiro, pasta):
             raise RuntimeError("tempo esgotado para gerar a voz")
         n[0] += 1
         p = pasta / f"v{n[0]:02d}.wav"
-        m, d = sintetizar_clipe(key, modelos, voz, texto, p, grave)
+        m, d = sintetizar_clipe(key, modelos, voz, texto, p, grave, estilo=_estilo())
         usado["modelo"] = m
         modelos[:] = [m] + [x for x in modelos if x != m]
         print(f"[voz] clipe {n[0]} ({d:.1f}s) com {m}/{voz}", flush=True)
@@ -247,7 +261,7 @@ def _telegram_audio(caminho, legenda):
     print("[voz] Telegram:", "enviado" if r.status_code == 200 else f"falhou (HTTP {r.status_code})")
 
 
-def testar(voz, texto, grave):
+def testar(voz, texto, grave, estilo=""):
     key = os.environ.get("GEMINI_API_KEY", "")
     if not key:
         raise SystemExit("GEMINI_API_KEY ausente")
@@ -256,10 +270,10 @@ def testar(voz, texto, grave):
     modelos = modelos_tts(key)
     print("[voz] modelos de voz disponíveis:", ", ".join(modelos[:6]), flush=True)
     wav = pasta / "teste.wav"
-    modelo, dur = sintetizar_clipe(key, modelos, voz, _limpo(texto), wav, grave)
+    modelo, dur = sintetizar_clipe(key, modelos, voz, _limpo(texto), wav, grave, estilo=estilo or None)
     m4a = pasta / f"voz_{voz}.m4a"
     _ffmpeg(["-i", str(wav), "-c:a", "aac", "-b:a", "128k", str(m4a)])
-    _telegram_audio(m4a, f"🎙 Teste de voz\nVoz: {voz}\nModelo: {modelo}\nDuração: {dur:.1f}s\nTom mais grave (TTS_GRAVE): {grave}")
+    _telegram_audio(m4a, f"🎙 Teste de voz\nVoz: {voz}\nModelo: {modelo}\nDuração: {dur:.1f}s\nTom mais grave (TTS_GRAVE): {grave}\nEstilo: {estilo or '(nenhum)'}")
     print(f"[voz] ok: {dur:.1f}s com {modelo}/{voz}")
 
 
@@ -269,7 +283,8 @@ if __name__ == "__main__":
     ap.add_argument("--voz", default="")
     ap.add_argument("--texto", default="Seu currículo não precisa de três páginas. Precisa de clareza. Pare de listar tarefas e mostre o que mudou.")
     ap.add_argument("--grave", type=float, default=0)
+    ap.add_argument("--estilo", default="")
     a = ap.parse_args()
     v, g = _cfg()
     if a.testar:
-        testar(a.voz or v, a.texto, a.grave or g)
+        testar(a.voz or v, a.texto, a.grave or g, a.estilo)
