@@ -359,6 +359,42 @@
      "total": 261
     }
    }
+  },
+  "2026-11-22": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 64,
+      "NON_FOLLOWER": 420
+     },
+     "total": 488
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 193,
+      "REEL": 387,
+      "STORY": 154
+     },
+     "total": 488
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 56,
+      "NON_FOLLOWER": 208
+     },
+     "total": 264
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 15,
+      "REEL": 206,
+      "STORY": 143
+     },
+     "total": 264
+    }
+   }
   }
  },
  "midias": {
@@ -1992,6 +2028,19 @@
       "total_interactions": 1,
       "views": 28
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 8.93,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 10,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 28
+     }
     }
    ],
    "media_id": "18039366437890516",
@@ -2102,6 +2151,21 @@
       "total_interactions": 1,
       "views": 23
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 8.66,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3218,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 84.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 23
+     }
     }
    ],
    "media_id": "17888031285505963",
@@ -2156,6 +2220,21 @@
     {
      "em": "2026-11-21T14:51:33+0000",
      "idade": 5.07,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2728,
+      "likes": 1,
+      "reach": 11,
+      "reels_skip_rate": 100,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 15
+     }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 6.07,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 2728,
@@ -2226,6 +2305,19 @@
       "total_interactions": 2,
       "views": 20
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 6.07,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 21
+     }
     }
    ],
    "media_id": "18101148686214506",
@@ -2285,6 +2377,19 @@
       "total_interactions": 1,
       "views": 29
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 5.91,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 13,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 33
+     }
     }
    ],
    "media_id": "18177698731458111",
@@ -2324,6 +2429,21 @@
     {
      "em": "2026-11-21T14:51:33+0000",
      "idade": 4.09,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 57574,
+      "likes": 1,
+      "reach": 12,
+      "reels_skip_rate": 83.3,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 19
+     }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 5.09,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 57574,
@@ -2385,6 +2505,21 @@
       "total_interactions": 0,
       "views": 16
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 4.71,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3107,
+      "likes": 0,
+      "reach": 10,
+      "reels_skip_rate": 66.7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 16
+     }
     }
    ],
    "media_id": "18184031527430420",
@@ -2420,6 +2555,21 @@
       "total_interactions": 1,
       "views": 11
      }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 3.88,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3388,
+      "likes": 1,
+      "reach": 9,
+      "reels_skip_rate": 63.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 12
+     }
     }
    ],
    "media_id": "18122410429966412",
@@ -2444,6 +2594,21 @@
     {
      "em": "2026-11-21T14:51:33+0000",
      "idade": 2.09,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 5513,
+      "likes": 2,
+      "reach": 13,
+      "reels_skip_rate": 80,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 32
+     }
+    },
+    {
+     "em": "2026-11-22T14:47:55+0000",
+     "idade": 3.09,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 5513,
@@ -2499,6 +2664,25 @@
    "permalink": "https://www.instagram.com/p/DgAbp8LloDD/",
    "post_id": "20261121-1117",
    "publicado_em": "2026-11-21T14:21:06+0000",
+   "tipo": "carrossel"
+  },
+  "20261121-1729:carrossel": {
+   "atributos": {
+    "angle": "segunda-feira",
+    "format": "tradutor_corporativo",
+    "funnel": "leve",
+    "hook": "confissão leve ('ninguém fala, mas...')",
+    "pillar": "leve_mundo",
+    "reel_formato": null,
+    "theme": "claro",
+    "topic": "Tradutor sincero das frases de segunda-feira",
+    "variant": 1
+   },
+   "coletas": [],
+   "media_id": "18121592309084335",
+   "permalink": "https://www.instagram.com/p/DgBKNeFmdSp/",
+   "post_id": "20261121-1729",
+   "publicado_em": "2026-11-21T21:07:53+0000",
    "tipo": "carrossel"
   }
  },
