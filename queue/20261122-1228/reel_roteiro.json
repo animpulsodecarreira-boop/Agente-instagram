@@ -1,0 +1,27 @@
+{
+ "formato": "lista",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "3 coisas que ninguém conta sobre dizer não",
+  "destaque": "dizer não",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Recusar tarefas fora do escopo",
+    "apoio": "Você protege o prazo do que já foi combinado."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Propor outro prazo com calma",
+    "apoio": "Mostra que você organiza a agenda sem aceitar tudo."
+   },
+   {
+    "rotulo": "3",
+    "texto": "Explicar o motivo sem pedir desculpas",
+    "apoio": "A conversa fica profissional e sem culpa desnecessária."
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

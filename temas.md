@@ -74,8 +74,8 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 |---|---|---|
 | alinhar expectativas | 1 | 2026-11-17 |
 | avaliar uma proposta | 1 | 2026-11-09 |
+| dizer não com educação | 1 | 2026-11-22 |
 | benefícios além do salário | 0 | - |
-| dizer não com educação | 0 | - |
 | pedir tempo para decidir | 0 | - |
 | preparar a conversa sobre salário | 0 | - |
 

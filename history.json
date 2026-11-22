@@ -1388,5 +1388,15 @@
     "story_title": "Mensagem de segunda de manhã",
     "pillar": "leve_mundo",
     "angle": "segunda-feira"
+  },
+  {
+    "topic": "Dizer não com educação no ambiente profissional",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 2,
+    "pillar": "negociacao",
+    "angle": "dizer não com educação",
+    "reel_formato": "lista",
+    "cover": "3 coisas que ninguém conta sobre dizer não"
   }
 ]
