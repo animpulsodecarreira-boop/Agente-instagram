@@ -1,0 +1,68 @@
+name: Testar voz
+on:
+  workflow_dispatch:
+    inputs:
+      voz:
+        description: "Nome da voz do Gemini (ex.: Orus, Alnilam, Algenib, Charon, Kore, Puck, Zephyr)"
+        required: false
+        default: "Orus"
+        type: string
+      grave:
+        description: "Tom: 1.0 = como vem; 0.94 = um pouco mais grave"
+        required: false
+        default: "1.0"
+        type: string
+      texto:
+        description: "Frase para a voz falar"
+        required: false
+        default: "Seu currículo não precisa de três páginas. Precisa de clareza. Pare de listar tarefas e mostre o que mudou."
+        type: string
+permissions:
+  contents: read
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar ffmpeg, repetindo se a rede do GitHub falhar
+        timeout-minutes: 8
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            for i in 1 2; do
+              sudo timeout 100 apt-get -o Acquire::Retries=0 -o Acquire::http::Timeout=15 -o Acquire::ForceIPv4=true update -qq || true
+              sudo timeout 150 apt-get install -y -qq ffmpeg && break
+              echo "apt falhou (tentativa $i)"; sleep 15
+            done
+          fi
+          if ! command -v ffmpeg >/dev/null; then
+            echo "Usando o ffmpeg empacotado no pip (plano B)"
+            pip install imageio-ffmpeg
+            sudo ln -sf "$(python -c 'import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg
+          fi
+          ffmpeg -version | head -1
+      - run: pip install requests
+      - name: Gerar a voz e mandar o áudio para o Telegram
+        timeout-minutes: 8
+        env:
+          PYTHONUNBUFFERED: "1"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          VOZ: ${{ inputs.voz }}
+          GRAVE: ${{ inputs.grave }}
+          TEXTO: ${{ inputs.texto }}
+        run: python -m agent.narracao --testar --voz "${VOZ:-Orus}" --grave "${GRAVE:-1.0}" --texto "$TEXTO"
+      - name: Avisar no Telegram se a voz falhou
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s --max-time 20 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Testar voz falhou. Veja o motivo no log: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+ 
