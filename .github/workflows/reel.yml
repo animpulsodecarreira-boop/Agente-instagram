@@ -20,7 +20,7 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -52,12 +52,16 @@ jobs:
             echo "tentativa $i falhou; aguardando"; sleep $((i*20))
           done
       - name: Montar o Reel (texto animado, ou carrossel em vídeo se a animação falhar)
-        timeout-minutes: 10
+        timeout-minutes: 18
         env:
           PYTHONUNBUFFERED: "1"
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TTS_VOZ: ${{ vars.TTS_VOZ }}
+          TTS_GRAVE: ${{ vars.TTS_GRAVE }}
+          TTS_MODELO: ${{ vars.TTS_MODELO }}
+          NARRACAO: ${{ vars.NARRACAO }}
           POST_ID: ${{ inputs.post_id }}
           MODO: ${{ inputs.modo }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
