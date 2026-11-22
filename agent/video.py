@@ -139,12 +139,13 @@ def make_reel_video(slides, out: Path, seed: str):
     return out
 
 
-def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3, animado: bool = False):
+def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3, animado: bool = False, voz=None):
     """Junta os quadros do Reel de texto [(arquivo, segundos)] em vídeo 1080x1920 (H.264 + AAC) com a trilha.
 
     Se o Reel for mais longo que a faixa, a trilha se repete (lo-fi emenda bem).
     fade_in = 0 tira o escurecimento do primeiro quadro (o Reel de gancho precisa do gancho visível desde o início).
     animado = True é para quadros com movimento contínuo (Reel de palco): sem o ajuste de imagem parada.
+    voz = lista de {'path': clipe de voz, 't0': segundo em que começa}: a narração é mixada por cima da trilha, que abaixa quando há fala.
     """
     out = Path(out)
     frames = [(Path(p), float(d)) for p, d in frames]
@@ -171,14 +172,27 @@ def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3, an
             cmd += ["-stream_loop", "-1", "-t", f"{total:.3f}", "-i", str(track)]
     else:
         cmd += ["-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=r=44100:cl=stereo"]
-    cmd += ["-map", "0:v", "-map", "1:a",
-            # 24 fps (a Meta aceita de 23 a 60) e ajustes para imagem quase parada: montagem bem mais rápida
-            "-vf", f"fps=24,scale={REEL_W}:{REEL_H},format=yuv420p" + (f",fade=t=in:st=0:d={fade_in}" if fade_in > 0 else ""),
-            "-af", f"afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5",
-            "-c:v", "libx264", "-preset", "ultrafast" if not animado else "veryfast", *([] if animado else ["-tune", "stillimage"]),
-            "-crf", "21" if not animado else "22", "-profile:v", "high", "-r", "24",
-            "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-t", f"{total:.3f}", "-shortest",
-            "-movflags", "+faststart", str(out)]
+    vf = f"fps=24,scale={REEL_W}:{REEL_H},format=yuv420p" + (f",fade=t=in:st=0:d={fade_in}" if fade_in > 0 else "")
+    video_args = ["-c:v", "libx264", "-preset", "ultrafast" if not animado else "veryfast", *([] if animado else ["-tune", "stillimage"]),
+                  "-crf", "21" if not animado else "22", "-profile:v", "high", "-r", "24"]
+    if voz:
+        for c in voz:
+            cmd += ["-i", str(c["path"])]
+        partes = [f"[1:a]volume=0.28,afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5[m]"]
+        rot = []
+        for k, c in enumerate(voz):
+            ms = max(0, int(round(c["t0"] * 1000)))
+            partes.append(f"[{k + 2}:a]aresample=44100,aformat=channel_layouts=stereo,adelay={ms}|{ms}[v{k}]")
+            rot.append(f"[v{k}]")
+        partes.append(("".join(rot) + f"amix=inputs={len(voz)}:normalize=0[voz]") if len(voz) > 1 else f"{rot[0]}anull[voz]")
+        partes += ["[voz]asplit=2[vo][vs]",
+                   "[m][vs]sidechaincompress=threshold=0.03:ratio=9:attack=25:release=350[md]",
+                   "[md][vo]amix=inputs=2:duration=longest:normalize=0,alimiter=limit=0.97[a]"]
+        cmd += ["-filter_complex", ";".join(partes), "-map", "0:v", "-map", "[a]", "-vf", vf, *video_args]
+    else:
+        cmd += ["-map", "0:v", "-map", "1:a", "-vf", vf,
+                "-af", f"afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5", *video_args]
+    cmd += ["-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-t", f"{total:.3f}", "-shortest", "-movflags", "+faststart", str(out)]
     try:
         subprocess.run(cmd, check=True)
     finally:
