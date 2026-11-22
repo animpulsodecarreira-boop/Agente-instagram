@@ -106,7 +106,7 @@ SCHEMA_DIRETO = {"type": "OBJECT", "properties": {
         "rotulo": {"type": "STRING"}, "antes": {"type": "STRING"}, "texto": {"type": "STRING"}, "apoio": {"type": "STRING"}},
         "required": ["rotulo", "texto"]}},
     "legenda": {"type": "STRING"}, "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
-}, "required": ["tema", "gancho", "cenas", "legenda", "hashtags"]}
+}, "required": ["tema", "gancho", "destaque", "cenas", "legenda", "hashtags"]}
 
 # ---------------------------------------------------------------- banco de reserva (escrito à mão, só topo)
 def _r(pilar, formato, tema, gancho, destaque, cenas, legenda, tags):
@@ -190,6 +190,21 @@ def chamada_final(etapa, post_id):
     return texto
 
 
+PALAVRAS_FRACAS = {"para", "como", "mais", "menos", "seus", "suas", "isso", "esse", "essa", "este", "esta", "você", "voce", "faça",
+                   "antes", "depois", "sobre", "quando", "porque", "sempre", "nunca", "fale", "pare", "erro", "uma", "dos", "das"}
+
+
+def destaque_valido(r):
+    """A palavra do gancho que vai em cor. Usa a do Gemini se ela existir no gancho; senão, a palavra mais forte (a mais longa)."""
+    gancho = _txt(r.get("gancho"))
+    d = _txt(r.get("destaque")).strip(".,!?:;")
+    if d and re.search(re.escape(d), gancho, flags=re.I):
+        return d
+    palavras = [p.strip(".,!?:;\"“”") for p in gancho.split()]
+    fortes = [p for p in palavras if len(p) >= 5 and p.lower() not in PALAVRAS_FRACAS]
+    return max(fortes, key=len) if fortes else ""
+
+
 def _valida_extra(r):
     if not 2 <= len(r.get("hashtags") or []) <= 10:
         return "hashtags fora do esperado"
@@ -253,6 +268,8 @@ def criar_reel_direto(etapa, post_id, tema=None, modelo=None):
                 break
             print(f"[reel-direto] roteiro reprovado ({erro})" + ("; tentando de novo" if tentativa == 0 else ""), flush=True)
             r = None
+        if r is not None:
+            r["destaque"] = destaque_valido(r)
     except Exception as e:
         print(f"[reel-direto] Gemini indisponível ({str(e)[:160]}); usando o banco de reserva", flush=True)
         r = None
@@ -262,7 +279,8 @@ def criar_reel_direto(etapa, post_id, tema=None, modelo=None):
         r = {k: b[k] for k in ("gancho", "destaque", "cenas", "legenda", "hashtags")}
         r["tema"], r["chamada"] = b["tema"], chamada
     tags = " ".join("#" + _txt(h).lstrip("#").replace(" ", "") for h in r["hashtags"][:8])
-    return {"roteiro": {k: r[k] for k in ("gancho", "destaque", "cenas", "chamada")},
+    r["destaque"] = destaque_valido(r)
+    return {"roteiro": {"gancho": r["gancho"], "destaque": r["destaque"], "cenas": r["cenas"], "chamada": r["chamada"]},
             "formato": formato, "origem": origem, "topic": _txt(r["tema"]), "pillar": pillar,
             "angle": ang["angulo"] if ang else None, "caption": r["legenda"].strip() + "\n\n" + tags,
             "theme": pick_theme(etapa), "variant": pick_variant(etapa),
