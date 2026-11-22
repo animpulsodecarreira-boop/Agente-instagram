@@ -25,6 +25,11 @@ jobs:
                          "monitor": "Monitor do agente", "insights": "Analista de conteúdo", "estilo": "Guia de voz",
                          "instagram": "Publica carrosséis", "video": "Junta os quadros", "storage": "Armazenamento externo",
                          "insights_teste": "Teste de leitura"}
+          # trecho que só existe na versão mais nova de cada arquivo (para achar uma versão ANTIGA colada por engano)
+          marcas = {"reel_direto": "destaque_valido", "reel_palco": "_montar_narrado", "narracao": "gerar_narracao",
+                    "main": "_montar_reel_video", "video": "voz=None", "reel_gancho": "mostrar_link", "generate": "GUIA_POSTS",
+                    "revisao": "def _tom", "insights": "_linhas_conta", "monitor": "montar_resumo", "roteiros": "GUIA_REEL",
+                    "estilo": "GUIA_REEL"}
           for f in sorted(pasta.glob("*.py")):
               nome = f.stem
               if nome == "__init__":
@@ -37,6 +42,10 @@ jobs:
               esperado = assinaturas.get(nome)
               if esperado and esperado not in txt[:400]:
                   problemas.append(f"{f}: o começo do arquivo não é o esperado (esperava '{esperado}'; começa com: {primeira[:70]})")
+                  continue
+              marca = marcas.get(nome)
+              if marca and marca not in txt:
+                  problemas.append(f"{f}: parece uma versão ANTIGA (não tem '{marca}'); cole de novo a versão mais recente")
                   continue
               try:
                   importlib.import_module(f"agent.{nome}")
