@@ -1,0 +1,27 @@
+{
+ "formato": "mito",
+ "origem": "banco",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Aprender é só fazer cursos? Mito",
+  "destaque": "Mito",
+  "cenas": [
+   {
+    "rotulo": "MITO",
+    "texto": "Mais cursos, mais preparo",
+    "apoio": ""
+   },
+   {
+    "rotulo": "VERDADE",
+    "texto": "Prática fixa o que o curso ensina",
+    "apoio": "Sem aplicar, o conteúdo se perde."
+   },
+   {
+    "rotulo": "NA PRÁTICA",
+    "texto": "Aplique algo pequeno nesta semana",
+    "apoio": ""
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

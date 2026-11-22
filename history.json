@@ -1398,5 +1398,15 @@
     "angle": "dizer não com educação",
     "reel_formato": "lista",
     "cover": "3 coisas que ninguém conta sobre dizer não"
+  },
+  {
+    "topic": "Aprender é só fazer cursos?",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 0,
+    "pillar": "aprendizado",
+    "angle": null,
+    "reel_formato": "mito",
+    "cover": "Aprender é só fazer cursos? Mito"
   }
 ]
