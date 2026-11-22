@@ -1408,5 +1408,22 @@
     "angle": null,
     "reel_formato": "mito",
     "cover": "Aprender é só fazer cursos? Mito"
+  },
+  {
+    "topic": "O clássico 'só mais um minutinho' antes de encarar o dia",
+    "funnel": "leve",
+    "theme": "azul",
+    "variant": 2,
+    "format": "pergunta_leve",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "cta": "convidar a contar nos comentários a situação mais engraçada que já viveu no trabalho (sem citar empresas ou pessoas)",
+    "keyword": "CHECK",
+    "cover": "Time alarme que toca de cinco em cinco minutos ou time levantar de uma vez?",
+    "opener": "A missão de levantar da cama logo no primeiro toque do alarme deveria vir com troféu e medalha de honra ao mérito. Por m",
+    "story_format": "chat",
+    "story_mode": "paralela",
+    "story_title": "Alarme vs Realidade",
+    "pillar": "leve_rotina",
+    "angle": "o 'só mais um minutinho'"
   }
 ]

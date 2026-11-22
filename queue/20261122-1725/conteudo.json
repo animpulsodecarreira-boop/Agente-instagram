@@ -1,0 +1,34 @@
+{
+  "topic": "O clássico 'só mais um minutinho' antes de encarar o dia",
+  "funnel": "leve",
+  "theme": "azul",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Time alarme que toca de cinco em cinco minutos ou time levantar de uma vez?",
+      "body": "Escolha o seu lado nessa batalha diária."
+    },
+    {
+      "kind": "content",
+      "title": "Estratégia um: o ciclo da soneca infinita",
+      "body": "Você programa o relógio para tocar às sete, depois sete e cinco, sete e dez e assim vai até perder a conta do horário."
+    },
+    {
+      "kind": "content",
+      "title": "Estratégia dois: o pulo olímpico da cama",
+      "body": "O despertador toca uma única vez e a pessoa levanta num pulo só, como se a casa estivesse pegando fogo."
+    },
+    {
+      "kind": "content",
+      "title": "Estratégia três: negociar com o travesseiro",
+      "body": "Você promete para si mesmo que só vai fechar os olhos por mais um minutinho e acorda vinte minutos depois sem saber que ano é."
+    },
+    {
+      "kind": "cta",
+      "title": "De qual desses times você faz parte?",
+      "body": "Conta aqui nos comentários qual é a sua tática de guerra para conseguir sair da cama de manhã.",
+      "show_link": false
+    }
+  ]
+}
