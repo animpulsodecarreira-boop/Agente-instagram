@@ -1442,5 +1442,15 @@
     "story_title": "Sair para caminhar sem fone é um exercício de coragem ou de paz?",
     "pillar": "leve_fora",
     "angle": "caminhar sem fone"
+  },
+  {
+    "topic": "Como responder perguntas difíceis em entrevistas de emprego",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 1,
+    "pillar": "entrevista",
+    "angle": "perguntas difíceis",
+    "reel_formato": "erro",
+    "cover": "O erro nº 1 em entrevistas difíceis"
   }
 ]

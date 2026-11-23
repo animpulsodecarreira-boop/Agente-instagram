@@ -1,0 +1,27 @@
+{
+ "formato": "erro",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "O erro nº 1 em entrevistas difíceis",
+  "destaque": "erro",
+  "cenas": [
+   {
+    "rotulo": "O ERRO",
+    "texto": "Inventar uma resposta pronta para agradar",
+    "apoio": ""
+   },
+   {
+    "rotulo": "POR QUE ATRAPALHA",
+    "texto": "O recrutador percebe a fala ensaiada na hora",
+    "apoio": ""
+   },
+   {
+    "rotulo": "CORRIJA ASSIM",
+    "texto": "Diga a verdade com exemplos reais da rotina",
+    "apoio": "Fale do que você fez de fato, sem tentar adivinhar a resposta ideal."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}
