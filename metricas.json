@@ -365,34 +365,34 @@
     "follow_type": {
      "partes": {
       "FOLLOWER": 64,
-      "NON_FOLLOWER": 420
+      "NON_FOLLOWER": 422
      },
-     "total": 488
+     "total": 489
     },
     "superficie": {
      "partes": {
       "CAROUSEL_CONTAINER": 193,
-      "REEL": 387,
+      "REEL": 389,
       "STORY": 154
      },
-     "total": 488
+     "total": 489
     }
    },
    "7": {
     "follow_type": {
      "partes": {
       "FOLLOWER": 56,
-      "NON_FOLLOWER": 208
+      "NON_FOLLOWER": 209
      },
-     "total": 264
+     "total": 265
     },
     "superficie": {
      "partes": {
       "CAROUSEL_CONTAINER": 15,
-      "REEL": 206,
+      "REEL": 207,
       "STORY": 143
      },
-     "total": 264
+     "total": 265
     }
    }
   }
@@ -2640,7 +2640,23 @@
     "topic": "Como transformar o histórico de experiências em conquistas reais no LinkedIn",
     "variant": 1
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-23T01:00:48+0000",
+     "idade": 2.24,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 1782,
+      "likes": 1,
+      "reach": 13,
+      "reels_skip_rate": 92.3,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 21
+     }
+    }
+   ],
    "media_id": "18103873418653117",
    "permalink": "https://www.instagram.com/reel/Df-XyOWFFW7/",
    "post_id": "20261120-1557",
@@ -2683,6 +2699,25 @@
    "permalink": "https://www.instagram.com/p/DgBKNeFmdSp/",
    "post_id": "20261121-1729",
    "publicado_em": "2026-11-21T21:07:53+0000",
+   "tipo": "carrossel"
+  },
+  "20261122-1725:carrossel": {
+   "atributos": {
+    "angle": "o 'só mais um minutinho'",
+    "format": "pergunta_leve",
+    "funnel": "leve",
+    "hook": "convite para escolher um lado ('time X ou time Y?')",
+    "pillar": "leve_rotina",
+    "reel_formato": null,
+    "theme": "azul",
+    "topic": "O clássico 'só mais um minutinho' antes de encarar o dia",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "18227310613351328",
+   "permalink": "https://www.instagram.com/p/DgDsg3JATbA/",
+   "post_id": "20261122-1725",
+   "publicado_em": "2026-11-22T20:46:06+0000",
    "tipo": "carrossel"
   }
  },
