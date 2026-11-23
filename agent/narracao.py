@@ -158,16 +158,38 @@ def _duracao(p):
         return w.getnframes() / float(w.getframerate())
 
 
+def _niveis(arquivo):
+    """(volume médio, volume máximo) em dB, como o ffmpeg mede."""
+    r = subprocess.run(["ffmpeg", "-i", str(arquivo), "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True)
+    m, x = re.search(r"mean_volume: (-?[\d.]+) dB", r.stderr), re.search(r"max_volume: (-?[\d.]+) dB", r.stderr)
+    return (float(m.group(1)), float(x.group(1))) if m and x else (-91.0, -91.0)
+
+
 def _limpa(entrada, saida, grave=1.0, tempo=1.0):
-    """Tira o silêncio das pontas, deixa a voz mais grave (se pedido), acelera (se pedido) e nivela o volume."""
-    f = ["silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.04",
-         "areverse", "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.04", "areverse"]
+    """Limpa o clipe de voz para não deixar chiado: filtra o que não é voz, corta o silêncio e o ruído das pontas (com limiar
+    relativo ao pico da própria fala), abafa o ruído entre as palavras, faz fade nas pontas e nivela o volume pelo valor medido
+    (sem loudnorm, que pode puxar o chiado para cima)."""
+    saida = Path(saida)
+    p1, p2 = saida.with_suffix(".p1.wav"), saida.with_suffix(".p2.wav")
+    base = ["highpass=f=80", "lowpass=f=9500"]
     if abs(grave - 1.0) > 0.005:
-        f += [f"asetrate=24000*{grave:.4f}", "aresample=24000", f"atempo={1 / grave:.4f}"]
+        base += [f"asetrate=24000*{grave:.4f}", "aresample=24000", f"atempo={1 / grave:.4f}"]
     if abs(tempo - 1.0) > 0.005:
-        f.append(f"atempo={tempo:.4f}")
-    f.append("loudnorm=I=-16:TP=-1.5:LRA=9")
-    _ffmpeg(["-i", str(entrada), "-af", ",".join(f), "-ar", "24000", "-ac", "1", str(saida)])
+        base.append(f"atempo={tempo:.4f}")
+    _ffmpeg(["-i", str(entrada), "-af", ",".join(base), "-ar", "24000", "-ac", "1", str(p1)])
+    _, pico = _niveis(p1)
+    th = max(-48.0, min(-30.0, pico - 30.0))
+    corte = f"silenceremove=start_periods=1:start_threshold={th:.0f}dB:start_silence=0.05"
+    gate = 10 ** ((th - 6) / 20)
+    _ffmpeg(["-i", str(p1), "-af", ",".join([corte, "areverse", corte, "areverse",
+                                              f"agate=threshold={gate:.4f}:ratio=4:attack=4:release=70:range=0.08",
+                                              "afade=t=in:d=0.012", "areverse", "afade=t=in:d=0.06", "areverse"]),
+             "-ar", "24000", "-ac", "1", str(p2)])
+    media, pico2 = _niveis(p2)
+    ganho = max(-12.0, min(12.0, min(-19.0 - media, -1.5 - pico2))) if media > -80 else 0.0
+    _ffmpeg(["-i", str(p2), "-af", f"volume={ganho:.2f}dB,alimiter=limit=0.9", "-ar", "24000", "-ac", "1", str(saida)])
+    p1.unlink(missing_ok=True)
+    p2.unlink(missing_ok=True)
 
 
 def _cfg():
