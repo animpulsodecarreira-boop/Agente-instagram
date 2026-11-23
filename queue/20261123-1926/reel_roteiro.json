@@ -1,0 +1,24 @@
+{
+ "formato": "antes_depois",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Mensagem para recrutador: veja a diferença",
+  "destaque": "mensagem",
+  "cenas": [
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Ola, vi sua vaga e tenho interesse.",
+    "antes": "Ola, vi sua vaga e tenho interesse.",
+    "apoio": "Vago demais."
+   },
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Ajudo na gestao de projetos com foco em prazos.",
+    "antes": "Busco nova oportunidade na area.",
+    "apoio": "Mostre o que voce resolve."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

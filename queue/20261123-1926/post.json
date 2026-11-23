@@ -1,0 +1,27 @@
+{
+  "id": "20261123-1926",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "azul",
+  "variant": 2,
+  "topic": "Abordagem a recrutadores no LinkedIn",
+  "caption": "Abordar recrutadores exige clareza sobre o seu trabalho. Veja o que colocar na mensagem para iniciar a conversa. Comente abaixo qual mensagem voce costuma enviar.\n\n#transicaodecarreira #recolocacaoprofissional #linkedinparaemprego #mercadodetrabalho #carreira #posicionamentoprofissional #entrevista",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "linkedin",
+  "angle": "mensagens a recrutadores",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "antes_depois",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "voz Orus (gemini-3.8-flash-tts)",
+  "revisao": [
+    "cena 2: “gestao” não está no dicionário (sugestões: gesto, gestão, gestas)",
+    "cena 2: “area” não está no dicionário (sugestões: arma, área, areia)",
+    "cena 2: “voce” não está no dicionário (sugestões: você, doce, vice)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261123-1926/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261123-1926/reel.mp4"
+}

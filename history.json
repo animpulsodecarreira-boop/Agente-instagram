@@ -1452,5 +1452,15 @@
     "angle": "perguntas difíceis",
     "reel_formato": "erro",
     "cover": "O erro nº 1 em entrevistas difíceis"
+  },
+  {
+    "topic": "Abordagem a recrutadores no LinkedIn",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 2,
+    "pillar": "linkedin",
+    "angle": "mensagens a recrutadores",
+    "reel_formato": "antes_depois",
+    "cover": "Mensagem para recrutador: veja a diferença"
   }
 ]
