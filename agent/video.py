@@ -1,5 +1,6 @@
 """Junta os quadros do story (e os slides do Reel) em vídeo MP4 com trilha de áudio (ffmpeg)."""
 import hashlib
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -178,16 +179,19 @@ def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3, an
     if voz:
         for c in voz:
             cmd += ["-i", str(c["path"])]
-        partes = [f"[1:a]volume=0.28,afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5[m]"]
+        try:
+            vol_musica = min(0.6, max(0.02, float(os.getenv("MUSICA_VOL", "") or 0.16)))
+        except ValueError:
+            vol_musica = 0.16
+        # música baixa e em nível constante: com a voz por cima, não há ducking (o "respirar" da trilha nas pausas soava como chiado)
+        partes = [f"[1:a]volume={vol_musica},afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5[m]"]
         rot = []
         for k, c in enumerate(voz):
             ms = max(0, int(round(c["t0"] * 1000)))
             partes.append(f"[{k + 2}:a]aresample=44100,aformat=channel_layouts=stereo,adelay={ms}|{ms}[v{k}]")
             rot.append(f"[v{k}]")
         partes.append(("".join(rot) + f"amix=inputs={len(voz)}:normalize=0[voz]") if len(voz) > 1 else f"{rot[0]}anull[voz]")
-        partes += ["[voz]asplit=2[vo][vs]",
-                   "[m][vs]sidechaincompress=threshold=0.03:ratio=9:attack=25:release=350[md]",
-                   "[md][vo]amix=inputs=2:duration=longest:normalize=0,alimiter=limit=0.97[a]"]
+        partes += ["[m][voz]amix=inputs=2:duration=longest:normalize=0,alimiter=limit=0.97[a]"]
         cmd += ["-filter_complex", ";".join(partes), "-map", "0:v", "-map", "[a]", "-vf", vf, *video_args]
     else:
         cmd += ["-map", "0:v", "-map", "1:a", "-vf", vf,
