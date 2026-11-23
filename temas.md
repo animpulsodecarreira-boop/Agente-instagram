@@ -138,9 +138,9 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| caminhar sem fone | 1 | 2026-11-22 |
 | pequenas coisas pelas quais agradecer | 1 | 2026-11-01 |
 | um hobby novo | 1 | 2026-11-08 |
 | uma música para o fim de semana | 1 | 2026-10-31 |
-| caminhar sem fone | 0 | - |
 | cozinhar sem pressa | 0 | - |
 | reencontrar alguém | 0 | - |

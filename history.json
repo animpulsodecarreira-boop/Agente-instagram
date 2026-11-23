@@ -1425,5 +1425,22 @@
     "story_title": "Alarme vs Realidade",
     "pillar": "leve_rotina",
     "angle": "o 'só mais um minutinho'"
+  },
+  {
+    "topic": "Habitos de caminhada sem fone no fim de semana e os times de fim de semana",
+    "funnel": "leve",
+    "theme": "claro",
+    "variant": 0,
+    "format": "time_quiz",
+    "hook": "pergunta bem-humorada que gera identificação",
+    "cta": "pedir para comentar qual opção ou time a pessoa é",
+    "keyword": "AJUDA",
+    "cover": "Você é do time que sai para caminhar sem fone ou do time que esquece que o mundo existe?",
+    "opener": "Sair para caminhar sem fone parecia uma ótima ideia até o primeiro cachorro latir e você perceber que não tem para onde ",
+    "story_format": "teaser",
+    "story_mode": "acompanha",
+    "story_title": "Sair para caminhar sem fone é um exercício de coragem ou de paz?",
+    "pillar": "leve_fora",
+    "angle": "caminhar sem fone"
   }
 ]

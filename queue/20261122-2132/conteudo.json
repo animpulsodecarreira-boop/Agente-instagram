@@ -1,0 +1,43 @@
+{
+  "topic": "Habitos de caminhada sem fone no fim de semana e os times de fim de semana",
+  "funnel": "leve",
+  "theme": "claro",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Você é do time que sai para caminhar sem fone ou do time que esquece que o mundo existe?",
+      "body": "Escolha o seu time de fim de semana"
+    },
+    {
+      "kind": "content",
+      "title": "Time radar ligado",
+      "body": "Você sai para dar uma volta na rua e presta atenção em tudo. Repara no cachorro do vizinho, na árvore com flor nova e até na brisa que bateu errado. Volta para casa sabendo a vida de todo mundo do quarteirão.",
+      "highlight": "Quem precisa de fone quando a rua é uma novela?"
+    },
+    {
+      "kind": "content",
+      "title": "Time silêncio absoluto",
+      "body": "O objetivo da caminhada é não ouvir som nenhum. Passo firme, olhar fixo no horizonte e a mente finalmente processando aquela ideia aleatória que surgiu na terça-feira passada.",
+      "highlight": "O único som permitido é o barulho do tênis no chão."
+    },
+    {
+      "kind": "content",
+      "title": "Time tropeço filosófico",
+      "body": "Sai de casa com a nobre intenção de fazer um exercício leve e focado. No segundo quarteirão, tropeça na calçada e passa o resto do percurso pensando em como a engenharia urbana é falha.",
+      "highlight": "Pé esquerdo na calçada, mente em 1998."
+    },
+    {
+      "kind": "content",
+      "title": "Time desistência estratégica",
+      "body": "Coloca o tênis mais bonito do armário, caminha trezentos metros até a padaria mais próxima, compra um pão de queijo quentinho e volta para o sofá com a sensação de dever cumprido.",
+      "highlight": "O importante foi ter dado o primeiro passo."
+    },
+    {
+      "kind": "cta",
+      "title": "De qual desses times você faz parte neste fim de semana?",
+      "body": "Conta aqui nos comentários qual é o seu estilo oficial de caminhada.",
+      "show_link": false
+    }
+  ]
+}
