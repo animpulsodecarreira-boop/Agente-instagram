@@ -1,0 +1,30 @@
+{
+ "formato": "pov",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "POV: você quer ser lembrado pela sua rede",
+  "destaque": "lembrado",
+  "cenas": [
+   {
+    "rotulo": "A VIRADA",
+    "texto": "Sua rede lê seu perfil em segundos",
+    "antes": "",
+    "apoio": "Ninguém perde tempo procurando o que você faz."
+   },
+   {
+    "rotulo": "FAÇA ISSO",
+    "texto": "Deixe seu cargo claro no topo",
+    "antes": "",
+    "apoio": "Quem bate o olho entende sua especialidade."
+   },
+   {
+    "rotulo": "DEPOIS",
+    "texto": "Sua página mostra exatamente quem você é",
+    "antes": "",
+    "apoio": "A conexão faz sentido logo na primeira linha."
+   }
+  ],
+  "chamada": "Segue para mais dicas de carreira"
+ }
+}

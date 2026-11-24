@@ -1479,5 +1479,15 @@
     "story_title": "Em qualquer proposta de emprego, o valor da sua rotina também conta.",
     "pillar": "negociacao",
     "angle": "benefícios além do salário"
+  },
+  {
+    "topic": "Como sua rede de contatos no LinkedIn avalia seu perfil",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 1,
+    "pillar": "linkedin",
+    "angle": "rede de contatos",
+    "reel_formato": "pov",
+    "cover": "POV: você quer ser lembrado pela sua rede"
   }
 ]
