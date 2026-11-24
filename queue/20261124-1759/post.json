@@ -1,0 +1,25 @@
+{
+  "id": "20261124-1759",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "claro",
+  "variant": 2,
+  "topic": "Como perguntar o resultado da entrevista sem parecer ansioso",
+  "caption": "Saber o que perguntar no fim da conversa mostra interesse real pela vaga. Deixe sua opinião nos comentários e compartilhe este post com quem precisa saber disso.\n\n#entrevista #recrutador #carreira #transicaodecarreira #recolocacao #emprego",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "entrevista",
+  "angle": "acompanhamento depois da entrevista",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "pergunta_recrutador",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "voz Orus (gemini-3.8-flash-tts)",
+  "revisao": [
+    "legenda: “post” não está no dicionário (sugestões: posto, posta, poste)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261124-1759/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261124-1759/reel.mp4"
+}

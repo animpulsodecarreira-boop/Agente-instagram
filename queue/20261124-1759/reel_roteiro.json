@@ -1,0 +1,27 @@
+{
+ "formato": "pergunta_recrutador",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Recrutador pergunta: tem alguma dúvida para nós",
+  "destaque": "dúvida",
+  "cenas": [
+   {
+    "rotulo": "O QUE ELE QUER SABER",
+    "texto": "Se você entendeu bem o papel",
+    "apoio": "E se tem interesse real na vaga."
+   },
+   {
+    "rotulo": "COMO RESPONDER",
+    "texto": "Pergunte sobre os próximos passos do processo",
+    "apoio": "E qual é o prazo para retorno."
+   },
+   {
+    "rotulo": "EVITE",
+    "texto": "Ficar em silêncio ou falar só de salário",
+    "apoio": ""
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

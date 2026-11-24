@@ -1489,5 +1489,15 @@
     "angle": "rede de contatos",
     "reel_formato": "pov",
     "cover": "POV: você quer ser lembrado pela sua rede"
+  },
+  {
+    "topic": "Como perguntar o resultado da entrevista sem parecer ansioso",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 2,
+    "pillar": "entrevista",
+    "angle": "acompanhamento depois da entrevista",
+    "reel_formato": "pergunta_recrutador",
+    "cover": "Recrutador pergunta: tem alguma dúvida para nós"
   }
 ]
