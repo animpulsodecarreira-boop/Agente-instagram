@@ -1,0 +1,47 @@
+{
+  "topic": "Negociação de benefícios além do salário",
+  "funnel": "topo",
+  "theme": "geometrico",
+  "keyword": "AJUDA",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Olhar só o salário é como alugar casa sem ver o valor do condomínio",
+      "body": "O valor da primeira linha chama a atenção, mas o pacote completo é o que determina quanto sobra no seu bolso e na sua rotina."
+    },
+    {
+      "kind": "versus",
+      "title": "Na flexibilidade do dia a dia",
+      "left": "Perguntar apenas se a vaga é presencial, híbrida ou remota.",
+      "right": "Saber a regra do jogo: há horários fixos, plantões não combinados ou liberdade para gerenciar entregas?"
+    },
+    {
+      "kind": "versus",
+      "title": "Na avaliação dos benefícios",
+      "left": "Comemorar que tem assistência médica e vale refeição sem checar os detalhes.",
+      "right": "Calcular coparticipação, rede credenciada e os descontos totais que vão aparecer no holerite."
+    },
+    {
+      "kind": "versus",
+      "title": "Quando a proposta salarial trava",
+      "left": "Insistir apenas no salário fixo quando a empresa avisa que atingiu o teto da faixa.",
+      "right": "Negociar apoio para cursos, dias extras de home office, auxílio equipamentos ou bônus de entrada."
+    },
+    {
+      "kind": "list",
+      "title": "O que pesa na conta final",
+      "items": [
+        "Descontos reais que incidem sobre o holerite",
+        "Autonomia de horário e tempo real de deslocamento",
+        "Verba para saúde, alimentação e capacitação",
+        "Critérios e previsibilidade para bônus ou PLR"
+      ]
+    },
+    {
+      "kind": "cta",
+      "title": "Conhece alguém avaliando propostas de trabalho?",
+      "body": "Envie este post para quem está em processos seletivos e precisa analisar o pacote completo antes de responder.",
+      "show_link": false
+    }
+  ]
+}

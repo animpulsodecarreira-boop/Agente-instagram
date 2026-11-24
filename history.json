@@ -1462,5 +1462,22 @@
     "angle": "mensagens a recrutadores",
     "reel_formato": "antes_depois",
     "cover": "Mensagem para recrutador: veja a diferença"
+  },
+  {
+    "topic": "Negociação de benefícios além do salário",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 0,
+    "format": "erro_correcao",
+    "hook": "comparação inesperada entre duas coisas",
+    "cta": "convidar a mandar o post para alguém que está buscando recolocação",
+    "keyword": "AJUDA",
+    "cover": "Olhar só o salário é como alugar casa sem ver o valor do condomínio",
+    "opener": "Uma oferta de dez mil reais pode render menos do que uma de oito.",
+    "story_format": "digitar",
+    "story_mode": "acompanha",
+    "story_title": "Em qualquer proposta de emprego, o valor da sua rotina também conta.",
+    "pillar": "negociacao",
+    "angle": "benefícios além do salário"
   }
 ]
