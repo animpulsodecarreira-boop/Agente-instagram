@@ -1,0 +1,27 @@
+{
+ "formato": "antes_de",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Antes de enviar seu currículo, confira 3 coisas",
+  "destaque": "currículo",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Escreva seu nome e a vaga exata",
+    "apoio": "Quem recebe precisa saber rápido quem você é."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Resuma sua principal experiência em uma frase",
+    "apoio": "Mostra o que você faz de melhor logo no início."
+   },
+   {
+    "rotulo": "3",
+    "texto": "Explique o motivo do seu interesse na empresa",
+    "apoio": "Conecta seu trabalho aos objetivos deles."
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

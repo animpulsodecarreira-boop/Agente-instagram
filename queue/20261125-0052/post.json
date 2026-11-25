@@ -1,0 +1,27 @@
+{
+  "id": "20261125-0052",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "geometrico",
+  "variant": 1,
+  "topic": "O que colocar na mensagem de apresentação ao enviar o currículo",
+  "caption": "Enviar o currículo sem uma mensagem clara dificulta a leitura de quem contrata. Use estas tres dicas para escrever algo direto e objetivo. Comente abaixo qual parte da mensagem voce acha mais dificil de escrever.\n\n#transicaodecarreira #recolocacaoprofissional #curriculo #buscadeemprego #mercadodetrabalho #carreira",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "curriculo",
+  "angle": "carta ou mensagem de apresentação",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "antes_de",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "voz Orus (gemini-3.8-flash-tts)",
+  "revisao": [
+    "legenda: “tres” não está no dicionário (sugestões: três, teres, trás)",
+    "legenda: “voce” não está no dicionário (sugestões: você, doce, vice)",
+    "legenda: “dificil” não está no dicionário (sugestões: difícil)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261125-0052/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261125-0052/reel.mp4"
+}

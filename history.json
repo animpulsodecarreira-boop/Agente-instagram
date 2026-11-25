@@ -1516,5 +1516,15 @@
     "story_title": "Por que seu LinkedIn não atrai quem você quer?",
     "pillar": "linkedin",
     "angle": "título e Sobre"
+  },
+  {
+    "topic": "O que colocar na mensagem de apresentação ao enviar o currículo",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 1,
+    "pillar": "curriculo",
+    "angle": "carta ou mensagem de apresentação",
+    "reel_formato": "antes_de",
+    "cover": "Antes de enviar seu currículo, confira 3 coisas"
   }
 ]
