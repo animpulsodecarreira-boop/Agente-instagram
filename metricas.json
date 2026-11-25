@@ -467,6 +467,42 @@
      "total": 156
     }
    }
+  },
+  "2026-11-25": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 62,
+      "NON_FOLLOWER": 293
+     },
+     "total": 357
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 174,
+      "REEL": 243,
+      "STORY": 151
+     },
+     "total": 357
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 51,
+      "NON_FOLLOWER": 93
+     },
+     "total": 144
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 13,
+      "REEL": 144,
+      "STORY": 18
+     },
+     "total": 144
+    }
+   }
   }
  },
  "midias": {
@@ -2639,6 +2675,21 @@
       "total_interactions": 1,
       "views": 20
      }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 8.2,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 53206,
+      "likes": 1,
+      "reach": 13,
+      "reels_skip_rate": 84.6,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 20
+     }
     }
    ],
    "media_id": "18653923819028094",
@@ -2734,6 +2785,21 @@
       "total_interactions": 0,
       "views": 17
      }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 7.82,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2938,
+      "likes": 0,
+      "reach": 11,
+      "reels_skip_rate": 69.2,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 17
+     }
     }
    ],
    "media_id": "18184031527430420",
@@ -2803,6 +2869,21 @@
     {
      "em": "2026-11-24T18:06:07+0000",
      "idade": 6.02,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3248,
+      "likes": 1,
+      "reach": 10,
+      "reels_skip_rate": 66.7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 6.99,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 3248,
@@ -2894,6 +2975,21 @@
       "total_interactions": 2,
       "views": 33
      }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 6.2,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 5403,
+      "likes": 2,
+      "reach": 15,
+      "reels_skip_rate": 76.2,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 33
+     }
     }
    ],
    "media_id": "18029440775874731",
@@ -2933,6 +3029,21 @@
     {
      "em": "2026-11-24T18:06:07+0000",
      "idade": 3.96,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 1789,
+      "likes": 1,
+      "reach": 15,
+      "reels_skip_rate": 92.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 22
+     }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 4.93,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 1789,
@@ -2990,6 +3101,19 @@
       "total_interactions": 1,
       "views": 28
      }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 4.13,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 29
+     }
     }
    ],
    "media_id": "17980585347140470",
@@ -3023,6 +3147,19 @@
       "total_interactions": 0,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 3.85,
+     "metricas": {
+      "comments": 0,
+      "likes": 0,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 26
+     }
     }
    ],
    "media_id": "18121592309084335",
@@ -3043,7 +3180,21 @@
     "topic": "O clássico 'só mais um minutinho' antes de encarar o dia",
     "variant": 2
    },
-   "coletas": [],
+   "coletas": [
+    {
+     "em": "2026-11-25T17:29:57+0000",
+     "idade": 2.86,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 11,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 43
+     }
+    }
+   ],
    "media_id": "18227310613351328",
    "permalink": "https://www.instagram.com/p/DgDsg3JATbA/",
    "post_id": "20261122-1725",
