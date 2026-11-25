@@ -1,0 +1,47 @@
+{
+  "topic": "Sinais de que seu título e Sobre do LinkedIn estão confusos para quem lê",
+  "funnel": "topo",
+  "theme": "azul",
+  "keyword": "QUERO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Por que seu LinkedIn não atrai quem você quer?",
+      "body": "O problema pode estar exatamente onde todo mundo bate o olho primeiro."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 1: Seu título é só uma lista de termos soltos",
+      "body": "Imagine entrar num escritório e ver uma placa com cinco profissões diferentes. A gente não entende em que você é bom de verdade.",
+      "highlight": "Quem tenta abraçar o mundo acaba sem foco."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 2: O Sobre parece a introdução de uma biografia",
+      "body": "Começar com 'apaixonado por desafios desde a infância' não ajuda quem busca resolver um problema específico de negócio hoje.",
+      "highlight": "Menos poesia, mais clareza."
+    },
+    {
+      "kind": "content",
+      "title": "Sinal 3: O texto foca só nas ferramentas",
+      "body": "Listar dezenas de softwares sem contar qual problema você resolve com eles vira só uma sopa de letrinhas sem alma.",
+      "highlight": "O foco é o impacto, não o menu."
+    },
+    {
+      "kind": "check",
+      "title": "Checklist rápido para o seu topo de perfil",
+      "items": [
+        "O título diz claramente o que você faz e para quem",
+        "O Sobre explica sua especialidade principal em poucas linhas",
+        "Há uma forma simples de entender sua trajetória logo de cara"
+      ],
+      "note": "Ajustar isso muda a forma como o mercado lê sua história."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer acertar no posicionamento?",
+      "body": "Siga o perfil para não perder as próximas dicas práticas sobre o LinkedIn e a sua carreira.",
+      "show_link": true
+    }
+  ]
+}

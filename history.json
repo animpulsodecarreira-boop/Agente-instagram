@@ -1499,5 +1499,22 @@
     "angle": "acompanhamento depois da entrevista",
     "reel_formato": "pergunta_recrutador",
     "cover": "Recrutador pergunta: tem alguma dúvida para nós"
+  },
+  {
+    "topic": "Sinais de que seu título e Sobre do LinkedIn estão confusos para quem lê",
+    "funnel": "topo",
+    "theme": "azul",
+    "variant": 0,
+    "format": "tres_sinais",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "cta": "convidar a seguir o perfil para a próxima dica",
+    "keyword": "QUERO",
+    "cover": "Por que seu LinkedIn não atrai quem você quer?",
+    "opener": "Abriu o perfil no LinkedIn, leu o próprio título e sentiu que aquilo não diz nada sobre quem você é hoje? Acontece muito",
+    "story_format": "teaser",
+    "story_mode": "paralela",
+    "story_title": "Por que seu LinkedIn não atrai quem você quer?",
+    "pillar": "linkedin",
+    "angle": "título e Sobre"
   }
 ]
