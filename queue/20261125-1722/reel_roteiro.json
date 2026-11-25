@@ -1,0 +1,30 @@
+{
+ "formato": "pare",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Pare de dizer que não tem dúvidas na entrevista",
+  "destaque": "dúvidas",
+  "cenas": [
+   {
+    "rotulo": "FAÇA ASSIM",
+    "texto": "Pergunte sobre os desafios da vaga",
+    "antes": "",
+    "apoio": "Descubra o que a empresa espera resolver nos primeiros meses."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Mostra interesse real pelo trabalho",
+    "antes": "",
+    "apoio": "Quem pergunta avalia se a rotina faz sentido para a carreira."
+   },
+   {
+    "rotulo": "HOJE",
+    "texto": "Anote duas perguntas antes da próxima conversa",
+    "antes": "",
+    "apoio": "Leve as anotações prontas para a sala ou para a tela."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

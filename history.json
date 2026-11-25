@@ -1526,5 +1526,15 @@
     "angle": "carta ou mensagem de apresentação",
     "reel_formato": "antes_de",
     "cover": "Antes de enviar seu currículo, confira 3 coisas"
+  },
+  {
+    "topic": "Perguntas inteligentes para fazer ao recrutador no fim da entrevista",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 2,
+    "pillar": "entrevista",
+    "angle": "perguntas para fazer ao recrutador",
+    "reel_formato": "pare",
+    "cover": "Pare de dizer que não tem dúvidas na entrevista"
   }
 ]
