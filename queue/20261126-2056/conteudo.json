@@ -1,0 +1,34 @@
+{
+  "topic": "Pausas e energia no trabalho",
+  "funnel": "topo",
+  "theme": "claro",
+  "keyword": "TITULO",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Trabalhar sem parar o dia todo não prova que você é produtivo",
+      "body": "Prova apenas que você está acumulando cansaço."
+    },
+    {
+      "kind": "content",
+      "title": "O cérebro não foi feito para focar oito horas seguidas",
+      "body": "A gente tenta esticar a atenção como se fosse chiclete. O resultado é que a última hora do dia rende menos do que dez minutos descansados."
+    },
+    {
+      "kind": "content",
+      "title": "Pausa não é tempo perdido",
+      "body": "Levantar para beber água ou olhar pela janela por dois minutos não é falta de foco. É o momento em que o cérebro processa o que você acabou de fazer."
+    },
+    {
+      "kind": "content",
+      "title": "Cansaço acumulado cobra o dobro do tempo",
+      "body": "Forçar a barra quando a energia acaba faz você demorar o dobro do tempo para resolver uma tarefa simples."
+    },
+    {
+      "kind": "cta",
+      "title": "Como costuma ser a sua rotina de pausas?",
+      "body": "Comente a palavra TITULO e conte se você consegue parar durante o expediente ou se vai direto até o fim.",
+      "show_link": false
+    }
+  ]
+}

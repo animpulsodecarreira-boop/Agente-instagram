@@ -1583,5 +1583,22 @@
     "angle": "lidar com a ansiedade da busca",
     "reel_formato": "mito",
     "cover": "Procurar emprego todo dia reduz a ansiedade"
+  },
+  {
+    "topic": "Pausas e energia no trabalho",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 1,
+    "format": "pergunta",
+    "hook": "afirmação contraintuitiva que quebra uma crença comum",
+    "cta": "convidar a comentar a palavra-chave {kw}",
+    "keyword": "TITULO",
+    "cover": "Trabalhar sem parar o dia todo não prova que você é produtivo",
+    "opener": "Passar a tarde inteira encarando a tela sem levantar da cadeira parece dedicação. Na prática, costuma ser só cansaço acu",
+    "story_format": "teaser",
+    "story_mode": "paralela",
+    "story_title": "Trabalhar sem parar o dia todo não prova que você é produtivo",
+    "pillar": "produtividade",
+    "angle": "pausas e energia"
   }
 ]

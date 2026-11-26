@@ -51,11 +51,11 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 | Ângulo | Vezes | Última vez |
 |---|---|---|
 | fechar o dia com clareza | 1 | 2026-11-02 |
+| pausas e energia | 1 | 2026-11-26 |
 | prioridades da semana | 1 | 2026-11-26 |
 | rotina de busca de emprego | 1 | 2026-11-19 |
 | como lidar com distrações | 0 | - |
 | metas pequenas | 0 | - |
-| pausas e energia | 0 | - |
 
 ## Comunicação e presença no trabalho
 
