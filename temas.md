@@ -41,10 +41,10 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 |---|---|---|
 | como contar a história da transição | 1 | 2026-11-19 |
 | habilidades transferíveis | 1 | 2026-11-09 |
+| lidar com a ansiedade da busca | 1 | 2026-11-26 |
 | o que fazer nas primeiras semanas | 1 | 2026-11-13 |
 | reorganizar a rotina de busca | 1 | 2026-11-02 |
 | reposicionar a experiência anterior | 1 | 2026-10-30 |
-| lidar com a ansiedade da busca | 0 | - |
 
 ## Rotina, produtividade e foco
 

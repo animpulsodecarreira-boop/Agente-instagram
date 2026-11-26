@@ -1573,5 +1573,15 @@
     "story_title": "Raio-x do perfil",
     "pillar": "linkedin",
     "angle": null
+  },
+  {
+    "topic": "Controlar a ansiedade durante a busca por emprego",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 0,
+    "pillar": "transicao",
+    "angle": "lidar com a ansiedade da busca",
+    "reel_formato": "mito",
+    "cover": "Procurar emprego todo dia reduz a ansiedade"
   }
 ]

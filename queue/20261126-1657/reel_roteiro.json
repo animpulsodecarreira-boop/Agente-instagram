@@ -1,0 +1,30 @@
+{
+ "formato": "mito",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Procurar emprego todo dia reduz a ansiedade",
+  "destaque": "ansiedade",
+  "cenas": [
+   {
+    "rotulo": "MITO",
+    "texto": "Ver vagas o dia todo traz controle",
+    "antes": "",
+    "apoio": ""
+   },
+   {
+    "rotulo": "VERDADE",
+    "texto": "Excesso de busca aumenta o cansaço",
+    "antes": "",
+    "apoio": "Olhar a tela sem parar esgota a energia mental."
+   },
+   {
+    "rotulo": "NA PRÁTICA",
+    "texto": "Defina horários fixos para enviar currículos",
+    "antes": "",
+    "apoio": ""
+   }
+  ],
+  "chamada": "Comenta AJUDA e eu te mando"
+ }
+}
