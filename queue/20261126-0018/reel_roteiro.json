@@ -1,0 +1,27 @@
+{
+ "formato": "lista",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "3 sinais de que suas prioridades sumiram",
+  "destaque": "sumiram",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Responder mensagens antes de planejar o dia",
+    "apoio": "Você passa a manhã inteira apagando o incêndio dos outros."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Dez tarefas urgentes anotadas no bloco",
+    "apoio": "Quando tudo parece urgente, nada de relevante avança de verdade."
+   },
+   {
+    "rotulo": "3",
+    "texto": "Aceitar convites de reuniões sem pauta",
+    "apoio": "Seu tempo vai embora sem você entregar o trabalho principal."
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

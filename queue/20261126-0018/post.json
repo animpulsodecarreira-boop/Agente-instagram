@@ -1,0 +1,25 @@
+{
+  "id": "20261126-0018",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "azul",
+  "variant": 1,
+  "topic": "Identificar quando a rotina engoliu as prioridades da semana",
+  "caption": "Sua semana começa com direção ou apenas reagindo a pedidos de última hora? Escolher três entregas centrais protege a sua rotina de trabalho. Comente qual desses sinais mais acontece no seu dia a dia.\n\n#produtividade #foco #gestaodotempo #planejamentosemanal #rotinadetrabalho #organizacaopessoal",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "produtividade",
+  "angle": "prioridades da semana",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "lista",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "sem narração: invalid syntax (narracao.py, line 330)",
+  "revisao": [
+    "cena 1: “planejar” não está no dicionário (sugestões: planear)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261126-0018/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261126-0018/reel.mp4"
+}
