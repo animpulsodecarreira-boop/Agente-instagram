@@ -1536,5 +1536,15 @@
     "angle": "perguntas para fazer ao recrutador",
     "reel_formato": "pare",
     "cover": "Pare de dizer que não tem dúvidas na entrevista"
+  },
+  {
+    "topic": "A primeira impressão gerada pelo topo do perfil no LinkedIn",
+    "funnel": "topo",
+    "theme": "claro",
+    "variant": 0,
+    "pillar": "linkedin",
+    "angle": "foto, banner e primeira impressão",
+    "reel_formato": "resposta_rapida",
+    "cover": "Sua foto e banner passam confiança?"
   }
 ]

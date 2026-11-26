@@ -1,0 +1,27 @@
+{
+ "formato": "resposta_rapida",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Sua foto e banner passam confiança?",
+  "destaque": "confiança",
+  "cenas": [
+   {
+    "rotulo": "RESPOSTA CURTA",
+    "texto": "Recrutador bate o olho em segundos",
+    "apoio": "O visual é o primeiro filtro da sua página."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Imagem borrada gera dúvida",
+    "apoio": "Detalhes simples afastam quem busca profissionais."
+   },
+   {
+    "rotulo": "DICA",
+    "texto": "Use foto limpa e banner atual",
+    "apoio": "Mostre clareza logo no topo do perfil."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}
