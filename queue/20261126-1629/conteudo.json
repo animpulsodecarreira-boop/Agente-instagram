@@ -1,0 +1,41 @@
+{
+  "topic": "topo",
+  "funnel": "fundo",
+  "theme": "geometrico",
+  "keyword": "PERFIL",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "Quem chega no seu perfil entende o que você faz?",
+      "body": "Veja como pequenos detalhes no topo mudam tudo."
+    },
+    {
+      "kind": "versus",
+      "title": "O título profissional",
+      "left": "Apenas o nome do cargo atual e nada mais",
+      "left_label": "JEITO A",
+      "right": "Sua especialidade e como você ajuda o mercado",
+      "right_label": "JEITO B"
+    },
+    {
+      "kind": "versus",
+      "title": "A foto e o fundo",
+      "left": "Foto escura e fundo em branco sem nenhuma cor",
+      "left_label": "JEITO A",
+      "right": "Imagem nítida e banner que reflete sua área",
+      "right_label": "JEITO B"
+    },
+    {
+      "kind": "content",
+      "title": "O topo é a sua vitrine",
+      "body": "Quem visita seu perfil decide em poucos segundos se vai continuar lendo ou fechar a aba. O topo precisa mostrar clareza imediata.",
+      "highlight": "Primeira impressão conta muito."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer saber como o seu perfil está?",
+      "body": "Comente PERFIL aqui embaixo que eu te envio um diagnóstico gratuito do seu LinkedIn para ajustarmos isso juntos.",
+      "show_link": true
+    }
+  ]
+}

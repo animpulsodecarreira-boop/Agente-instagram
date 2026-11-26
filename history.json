@@ -1556,5 +1556,22 @@
     "angle": "prioridades da semana",
     "reel_formato": "lista",
     "cover": "3 sinais de que suas prioridades sumiram"
+  },
+  {
+    "topic": "topo",
+    "funnel": "fundo",
+    "theme": "geometrico",
+    "variant": 2,
+    "format": "comparativo",
+    "hook": "pergunta direta que gera identificação",
+    "cta": "convidar a comentar {kw} para receber o diagnóstico",
+    "keyword": "PERFIL",
+    "cover": "Quem chega no seu perfil entende o que você faz?",
+    "opener": "Abriu o seu perfil no LinkedIn hoje e sentiu que o topo parece meio vazio ou confuso? Acontece muito de a gente focar na",
+    "story_format": "nota",
+    "story_mode": "acompanha",
+    "story_title": "Raio-x do perfil",
+    "pillar": "linkedin",
+    "angle": null
   }
 ]
