@@ -503,6 +503,42 @@
      "total": 144
     }
    }
+  },
+  "2026-11-26": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 62,
+      "NON_FOLLOWER": 292
+     },
+     "total": 356
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 174,
+      "REEL": 242,
+      "STORY": 151
+     },
+     "total": 356
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 35,
+      "NON_FOLLOWER": 28
+     },
+     "total": 63
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 13,
+      "REEL": 58,
+      "STORY": 15
+     },
+     "total": 63
+    }
+   }
   }
  },
  "midias": {
@@ -2800,6 +2836,21 @@
       "total_interactions": 0,
       "views": 17
      }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 8.81,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 2938,
+      "likes": 0,
+      "reach": 11,
+      "reels_skip_rate": 69.2,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 0,
+      "views": 17
+     }
     }
    ],
    "media_id": "18184031527430420",
@@ -2884,6 +2935,21 @@
     {
      "em": "2026-11-25T17:29:57+0000",
      "idade": 6.99,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3248,
+      "likes": 1,
+      "reach": 10,
+      "reels_skip_rate": 66.7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 7.98,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 3248,
@@ -2990,6 +3056,21 @@
       "total_interactions": 2,
       "views": 33
      }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 7.19,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 5403,
+      "likes": 2,
+      "reach": 15,
+      "reels_skip_rate": 76.2,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 33
+     }
     }
    ],
    "media_id": "18029440775874731",
@@ -3044,6 +3125,21 @@
     {
      "em": "2026-11-25T17:29:57+0000",
      "idade": 4.93,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 1789,
+      "likes": 1,
+      "reach": 15,
+      "reels_skip_rate": 92.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 22
+     }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 5.92,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 1789,
@@ -3114,6 +3210,19 @@
       "total_interactions": 1,
       "views": 29
      }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 5.12,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 29
+     }
     }
    ],
    "media_id": "17980585347140470",
@@ -3160,6 +3269,19 @@
       "total_interactions": 0,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 4.84,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 26
+     }
     }
    ],
    "media_id": "18121592309084335",
@@ -3193,12 +3315,44 @@
       "total_interactions": 1,
       "views": 43
      }
+    },
+    {
+     "em": "2026-11-26T17:12:34+0000",
+     "idade": 3.85,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 11,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 43
+     }
     }
    ],
    "media_id": "18227310613351328",
    "permalink": "https://www.instagram.com/p/DgDsg3JATbA/",
    "post_id": "20261122-1725",
    "publicado_em": "2026-11-22T20:46:06+0000",
+   "tipo": "carrossel"
+  },
+  "20261124-2059:carrossel": {
+   "atributos": {
+    "angle": "título e Sobre",
+    "format": "tres_sinais",
+    "funnel": "topo",
+    "hook": "curiosidade que deixa a pessoa querendo saber o motivo",
+    "pillar": "linkedin",
+    "reel_formato": null,
+    "theme": "azul",
+    "topic": "Sinais de que seu título e Sobre do LinkedIn estão confusos para quem lê",
+    "variant": 0
+   },
+   "coletas": [],
+   "media_id": "17943945390391659",
+   "permalink": "https://www.instagram.com/p/DgLTUdJFJTJ/",
+   "post_id": "20261124-2059",
+   "publicado_em": "2026-11-25T19:39:53+0000",
    "tipo": "carrossel"
   }
  },
