@@ -1,9 +1,5 @@
 [
   {
-    "topic": "Erro comum: transformar o perfil do LinkedIn em um currículo em PDF",
-    "funnel": "topo"
-  },
-  {
     "topic": "O erro de usar 'Em busca de recolocação' no título do LinkedIn",
     "funnel": "topo"
   },
@@ -1636,5 +1632,22 @@
     "angle": "adaptar o currículo a cada vaga",
     "reel_formato": "pergunta_recrutador",
     "cover": "Recrutador pergunta: por que este currículo?"
+  },
+  {
+    "topic": "Uso de termos técnicos e vocabulário da sua área no LinkedIn para ser encontrado",
+    "funnel": "fundo",
+    "theme": "azul",
+    "variant": 0,
+    "format": "caso_hipotetico",
+    "hook": "número concreto + promessa moderada (sem garantir resultado)",
+    "cta": "convidar a mandar DM com a palavra {kw}",
+    "keyword": "CHECK",
+    "cover": "3 termos que faltam no seu perfil do LinkedIn",
+    "opener": "Colocou gestor de projetos no título e esperava que o telefone tocasse sozinho? Acontece muito. O recrutador que busca a",
+    "story_format": "chat",
+    "story_mode": "acompanha",
+    "story_title": "Busca no LinkedIn",
+    "pillar": "linkedin",
+    "angle": "palavras-chave"
   }
 ]

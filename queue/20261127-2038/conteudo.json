@@ -1,0 +1,39 @@
+{
+  "topic": "Uso de termos técnicos e vocabulário da sua área no LinkedIn para ser encontrado",
+  "funnel": "fundo",
+  "theme": "azul",
+  "keyword": "CHECK",
+  "slides": [
+    {
+      "kind": "cover",
+      "title": "3 termos que faltam no seu perfil do LinkedIn",
+      "body": "Imagine a busca de uma vaga sem os códigos certos."
+    },
+    {
+      "kind": "content",
+      "title": "O caso de Marina",
+      "body": "Por exemplo: Marina era gerente de projetos, mas escrevia apenas liderança de equipes no topo do perfil."
+    },
+    {
+      "kind": "content",
+      "title": "O filtro invisível",
+      "body": "Quem contrata buscava metodologias específicas que ela dominava, mas o nome exato não aparecia no texto dela."
+    },
+    {
+      "kind": "content",
+      "title": "A virada de chave",
+      "body": "Basta trocar termos genéricos pelos nomes reais das ferramentas e processos que você domina para aparecer na busca certa."
+    },
+    {
+      "kind": "quote",
+      "title": "Palavra certa não é enfeite, é ponte para quem busca o seu trabalho.",
+      "body": "O recrutador digita o que precisa, não o que a gente acha bonito."
+    },
+    {
+      "kind": "cta",
+      "title": "Quer saber o que falta no seu perfil?",
+      "body": "Mande uma mensagem na DM com a palavra CHECK e receba nossa orientação sobre o seu posicionamento.",
+      "show_link": true
+    }
+  ]
+}

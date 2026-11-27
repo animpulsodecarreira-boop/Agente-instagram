@@ -6,10 +6,10 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| palavras-chave | 4 | 2026-11-27 |
 | experiências e conquistas | 3 | 2026-11-20 |
 | foto, banner e primeira impressão | 3 | 2026-11-25 |
 | mensagens a recrutadores | 3 | 2026-11-23 |
-| palavras-chave | 3 | 2026-11-20 |
 | rede de contatos | 3 | 2026-11-24 |
 | título e Sobre | 3 | 2026-11-24 |
 
