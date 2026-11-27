@@ -1,0 +1,29 @@
+{
+  "id": "20261127-0023",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "azul",
+  "variant": 2,
+  "topic": "Como transformar o conteúdo de um curso em resultados reais no trabalho",
+  "caption": "Fazer muitos cursos nao garante evolucao se voce nao mudar o que entrega. Escolha um aprendizado por semana e coloque em pratica imediatamente. Deixe sua opiniao nos comentarios.\n\n#desenvolvimentoprofissional #carreira #aprendizado #produtividade #crescimentoprofissional #rotinadetrabalho",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "aprendizado",
+  "angle": "transformar curso em resultado visível",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "erro",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "sem narração: invalid syntax (narracao.py, line 330)",
+  "revisao": [
+    "legenda: “nao” não está no dicionário (sugestões: não, no, na)",
+    "legenda: “evolucao” não está no dicionário (sugestões: evolução, evoluído, evoluam)",
+    "legenda: “voce” não está no dicionário (sugestões: você, doce, vice)",
+    "legenda: “opiniao” não está no dicionário (sugestões: opinião)",
+    "legenda: “comentarios” não está no dicionário (sugestões: comentários, comentarmos, comentarias)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261127-0023/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261127-0023/reel.mp4"
+}

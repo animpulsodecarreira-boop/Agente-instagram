@@ -1,0 +1,27 @@
+{
+ "formato": "erro",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "O erro que muita gente comete em cursos",
+  "destaque": "erro",
+  "cenas": [
+   {
+    "rotulo": "O ERRO",
+    "texto": "Acumular certificados sem mudar a prática",
+    "apoio": ""
+   },
+   {
+    "rotulo": "POR QUE ATRAPALHA",
+    "texto": "O conhecimento fica apenas no papel",
+    "apoio": ""
+   },
+   {
+    "rotulo": "CORRIJA ASSIM",
+    "texto": "Aplique uma nova ideia na sua tarefa de hoje",
+    "apoio": "Teste o que aprendeu em um projeto atual da sua rotina."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

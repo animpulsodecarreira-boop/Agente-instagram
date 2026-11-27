@@ -84,11 +84,11 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 | Ângulo | Vezes | Última vez |
 |---|---|---|
 | aprender fazendo | 1 | 2026-11-11 |
+| transformar curso em resultado visível | 1 | 2026-11-27 |
 | constância nos estudos | 0 | - |
 | escolher o que aprender | 0 | - |
 | mentoria e troca | 0 | - |
 | mostrar o que aprendeu | 0 | - |
-| transformar curso em resultado visível | 0 | - |
 
 ## Rotina e manias do trabalho
 
