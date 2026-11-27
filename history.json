@@ -1610,5 +1610,15 @@
     "angle": "transformar curso em resultado visível",
     "reel_formato": "erro",
     "cover": "O erro que muita gente comete em cursos"
+  },
+  {
+    "topic": "Como responder à pergunta fale sobre você na entrevista",
+    "funnel": "topo",
+    "theme": "geometrico",
+    "variant": 0,
+    "pillar": "entrevista",
+    "angle": "'fale sobre você'",
+    "reel_formato": "antes_depois",
+    "cover": "Fale sobre você: veja a diferença"
   }
 ]

@@ -1,0 +1,24 @@
+{
+ "formato": "antes_depois",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Fale sobre você: veja a diferença",
+  "destaque": "fale sobre você",
+  "cenas": [
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Sou formado e gosto de desafios",
+    "antes": "Nasci em outra cidade e estudo muito",
+    "apoio": "Fale da sua formação de forma direta."
+   },
+   {
+    "rotulo": "ANTES / DEPOIS",
+    "texto": "Resolvo problemas de estoque e logística",
+    "antes": "Sou uma pessoa bem dedicada ao trabalho",
+    "apoio": "Mostre sua função e o que você resolve."
+   }
+  ],
+  "chamada": "Comenta AJUDA e eu te mando"
+ }
+}

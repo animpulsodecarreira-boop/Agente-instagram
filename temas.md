@@ -28,12 +28,12 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| 'fale sobre você' | 1 | 2026-11-27 |
 | acompanhamento depois da entrevista | 1 | 2026-11-24 |
 | como falar de uma saída ou lacuna | 1 | 2026-11-16 |
 | perguntas difíceis | 1 | 2026-11-23 |
 | perguntas para fazer ao recrutador | 1 | 2026-11-25 |
 | primeiros minutos da conversa | 1 | 2026-11-18 |
-| 'fale sobre você' | 0 | - |
 
 ## Transição e recolocação de carreira
 
