@@ -59,7 +59,7 @@ def make_story_video(clip, out: Path, seed: str, seconds: int = STORY_SECONDS):
             "-vf", f"fps=30,scale=1080:1920,format=yuv420p,tpad=stop_mode=clone:stop_duration={seconds},fade=t=in:st=0:d=0.3",
             "-af", f"afade=t=in:d=0.5,afade=t=out:st={seconds - 1}:d=1",
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "27", "-r", "30",
-            "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-t", str(seconds), "-shortest",
+            "-c:a", "aac", "-b:a", "256k", "-ar", "44100", "-t", str(seconds), "-shortest",
             "-movflags", "+faststart", str(out)]
     try:
         subprocess.run(cmd, check=True)
