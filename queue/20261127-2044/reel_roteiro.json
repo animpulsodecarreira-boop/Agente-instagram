@@ -1,0 +1,27 @@
+{
+ "formato": "antes_de",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Antes de falar na reunião, confira 3 coisas",
+  "destaque": "reunião",
+  "cenas": [
+   {
+    "rotulo": "1",
+    "texto": "Defina o seu ponto principal",
+    "apoio": "Escreva a frase central antes de abrir o microfone."
+   },
+   {
+    "rotulo": "2",
+    "texto": "Vá direto ao problema",
+    "apoio": "Evite rodeios longos para prender a atenção."
+   },
+   {
+    "rotulo": "3",
+    "texto": "Termine com um pedido claro",
+    "apoio": "Diga o que você precisa que o grupo decida."
+   }
+  ],
+  "chamada": "Salva para consultar depois"
+ }
+}

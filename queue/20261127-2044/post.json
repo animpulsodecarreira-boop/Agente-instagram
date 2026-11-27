@@ -1,0 +1,25 @@
+{
+  "id": "20261127-2044",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "geometrico",
+  "variant": 1,
+  "topic": "Como falar em reuniões de trabalho",
+  "caption": "Falar bem em reuniões exige clareza e foco no que importa para o grupo. Salve este post para consultar antes da próxima chamada.\n\n#reuniões #comunicação #carreira #trabalho #produtividade #profissional",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "comunicacao",
+  "angle": "reuniões",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "antes_de",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "sem narração: limite de uso da voz do Gemini atingido: HTTP 429: You exceeded your current quota, please check your plan and billing details. For more inf",
+  "revisao": [
+    "legenda: “post” não está no dicionário (sugestões: posto, posta, poste)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261127-2044/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261127-2044/reel.mp4"
+}

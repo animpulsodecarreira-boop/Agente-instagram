@@ -63,10 +63,10 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 |---|---|---|
 | mensagens objetivas | 1 | 2026-11-04 |
 | pedir ajuda ou indicação | 1 | 2026-11-20 |
+| reuniões | 1 | 2026-11-27 |
 | falar de conquistas sem exagero | 0 | - |
 | feedback | 0 | - |
 | networking sem constrangimento | 0 | - |
-| reuniões | 0 | - |
 
 ## Negociação e limites
 
