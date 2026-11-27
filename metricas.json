@@ -539,6 +539,42 @@
      "total": 63
     }
    }
+  },
+  "2026-11-27": {
+   "28": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 62,
+      "NON_FOLLOWER": 292
+     },
+     "total": 356
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 174,
+      "REEL": 241,
+      "STORY": 151
+     },
+     "total": 356
+    }
+   },
+   "7": {
+    "follow_type": {
+     "partes": {
+      "FOLLOWER": 28,
+      "NON_FOLLOWER": 8
+     },
+     "total": 36
+    },
+    "superficie": {
+     "partes": {
+      "CAROUSEL_CONTAINER": 13,
+      "REEL": 22,
+      "STORY": 15
+     },
+     "total": 36
+    }
+   }
   }
  },
  "midias": {
@@ -2961,6 +2997,21 @@
       "total_interactions": 1,
       "views": 13
      }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 8.97,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 3248,
+      "likes": 1,
+      "reach": 10,
+      "reels_skip_rate": 66.7,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 13
+     }
     }
    ],
    "media_id": "18122410429966412",
@@ -3071,6 +3122,21 @@
       "total_interactions": 2,
       "views": 33
      }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 8.18,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 5403,
+      "likes": 2,
+      "reach": 15,
+      "reels_skip_rate": 76.2,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 33
+     }
     }
    ],
    "media_id": "18029440775874731",
@@ -3140,6 +3206,21 @@
     {
      "em": "2026-11-26T17:12:34+0000",
      "idade": 5.92,
+     "metricas": {
+      "comments": 0,
+      "ig_reels_avg_watch_time": 1789,
+      "likes": 1,
+      "reach": 15,
+      "reels_skip_rate": 92.9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 22
+     }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 6.91,
      "metricas": {
       "comments": 0,
       "ig_reels_avg_watch_time": 1789,
@@ -3223,6 +3304,19 @@
       "total_interactions": 1,
       "views": 29
      }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 6.11,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 9,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 29
+     }
     }
    ],
    "media_id": "17980585347140470",
@@ -3282,6 +3376,19 @@
       "total_interactions": 1,
       "views": 26
      }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 5.82,
+     "metricas": {
+      "comments": 0,
+      "likes": 1,
+      "reach": 8,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 1,
+      "views": 26
+     }
     }
    ],
    "media_id": "18121592309084335",
@@ -3328,6 +3435,19 @@
       "total_interactions": 2,
       "views": 43
      }
+    },
+    {
+     "em": "2026-11-27T16:54:05+0000",
+     "idade": 4.84,
+     "metricas": {
+      "comments": 0,
+      "likes": 2,
+      "reach": 12,
+      "saved": 0,
+      "shares": 0,
+      "total_interactions": 2,
+      "views": 49
+     }
     }
    ],
    "media_id": "18227310613351328",
@@ -3353,6 +3473,25 @@
    "permalink": "https://www.instagram.com/p/DgLTUdJFJTJ/",
    "post_id": "20261124-2059",
    "publicado_em": "2026-11-25T19:39:53+0000",
+   "tipo": "carrossel"
+  },
+  "20261126-1629:carrossel": {
+   "atributos": {
+    "angle": null,
+    "format": "comparativo",
+    "funnel": "fundo",
+    "hook": "pergunta direta que gera identificação",
+    "pillar": "linkedin",
+    "reel_formato": null,
+    "theme": "geometrico",
+    "topic": "topo",
+    "variant": 2
+   },
+   "coletas": [],
+   "media_id": "17923238754465746",
+   "permalink": "https://www.instagram.com/p/DgN3NLGDxI6/",
+   "post_id": "20261126-1629",
+   "publicado_em": "2026-11-26T19:31:58+0000",
    "tipo": "carrossel"
   }
  },
