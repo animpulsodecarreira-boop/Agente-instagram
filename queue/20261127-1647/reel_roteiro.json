@@ -1,0 +1,27 @@
+{
+ "formato": "pov",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "POV: sua experiência anterior parece não servir para a nova vaga",
+  "destaque": "experiência",
+  "cenas": [
+   {
+    "rotulo": "A VIRADA",
+    "texto": "O que você fazia ainda tem valor real",
+    "apoio": ""
+   },
+   {
+    "rotulo": "FAÇA ISSO",
+    "texto": "Traduza suas tarefas antigas para a nova linguagem",
+    "apoio": "Foque nos problemas que você já resolveu."
+   },
+   {
+    "rotulo": "DEPOIS",
+    "texto": "Sua trajetória faz sentido para quem lê",
+    "apoio": "A conexão entre os cargos fica evidente."
+   }
+  ],
+  "chamada": "Manda para quem precisa ver"
+ }
+}

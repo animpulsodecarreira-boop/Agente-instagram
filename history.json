@@ -1620,5 +1620,15 @@
     "angle": "'fale sobre você'",
     "reel_formato": "antes_depois",
     "cover": "Fale sobre você: veja a diferença"
+  },
+  {
+    "topic": "Reposicionar a experiência anterior na busca por emprego",
+    "funnel": "topo",
+    "theme": "escuro",
+    "variant": 1,
+    "pillar": "transicao",
+    "angle": "reposicionar a experiência anterior",
+    "reel_formato": "pov",
+    "cover": "POV: sua experiência anterior parece não servir para a nova vaga"
   }
 ]
