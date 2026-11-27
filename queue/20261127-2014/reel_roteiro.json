@@ -1,0 +1,27 @@
+{
+ "formato": "pergunta_recrutador",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Recrutador pergunta: por que este currículo?",
+  "destaque": "currículo",
+  "cenas": [
+   {
+    "rotulo": "O QUE ELE QUER SABER",
+    "texto": "Se você leu a vaga",
+    "apoio": "Conexão direta com os requisitos pedidos."
+   },
+   {
+    "rotulo": "COMO RESPONDER",
+    "texto": "Mostre o que resolve o problema",
+    "apoio": "Destaque experiências que combinam com a função."
+   },
+   {
+    "rotulo": "EVITE",
+    "texto": "Usar o mesmo texto para tudo",
+    "apoio": "Cada vaga exige foco em coisas diferentes."
+   }
+  ],
+  "chamada": "Comenta PERFIL e eu te mando"
+ }
+}

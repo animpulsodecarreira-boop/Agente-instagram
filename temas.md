@@ -17,12 +17,12 @@ Quantas vezes cada ângulo de cada pilar já saiu. O robô sempre escolhe o meno
 
 | Ângulo | Vezes | Última vez |
 |---|---|---|
+| adaptar o currículo a cada vaga | 1 | 2026-11-27 |
 | carta ou mensagem de apresentação | 1 | 2026-11-25 |
 | conquistas sem inventar números | 1 | 2026-11-03 |
 | lacunas no histórico | 1 | 2026-11-18 |
 | resumo profissional | 1 | 2026-11-20 |
 | tamanho e formato | 1 | 2026-11-06 |
-| adaptar o currículo a cada vaga | 0 | - |
 
 ## Entrevistas e conversa com recrutador
 
