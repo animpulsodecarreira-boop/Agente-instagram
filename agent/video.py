@@ -184,7 +184,7 @@ def make_reel_from_frames(frames, out: Path, seed: str, fade_in: float = 0.3, an
         except ValueError:
             vol_musica = 0.16
         # música baixa e em nível constante: com a voz por cima, não há ducking (o "respirar" da trilha nas pausas soava como chiado)
-        partes = [f"[1:a]volume={vol_musica},afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5[m]"]
+        partes = [f"[1:a]lowpass=f=7000,volume={vol_musica},afade=t=in:d=0.5,afade=t=out:st={total - 1.5:.3f}:d=1.5[m]"]
         rot = []
         for k, c in enumerate(voz):
             ms = max(0, int(round(c["t0"] * 1000)))
