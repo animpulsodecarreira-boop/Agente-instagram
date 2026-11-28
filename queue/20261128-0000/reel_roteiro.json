@@ -1,0 +1,27 @@
+{
+ "formato": "pare",
+ "origem": "gemini",
+ "estilo": "palco",
+ "roteiro": {
+  "gancho": "Pare de estudar só quando sobra tempo",
+  "destaque": "estudar",
+  "cenas": [
+   {
+    "rotulo": "FAÇA ASSIM",
+    "texto": "Reserve vinte minutos no seu dia",
+    "apoio": "Defina um horario fixo na sua agenda para focar no aprendizado."
+   },
+   {
+    "rotulo": "POR QUÊ",
+    "texto": "Habito constante traz aprendizado real",
+    "apoio": "Pequenas doses diarias geram mais resultado do que maratonas raras."
+   },
+   {
+    "rotulo": "HOJE",
+    "texto": "Bloqueie o horario para amanha",
+    "apoio": "Deixe o compromisso marcado no seu calendario."
+   }
+  ],
+  "chamada": "Segue para mais dicas de carreira"
+ }
+}

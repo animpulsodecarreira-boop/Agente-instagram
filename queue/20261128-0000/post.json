@@ -1,0 +1,27 @@
+{
+  "id": "20261128-0000",
+  "status": "reel_only",
+  "saida": "reel_direto",
+  "funnel": "topo",
+  "theme": "escuro",
+  "variant": 2,
+  "topic": "Constância nos estudos na carreira",
+  "caption": "A constância nos estudos depende de rotina e não de sorte. Defina um horário fixo e mantenha o foco. Comente aqui como você organiza seus estudos.\n\n#desenvolvimentoprofissional #estudos #carreira #aprendizado #produtividade #rotina #crescimentoprofissional",
+  "slides": 0,
+  "stories": 0,
+  "pillar": "aprendizado",
+  "angle": "constância nos estudos",
+  "reel_status": "pending",
+  "reel_modo": "direto",
+  "reel_formato": "pare",
+  "reel_origem": "gemini",
+  "reel_estilo": "palco",
+  "reel_narracao": "voz Orus (gemini-3.8-flash-tts)",
+  "revisao": [
+    "cena 1: “horario” não está no dicionário (sugestões: horário)",
+    "cena 2: “diarias” não está no dicionário (sugestões: dirias, darias, diárias)",
+    "cena 3: “calendario” não está no dicionário (sugestões: calendário, calendarizo)"
+  ],
+  "reel_capa_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261128-0000/reel_capa.png",
+  "reel_url": "https://agente-instagram-aprovacao.animpulsodecarreira.workers.dev/m/posts/20261128-0000/reel.mp4"
+}
